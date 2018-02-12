@@ -24,14 +24,6 @@
 ## Usage
 Make your changes to this repository and they will be deployed automatically once merged.
 
-<!-- HISTORY/ -->
-
-<h2>History</h2>
-
-<a href="https://github.com/balupton/jordanbpeterson.community/releases">Discover the release history by heading on over to the releases page.</a>
-
-<!-- /HISTORY -->
-
 
 <!-- LICENSE/ -->
 
