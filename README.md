@@ -39,7 +39,7 @@ Make your changes to this repository and they will be deployed automatically onc
 
 Unless stated otherwise all works are:
 
-<ul><li>Copyright &copy; <a href="http://balupton.com">Benjamin Lupton</a></li></ul>
+<ul><li>Copyright &copy; 2016+ <a href="http://balupton.com">Benjamin Lupton</a></li></ul>
 
 and licensed under:
 
