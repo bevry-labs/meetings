@@ -4,8 +4,11 @@
   "private": true,
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "surge"
+    "our:setup": "npm install",
+    "our:compile": "",
+    "our:verify": "npm test",
+    "our:deploy": "surge",
+    "test": "echo 'Error: no test specified'"
   },
   "author": "Benjamin Lupton <b@lupton.cc> (https://balupton.com)",
   "license": "MIT",
