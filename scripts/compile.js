@@ -18,6 +18,7 @@ function renderTemplate (url, title = 'Redirect') {
 		This page has moved. You will be automatically redirected to its new location. If you aren't forwarded to the new page,
 		<a href="${url}">click here</a>.
 	</p>
+	<!-- this is an automatically generated file, do not edit it manually -->
 </body>
 
 </html>`
