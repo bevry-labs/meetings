@@ -23,8 +23,8 @@ function renderTemplate (url, title = 'Redirect') {
 </html>`
 }
 
-const redirects = require('./package.json').redirects
-const www = path.join(__dirname, 'source')
+const redirects = require('../package.json').redirects
+const www = path.join(__dirname, '..', 'www')
 
 Object.keys(redirects).forEach(function (key) {
 	const url = redirects[key]

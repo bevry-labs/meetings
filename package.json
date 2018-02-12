@@ -16,10 +16,10 @@
   },
   "scripts": {
     "our:setup": "npm install",
-    "our:compile": "node ./compile.js",
+    "our:compile": "node ./scripts/compile.js",
     "our:verify": "npm test",
     "our:meta": "projectz compile",
-    "our:deploy": "surge ./source",
+    "our:deploy": "surge ./www",
     "test": "echo nothing to do"
   },
   "author": "2016+ Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
