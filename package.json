@@ -22,7 +22,7 @@
     "our:deploy": "surge",
     "test": "echo nothing to do"
   },
-  "author": "Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
+  "author": "2016+ Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
   "license": "MIT",
   "devDependencies": {
     "projectz": "^1.4.0",
