@@ -19,7 +19,7 @@
     "our:compile": "echo nothing to do",
     "our:verify": "npm test",
     "our:meta": "projectz compile",
-    "our:deploy": "surge",
+    "our:deploy": "surge ./source",
     "test": "echo nothing to do"
   },
   "author": "2016+ Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
