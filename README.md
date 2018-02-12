@@ -21,17 +21,6 @@
 <!-- /DESCRIPTION -->
 
 
-<!-- INSTALL/ -->
-
-<h2>Install</h2>
-
-<a href="https://npmjs.com" title="npm is a package manager for javascript"><h3>NPM</h3></a><ul>
-<li>Install: <code>npm install --save jordanbpeterson.community</code></li>
-<li>Module: <code>require('jordanbpeterson.community')</code></li></ul>
-
-<!-- /INSTALL -->
-
-
 ## Usage
 Make your changes to this repository and they will be deployed automatically once merged.
 
@@ -42,31 +31,6 @@ Make your changes to this repository and they will be deployed automatically onc
 <a href="https://github.com/balupton/jordanbpeterson.community/releases">Discover the release history by heading on over to the releases page.</a>
 
 <!-- /HISTORY -->
-
-
-<!-- BACKERS/ -->
-
-<h2>Backers</h2>
-
-<h3>Maintainers</h3>
-
-No maintainers yet! Will you be the first?
-
-<h3>Sponsors</h3>
-
-No sponsors yet! Will you be the first?
-
-
-
-<h3>Contributors</h3>
-
-These amazing people have contributed code to this project:
-
-<ul><li><a href="http://balupton.com">Benjamin Lupton</a> — <a href="https://github.com/balupton/jordanbpeterson.community/commits?author=balupton" title="View the GitHub contributions of Benjamin Lupton on repository balupton/jordanbpeterson.community">view contributions</a></li></ul>
-
-
-
-<!-- /BACKERS -->
 
 
 <!-- LICENSE/ -->
