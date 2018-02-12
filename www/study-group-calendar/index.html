@@ -2,14 +2,20 @@
 <html>
 
 <head>
-	<title>Redirect</title>
-	<meta http-equiv="REFRESH" content="0; url=webcal://calendar.google.com/calendar/ical/bg4cb33m4c9ptkj3l291kbgum8%40group.calendar.google.com/public/basic.ics">
+	<title>Study Group Calendar</title>
 	<link rel="canonical" href="webcal://calendar.google.com/calendar/ical/bg4cb33m4c9ptkj3l291kbgum8%40group.calendar.google.com/public/basic.ics"
 	/>
 </head>
 
 <body>
-	<script>document.location.href = "webcal://calendar.google.com/calendar/ical/bg4cb33m4c9ptkj3l291kbgum8%40group.calendar.google.com/public/basic.ics"</script>
+	<script>
+		setTimeout(
+			function () {
+				document.location.href = "webcal://calendar.google.com/calendar/ical/bg4cb33m4c9ptkj3l291kbgum8%40group.calendar.google.com/public/basic.ics"
+			},
+			100
+		)
+	</script>
 
 	<p>You should be automatically prompted to add the calendar subscription to your calendar application.</p>
 
@@ -19,12 +25,8 @@
 	</p>
 
 	<p>
-		If that doesn't work, you can subscribe to the calenadar subscription URL with the appropriate instructions for your platform:
+		If that doesn't work, you can subscribe to the calendar subscription URL with the appropriate instructions for your platform:
 		<ul>
-			<li>
-				Calendar Subscription URL:
-				<code>webcal://calendar.google.com/calendar/ical/bg4cb33m4c9ptkj3l291kbgum8%40group.calendar.google.com/public/basic.ics</code>
-			</li>
 			<li>
 				<a href="https://support.apple.com/kb/PH11523">MacOS</a>
 			</li>
@@ -38,6 +40,9 @@
 				<a href="https://support.office.com/en-us/article/Import-or-subscribe-to-a-calendar-in-Outlook-com-or-Outlook-on-the-web-CFF1429C-5AF6-41EC-A5B4-74F2C278E98C">Outlook</a>
 			</li>
 		</ul>
+		Calendar Subscription URL:
+		<br/>
+		<code>webcal://calendar.google.com/calendar/ical/bg4cb33m4c9ptkj3l291kbgum8%40group.calendar.google.com/public/basic.ics</code>
 	</p>
 
 </body>
