@@ -16,11 +16,11 @@
   },
   "scripts": {
     "our:setup": "npm install",
-    "our:compile": "",
+    "our:compile": "echo nothing to do",
     "our:verify": "npm test",
     "our:meta": "projectz compile",
     "our:deploy": "surge",
-    "test": "echo 'Error: no test specified'"
+    "test": "echo nothing to do"
   },
   "author": "Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
   "license": "MIT",
