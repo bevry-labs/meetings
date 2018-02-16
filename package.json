@@ -16,16 +16,16 @@
   },
   "scripts": {
     "our:setup": "npm install",
-    "our:compile": "node ./scripts/compile.js",
     "our:verify": "npm test",
     "our:meta": "projectz compile",
     "our:deploy": "surge ./www",
+    "my:clean": "node ./scripts/clean.js",
+    "my:compile": "node ./scripts/compile.js",
     "test": "echo nothing to do"
   },
   "author": "2016+ Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
   "license": "MIT",
   "devDependencies": {
-    "mkdirp": "^0.5.1",
     "projectz": "^1.4.0",
     "surge": "^0.19.0"
   },
@@ -47,7 +47,13 @@
     "reading-list": "https://www.goodreads.com/group/bookshelf/253798-jordan-b-peterson-reading-group?utf8=✓&order=d&sort=date_finished&view=main&per_page=200",
     "meetups": "https://www.meetup.com/find/?allMeetups=false&keywords=jordan+peterson&radius=Infinity",
     "discord": "https://discord.gg/j2PqA7S",
+    "study-group-calendar": "/calendar/",
     "study-group-recordings": "/youtube/",
     "study-group-hangout": "/study-group/"
+  },
+  "dependencies": {
+    "mkdirp-promise": "^5.0.1",
+    "rimraf-promise": "^2.0.0",
+    "then-fs": "^2.0.0"
   }
 }
