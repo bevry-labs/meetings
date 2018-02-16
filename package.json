@@ -2,39 +2,60 @@
   "name": "jordanbpeterson.community",
   "version": "1.0.0",
   "private": true,
-  "description": "",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/balupton/jordanbpeterson.community.git"
-  },
+  "description": "source-code for the Jordan B Peterson community website",
+  "homepage": "https://github.com/balupton/jordanbpeterson.community",
+  "license": "MIT",
+  "keywords": [
+    "jordan b peterson",
+    "jbp",
+    "website"
+  ],
   "badges": {
     "list": [
-      "travisci",
-      "daviddm",
-      "daviddmdev"
+      "travisci"
     ]
   },
-  "scripts": {
-    "our:setup": "npm install",
-    "our:verify": "npm test",
-    "our:meta": "projectz compile",
-    "our:deploy": "surge ./www",
-    "my:clean": "node ./scripts/clean.js",
-    "my:compile": "node ./scripts/compile.js",
-    "test": "echo nothing to do"
-  },
-  "author": "2016+ Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
-  "license": "MIT",
-  "devDependencies": {
-    "projectz": "^1.4.0",
-    "surge": "^0.19.0"
-  },
+  "author": "2017+ Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
   "maintainers": [],
   "contributors": [
     "Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
   ],
   "bugs": {
     "url": "https://github.com/balupton/jordanbpeterson.community/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/balupton/jordanbpeterson.community.git"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "dependencies": {
+    "mkdirp-promise": "^5.0.1",
+    "rimraf-promise": "^2.0.0",
+    "then-fs": "^2.0.0"
+  },
+  "devDependencies": {
+    "projectz": "^1.4.0",
+    "surge": "^0.19.0"
+  },
+  "scripts": {
+    "our:setup": "npm run our:setup:npm",
+    "our:setup:npm": "npm install",
+    "our:clean": "rm -Rf ./docs ./es2015 ./es5 ./out && npm run my:clean",
+    "our:compile": "npm run my:compile",
+    "our:meta": "npm run our:meta:projectz",
+    "our:meta:projectz": "projectz compile",
+    "our:verify": "echo no need for this project",
+    "our:deploy": "npm run my:deploy",
+    "our:test": "npm run our:verify && npm test",
+    "our:release": "npm run our:release:prepare && npm run our:release:push",
+    "our:release:prepare": "npm run our:clean && npm run our:compile && npm run our:test && npm run our:meta",
+    "our:release:push": "git push origin master && git push origin --tags",
+    "my:clean": "node ./scripts/clean.js",
+    "my:compile": "node ./scripts/compile.js",
+    "my:deploy": "surge ./www",
+    "test": "echo nothing to do"
   },
   "redirects": {
     "reddit": "https://www.reddit.com/r/JordanPeterson",
@@ -50,10 +71,5 @@
     "study-group-calendar": "/calendar/",
     "study-group-recordings": "/youtube/",
     "study-group-hangout": "/study-group/"
-  },
-  "dependencies": {
-    "mkdirp-promise": "^5.0.1",
-    "rimraf-promise": "^2.0.0",
-    "then-fs": "^2.0.0"
   }
 }
