@@ -21,7 +21,23 @@
 <!-- /DESCRIPTION -->
 
 
-## Usage
+## Goal
+
+The goal of this is to eventually get to the point where instead of people going to youtube to watch his lectures, instead they go to https://jordanbpeterson.community - as if they do that, they will also get these benefits:
+
+- ephemeral live chat with others watching the video at the same time
+- persisted forum discussion topic
+  - for this there will eventually be a [discourse](http://discourse.org) forum that will be at https://discuss.jordanbpeterson.community
+- view the crowd-sourced lecture notes for the lecture
+- view the previous study group discussion notes and video for the lecture, or if the discussion is upcoming, subscribe to be alerted when the discussion is happening with the join link to either participate in the calls, or watch the recorded summary session live
+
+If you wish to help out with any of this, reach `balupton` on [Wire](https://balupton.com)
+
+Thank you.
+
+
+## Development
+
 Make your changes to this repository and they will be deployed automatically once merged.
 
 
