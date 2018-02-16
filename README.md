@@ -40,6 +40,8 @@ Thank you.
 
 Make your changes to this repository and they will be deployed automatically once merged.
 
+Simple redirects are generated automatically by `npm run our:compile` which uses the `redirects` field inside `package.json`.
+
 
 <!-- LICENSE/ -->
 
