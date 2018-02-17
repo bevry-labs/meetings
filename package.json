@@ -31,7 +31,10 @@
     "node": "8"
   },
   "dependencies": {
+    "ical-expander": "^1.1.2",
+    "luxon": "^0.5.0",
     "mkdirp-promise": "^5.0.1",
+    "node-fetch": "^2.0.0",
     "rimraf-promise": "^2.0.0",
     "then-fs": "^2.0.0"
   },
@@ -53,7 +56,7 @@
     "our:release:prepare": "npm run our:clean && npm run our:compile && npm run our:test && npm run our:meta",
     "our:release:push": "git push origin master && git push origin --tags",
     "my:clean": "node ./scripts/clean.js",
-    "my:compile": "node ./scripts/compile.js",
+    "my:compile": "env TZ='Atlantic/Reykjavik' node ./scripts/compile.js",
     "my:deploy": "surge ./www",
     "test": "echo nothing to do"
   },
