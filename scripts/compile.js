@@ -2,6 +2,12 @@ const path = require('path')
 const fs = require('then-fs')
 const mkdirp = require('mkdirp-promise')
 
+// const fetch = require('node-fetch')
+// const { DateTime } = require('luxon')
+// const IE = require('ical-expander')
+// `ical-expander` uses `ical.js` which uses this datetime API
+// http://mozilla-comm.github.io/ical.js/api/ICAL.Time.html
+
 // Redirect Template
 function renderRedirectTemplate (url, title = 'Redirect') {
 	return `<!DOCTYPE html>
@@ -25,6 +31,9 @@ function renderRedirectTemplate (url, title = 'Redirect') {
 </html>`
 }
 
+const now = DateTime.local()
+const later = now.plus({ months: 2 })
+
 // Async Helper
 async function init () {
 	// Fetch paths
@@ -35,6 +44,37 @@ async function init () {
 	// Fetch redirect data
 	const redirects = require(packagePath).redirects
 	const keys = Object.keys(redirects).sort()
+
+	/*
+	// Calendar subscription
+	const calendarText = await fetch('https://jordanbpeterson.community/calendar.ics').then((res) => res.text())
+
+	const ie = new IE({ ics: calendarText, maxIterations: 100 });
+	const events = ie.between(now.toJSDate(), later.toJSDate());
+
+	const mappedEvents = events.events.map(function (event) {
+		return {
+			startDate: event.startDate,
+			summary: event.summary,
+			description: event.description,
+			tz: event.startDate.zone
+		}
+	})
+	const mappedOccurrences = events.occurrences.map(function (occurence) {
+		const event = occurence.item
+		return {
+			startDate: occurence.startDate,
+			summary: event.summary,
+			description: event.description,
+			tz: event.startDate.zone
+		}
+	})
+	const allEvents = [].concat(mappedEvents, mappedOccurrences).sort((a, b) => a.startDate.toUnixTime() - b.startDate.toUnixTime())
+	const allEventsHuman = allEvents.map(e => `${e.startDate.toJSDate().toISOString()} ${e.tz} - ${e.summary} / ${e.description}`).join('\n')
+
+	console.log(allEventsHuman);
+	*/
+
 
 	// Update gitignore with redirect directories
 	const gitignoreContentsOriginal = await fs.readFile(gitignorePath, 'utf8')
