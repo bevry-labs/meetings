@@ -31,9 +31,6 @@ function renderRedirectTemplate (url, title = 'Redirect') {
 </html>`
 }
 
-const now = DateTime.local()
-const later = now.plus({ months: 2 })
-
 // Async Helper
 async function init () {
 	// Fetch paths
@@ -46,6 +43,9 @@ async function init () {
 	const keys = Object.keys(redirects).sort()
 
 	/*
+	const now = DateTime.local()
+	const later = now.plus({ months: 2 })
+
 	// Calendar subscription
 	const calendarText = await fetch('https://jordanbpeterson.community/calendar.ics').then((res) => res.text())
 
