@@ -216,15 +216,15 @@ The attitude of folks in Asia
 
 Fri.
 
-What'sWhats been working for Sumit and I.
+What's been working for Sumit and I.
 
-Plans for these meetings. Having half structured, half stuff from ourout lives.
+Plans for these meetings. Having half structured, half stuff from our lives.
 
 Sat.
 
 Set up why to be anxious about death
 
-fear of death, leavingleaviing things unfinished.
+fear of death, leaving things unfinished.
 
 no longer existing
 
@@ -240,7 +240,7 @@ Stoned ape hypothesis
 
 loss/gain of fear of death from psychedelic experiences.
 
-DalaiDali lama remembering past lives
+Dalai lama remembering past lives
 
 Do trees fear death?
 
