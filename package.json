@@ -1,9 +1,8 @@
 {
   "name": "jordanbpeterson.community",
   "version": "1.0.0",
-  "private": true,
   "description": "source-code for the Jordan B Peterson community website",
-  "homepage": "https://github.com/balupton/jordanbpeterson.community",
+  "homepage": "https://github.com/bevry/jordanbpeterson.community",
   "license": "MIT",
   "keywords": [
     "jordan b peterson",
@@ -12,69 +11,117 @@
   ],
   "badges": {
     "list": [
-      "travisci"
-    ]
+      "travisci",
+      "---",
+      "patreon",
+      "flattr",
+      "liberapay",
+      "thanksapp",
+      "boostlab",
+      "buymeacoffee",
+      "opencollective",
+      "crypto",
+      "paypal",
+      "wishlist"
+    ],
+    "config": {
+      "buymeacoffeeUsername": "balupton",
+      "cryptoURL": "https://bevry.me/crypto",
+      "flattrUsername": "balupton",
+      "liberapayUsername": "bevry",
+      "opencollectiveUsername": "bevry",
+      "patreonUsername": "bevry",
+      "paypalURL": "https://bevry.me/paypal",
+      "wishlistURL": "https://bevry.me/wishlist"
+    }
   },
   "author": "2017+ Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
-  "maintainers": [],
+  "maintainers": [
+    "Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
+  ],
   "contributors": [
     "Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
   ],
   "bugs": {
-    "url": "https://github.com/balupton/jordanbpeterson.community/issues"
+    "url": "https://github.com/bevry/jordanbpeterson.community/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/balupton/jordanbpeterson.community.git"
+    "url": "https://github.com/bevry/jordanbpeterson.community.git"
   },
   "engines": {
     "node": "8"
   },
+  "editions": [
+    {
+      "description": "website",
+      "directory": ".",
+      "tags": [
+        "typescript",
+        "import"
+      ]
+    }
+  ],
   "dependencies": {
-    "ical-expander": "^1.1.2",
-    "luxon": "^0.5.0",
-    "mkdirp-promise": "^5.0.1",
-    "node-fetch": "^2.0.0",
-    "rimraf-promise": "^2.0.0",
-    "then-fs": "^2.0.0"
+    "googleapis": "^36.0.0",
+    "isomorphic-unfetch": "^3.0.0",
+    "luxon": "^1.8.3",
+    "next": "^7.0.2",
+    "react": "16.7.0-alpha.2",
+    "react-dom": "16.7.0-alpha.2"
   },
   "devDependencies": {
-    "projectz": "^1.4.0",
-    "surge": "^0.19.0"
+    "@types/luxon": "^1.4.1",
+    "@types/next": "^7.0.6",
+    "@zeit/next-typescript": "^1.1.1",
+    "eslint": "^5.11.0",
+    "eslint-config-bevry": "^1.0.2",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-typescript": "^0.14.0",
+    "now": "^12.1.14",
+    "prettier": "^1.15.3",
+    "projectz": "^1.7.4",
+    "stylelint": "^9.9.0",
+    "stylelint-config-standard": "^18.2.0",
+    "typescript": "^3.2.2",
+    "typescript-eslint-parser": "^21.0.2"
   },
   "scripts": {
-    "our:setup": "npm run our:setup:npm",
-    "our:setup:npm": "npm install",
-    "our:clean": "rm -Rf ./docs ./es2015 ./es5 ./out && npm run my:clean",
+    "my:api:events": "env GOOGLE_CREDENTIALS=\"$(cat ./.env/google.json)\" node ./api/routes/event.js",
+    "my:compile": "node scripts/compile.js",
+    "my:deploy": "npm run our:verify:typescript && now",
+    "my:secrets": "now secret add google-credentials \"$(cat ./.env/google.json | base64)\"",
+    "our:api": "npm run our:api:events",
+    "our:api:events": "npm run my:api:events",
+    "our:clean": "rm -Rf ./docs ./edition* ./es2015 ./es5 ./out",
     "our:compile": "npm run my:compile",
+    "our:deploy": "npm run my:deploy",
     "our:meta": "npm run our:meta:projectz",
     "our:meta:projectz": "projectz compile",
-    "our:verify": "echo no need for this project",
-    "our:deploy": "npm run my:deploy",
-    "our:test": "npm run our:verify && npm test",
-    "our:release": "npm run our:release:prepare && npm run our:release:push",
+    "our:release": "npm run our:release:push",
     "our:release:prepare": "npm run our:clean && npm run our:compile && npm run our:test && npm run our:meta",
     "our:release:push": "git push origin master && git push origin --tags",
-    "my:clean": "node ./scripts/clean.js",
-    "my:compile": "env TZ='Atlantic/Reykjavik' node ./scripts/compile.js",
-    "my:deploy": "surge ./www",
-    "test": "echo nothing to do"
+    "our:secrets": "npm run my:secrets",
+    "our:setup": "npm run our:setup:npm",
+    "our:setup:npm": "npm install",
+    "our:test": "npm run our:verify && npm test",
+    "our:verify": "npm run our:verify:eslint && npm run our:verify:stylelint && npm run our:verify:typescript",
+    "our:verify:eslint": "eslint --fix --ignore-pattern '**/*.d.ts' --ignore-pattern '**/vendor/' --ignore-pattern '**/node_modules/' --ext .mjs,.js,.jsx,.ts,.tsx .",
+    "our:verify:stylelint": "stylelint --fix './**/*.css'",
+    "our:verify:typescript": "tsc --noEmit --project .",
+    "start": "next start",
+    "test": "npm run build",
+    "dev": "next",
+    "build": "next build"
   },
-  "redirects": {
-    "reddit": "https://www.reddit.com/r/JordanPeterson",
-    "twitter": "https://twitter.com/JBPCommunity",
-    "newsletter": "https://goo.gl/forms/qgIjkJ8SYEpLCVY83",
-    "youtube": "https://www.youtube.com/channel/UCPkobzBsAIjpItonUT7AU9Q",
-    "podcast": "/youtube/",
-    "podcast-join": "https://discuss.jordanbpeterson.community/t/jbp-community-podcast-join-links-scheduling/361",
-    "study-group": "https://discuss.jordanbpeterson.community/t/about-the-meetings/92",
-    "lecture-notes": "https://discuss.jordanbpeterson.community/categories",
-    "reading-group": "https://www.goodreads.com/group/show/253798-jordan-b-peterson-reading-group",
-    "reading-list": "https://www.goodreads.com/group/bookshelf/253798-jordan-b-peterson-reading-group?utf8=✓&order=d&sort=date_finished&view=main&per_page=200",
-    "meetups": "https://www.meetup.com/find/?allMeetups=false&keywords=jordan+peterson&radius=Infinity",
-    "discord": "https://discord.gg/j2PqA7S",
-    "study-group-calendar": "/calendar/",
-    "study-group-recordings": "/youtube/",
-    "study-group-hangout": "/study-group/"
+  "eslintConfig": {
+    "extends": [
+      "bevry"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
   }
 }
