@@ -124,7 +124,7 @@
       "src": "/feedback/?",
       "status": 302,
       "headers": {
-        "Location": "https://www.reddit.com/r/JordanPeterson/comments/7x089x/"
+        "Location": "https://discuss.jordanbpeterson.community/c/feedback"
       }
     },
     {
