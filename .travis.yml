@@ -10,14 +10,12 @@ cache:
   - "$HOME/.npm"
   - "$HOME/.yarn-cache"
 install:
-- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/1ec050bc004d0e2161cb5286c247850d24aecc02/scripts/node-install.bash)"
+- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/1f4c6b3d2a0315d3fcd66e8a2cb5de31889ea87d/scripts/node-install.bash)"
 before_script:
-- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/1ec050bc004d0e2161cb5286c247850d24aecc02/scripts/node-verify.bash)"
+- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/1f4c6b3d2a0315d3fcd66e8a2cb5de31889ea87d/scripts/node-verify.bash)"
 after_success:
-- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/1ec050bc004d0e2161cb5286c247850d24aecc02/scripts/deploy-custom.bash)"
+- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/1f4c6b3d2a0315d3fcd66e8a2cb5de31889ea87d/scripts/deploy-now.bash)"
 notifications:
-  slack:
-    secure: iHdN95qboy3YxDUoE4cCHBOlsCYi3V51sa1oPstIY6+9q1PUKs8mt0W9MiFZVHUQcfsqBPUvDbPDGebXE0MkoNL57gqrvJoD2Vf38zOnbZrHQcBRvwBiprIn+opE03Wo7+qk4wVYLYmyh+JnX6+r6TUs9Cr3Gg1f/O1LuVUiZrjbbYUBSRSU1XTsdrKqlyEsHREwb9dH4t3reqbnC8i9am25MD2ProWzDnkrPAD0ZXTJOOtuVsdhAIpgNJcoRVb9QUdE56vtrbBrHJmi8F6dh3Z3w3zzzZaaRzndPnibLMxcZol7kWzE4LVBiE0SZJSK4rt57bhTwUYHWMMW/fb+2zzloaIs5H2rTz+5wnBV37ZyKQOuOyq0Tld17RaN8pMKwHJxat1/sLD8XGtSGmReqt4R4e+l7al7vHF5KEkp7gAh4ANtSSskm+s7tDNDVu5n0O70wYzVHH5Is3jii2nDPBEL2Jv8Kmg0rolvpkT69LnNtGAzqhV38IzotsH1kiPxq/sumxf5xkqXRzq0jVUJSjCD2ul3+XZv9VeooBuAhlgmEQZ0YRt+LBgZsyQgqu9CKPo4QPbraLHgIScRXtS4LX/ySbuXvj77A9KYyvlH48TqjX564Kw3X71Op5CoRsP6QN70++wJOY8ivujma+sAf1LXYtEg+CnWrkRPPKBlYN8=
   email:
     recipients:
-      secure: APpKN6RIIpahwi+yCnusQ2WK2x//1I4FEt6QZxPLPPFyh3rbatzrPJgmLnkrJXCh68eW5VBHgWCQpfqGdxVQXoeb+MDQBBhdwwtHqGkIIT7gIn47zr/zjjPKQFpHw3BzXgn8KEdSyJyjT7oTitoa80Vy3U7BCQC+Bt80hPatSXByyOKlbt+JCtJxRq6doNFEu9hlulgo/cmsmkYmP+4VVE7BJsYFJMA1TkoWfl7rfIOi4SZCW/lCTYHfKxbX4PR3kZ04D9J4/DXqNARisATf0Jv4IuK+XNtg+XaQVMsoA+V1H5b0+kLKFXZTPN+w3aL+qyNk8RyzA8RyqZm4P+gjmlUHdvpBDjkdzkYVhPOfW2fP2sgWg/1YQjZ4LEFlrRMGHkbtzNNLqE0aM1KsTZQuL5Aio/QT2G4wuVj7FKkPGwGK///9noV2R31D+9gH5M9bXOiLohP3iCvHT9JMPmsgFRcGUjhciBKKwEfZarM6XuOW336hjemxFWo1BP+lFH+KcRcXFXDEQeTIRMsdgA5Jnt/ZalRwnLq9U810KpT+CepT0cZOVgBQ28+Meq7pzoqYRJUCuFv8dO9zGonr/xajVF8aA1wo/t/dFThHW7DtlIZWtcyt48a/ELUYiawl62vRD9xd3PUjAJ89GZbpPPQ+Qb09D8KD/sOyvFBrel/VGjU=
+      secure: dzJ0PNTb+mB5qA/07Yoqfbx7ZdrWszYj09dbRERuktydnULpOAkBzIFmbGtfptaH/50NFa8qF48fbcnNPxkD6+o8+FXmK0mJSBoTNhEKg2DvMLxz5rBAJniDddPtpb515z1XeZ5VSFvspoG8WUqOML1FwlhwJN1wugIwggXhLMn+zZKJnrLq3RGUfgg3K6S1eaP8pr5SIHHMTWBLWUi4hSnbXJlowHpLTRX7T2BYl7lz0f18EWOawWKNjBtBq5LBgwPbtwpTVwuKyi38NwKWtZ+MZ/1jCRyNlL6tPtzXIBA77IALd7+seL4FVtWFhEO/4WRqawrRcwAiFTnvwkdvRDCph6wXHAATIP1Hobq32oXg6FCN2qq/5LG9Fu2MZftX8Loby4lJfzJaXnnfWB6qhN0H2aFlv9dBHTf/SFYV5xSqmHt5JLmZjAZbc+wqqlal+9nktxo331Zd0fDoanpnO9xoMoq5L1+8HKpoifkF47jk7xBfm+eVMDYWHPGVivkejNznOCTNknbPS0vq5p1pzfALowr8nQZAWpWbGHPxGcgX5kQ/uaaJPyMcqWjO5xtnr3lJrADcQRUj4aVjZlGQWXuY5k5Pgvs1oglYGryjBHSBS8TS0RWkKeEzo9ORBC1ArMGVryL4QJsDKZ5yyKtQ0JeSrmnA0wLUHJZPLR9utRk=

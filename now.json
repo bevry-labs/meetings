@@ -1,0 +1,172 @@
+{
+  "version": 2,
+  "name": "jordanbpeterson-community",
+  "alias": "jordanbpeterson.community",
+  "routes": [
+    {
+      "src": "/favicon.ico",
+      "dest": "/static/favicon.ico"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/static/robots.txt"
+    },
+    {
+      "src": "/calendar.ics",
+      "dest": "/api/ics/"
+    },
+    {
+      "src": "/forum/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://discuss.jordanbpeterson.community"
+      }
+    },
+    {
+      "src": "/reddit/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://www.reddit.com/r/JordanPeterson"
+      }
+    },
+    {
+      "src": "/twitter/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://twitter.com/JBPCommunity"
+      }
+    },
+    {
+      "src": "/newsletter/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://goo.gl/forms/qgIjkJ8SYEpLCVY83"
+      }
+    },
+    {
+      "src": "/youtube/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://www.youtube.com/channel/UCPkobzBsAIjpItonUT7AU9Q"
+      }
+    },
+    {
+      "src": "/podcast-join/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://discuss.jordanbpeterson.community/t/jbp-community-podcast-join-links-scheduling/361"
+      }
+    },
+    {
+      "src": "/study-group/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://discuss.jordanbpeterson.community/t/about-the-meetings/92"
+      }
+    },
+    {
+      "src": "/lecture-notes/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://discuss.jordanbpeterson.community/categories"
+      }
+    },
+    {
+      "src": "/reading-group/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://www.goodreads.com/group/show/253798-jordan-b-peterson-reading-group"
+      }
+    },
+    {
+      "src": "/reading-list/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://www.goodreads.com/group/bookshelf/253798-jordan-b-peterson-reading-group?utf8=✓&order=d&sort=date_finished&view=main&per_page=200"
+      }
+    },
+    {
+      "src": "/meetups/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://www.meetup.com/find/?allMeetups=false&keywords=jordan+peterson&radius=Infinity"
+      }
+    },
+    {
+      "src": "/discord/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://discord.gg/j2PqA7S"
+      }
+    },
+    {
+      "src": "/source/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://github.com/balupton/jordanbpeterson.community"
+      }
+    },
+    {
+      "src": "/facebook-liberal-group/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://www.facebook.com/groups/1408546319260687/"
+      }
+    },
+    {
+      "src": "/facebook-study-group/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://www.facebook.com/groups/198567587146349/"
+      }
+    },
+    {
+      "src": "/feedback/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://www.reddit.com/r/JordanPeterson/comments/7x089x/"
+      }
+    },
+    {
+      "src": "/podcast/?",
+      "status": 302,
+      "headers": {
+        "Location": "/youtube"
+      }
+    },
+    {
+      "src": "/study-group-calendar/?",
+      "status": 302,
+      "headers": {
+        "Location": "/calendar"
+      }
+    },
+    {
+      "src": "/study-group-recordings/?",
+      "status": 302,
+      "headers": {
+        "Location": "/youtube"
+      }
+    },
+    {
+      "src": "/study-group-hangout/?",
+      "status": 302,
+      "headers": {
+        "Location": "/study-group"
+      }
+    }
+  ],
+  "builds": [
+    {
+      "src": "api/**/index.*",
+      "use": "@now/node@canary"
+    },
+    {
+      "src": "next.config.js",
+      "use": "@now/next"
+    }
+  ],
+  "env": {
+    "GOOGLE_CREDENTIALS": "@google-credentials"
+  }
+}

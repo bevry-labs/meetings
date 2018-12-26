@@ -1,0 +1,22 @@
+{
+  "/forum/?": "https://discuss.jordanbpeterson.community",
+  "/reddit/?": "https://www.reddit.com/r/JordanPeterson",
+  "/twitter/?": "https://twitter.com/JBPCommunity",
+  "/newsletter/?": "https://goo.gl/forms/qgIjkJ8SYEpLCVY83",
+  "/youtube/?": "https://www.youtube.com/channel/UCPkobzBsAIjpItonUT7AU9Q",
+  "/podcast-join/?": "https://discuss.jordanbpeterson.community/t/jbp-community-podcast-join-links-scheduling/361",
+  "/study-group/?": "https://discuss.jordanbpeterson.community/t/about-the-meetings/92",
+  "/lecture-notes/?": "https://discuss.jordanbpeterson.community/categories",
+  "/reading-group/?": "https://www.goodreads.com/group/show/253798-jordan-b-peterson-reading-group",
+  "/reading-list/?": "https://www.goodreads.com/group/bookshelf/253798-jordan-b-peterson-reading-group?utf8=✓&order=d&sort=date_finished&view=main&per_page=200",
+  "/meetups/?": "https://www.meetup.com/find/?allMeetups=false&keywords=jordan+peterson&radius=Infinity",
+  "/discord/?": "https://discord.gg/j2PqA7S",
+  "/source/?": "https://github.com/balupton/jordanbpeterson.community",
+  "/facebook-liberal-group/?": "https://www.facebook.com/groups/1408546319260687/",
+  "/facebook-study-group/?": "https://www.facebook.com/groups/198567587146349/",
+  "/feedback/?": "https://www.reddit.com/r/JordanPeterson/comments/7x089x/",
+  "/podcast/?": "/youtube",
+  "/study-group-calendar/?": "/calendar",
+  "/study-group-recordings/?": "/youtube",
+  "/study-group-hangout/?": "/study-group"
+}
