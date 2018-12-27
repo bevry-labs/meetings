@@ -84,12 +84,14 @@
     "projectz": "^1.7.4",
     "stylelint": "^9.9.0",
     "stylelint-config-standard": "^18.2.0",
+    "ts-comparators": "^1.0.0",
+    "ts-node": "^7.0.1",
     "typescript": "^3.2.2",
     "typescript-eslint-parser": "^21.0.2"
   },
   "scripts": {
     "my:api:events": "env GOOGLE_CREDENTIALS=\"$(cat ./.env/google.json)\" node ./api/routes/event.js",
-    "my:compile": "node scripts/compile.js",
+    "my:compile": "ts-node scripts/compile.ts",
     "my:deploy": "npm run our:verify:typescript && now",
     "my:secrets": "now secret add google-credentials \"$(cat ./.env/google.json | base64)\"",
     "our:api": "npm run our:api:events",

@@ -18,16 +18,13 @@ export default () => (
 		</script>
 
 		<p>
-			You should be automatically prompted to add the calendar subscription to
-			your calendar application.
+			You should be automatically prompted to add the calendar subscription to your calendar application.
 		</p>
 
 		<p>
-			If you are not automatically prompted then try
-			<a href="webcal://jordanbpeterson.community/calendar.ics">
+			If you are not automatically prompted then try <a href="webcal://jordanbpeterson.community/calendar.ics">
 				clicking here
-			</a>
-			.
+			</a>.
 		</p>
 
 		<p>
@@ -35,18 +32,18 @@ export default () => (
 			appropriate instructions and URL for your platform:
 			<ul>
 				<li>
-					<a href="https://support.apple.com/kb/PH11523">MacOS</a>
+					<a href="/macos-calendar-support">MacOS</a>
 				</li>
 				<li>
-					<a href="https://support.apple.com/kb/HT202361">iOS</a>
+					<a href="/ios-calendar-support">iOS</a>
 				</li>
 				<li>
-					<a href="https://support.google.com/calendar/answer/37100?co=GENIE.Platform%3DDesktop&hl=en&oco=1">
+					<a href="/google-calendar-support">
 						Google/Android
 					</a>
 				</li>
 				<li>
-					<a href="https://support.office.com/en-us/article/Import-or-subscribe-to-a-calendar-in-Outlook-com-or-Outlook-on-the-web-CFF1429C-5AF6-41EC-A5B4-74F2C278E98C">
+					<a href="/outlook-calendar-support">
 						Outlook
 					</a>
 				</li>
