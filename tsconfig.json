@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
-    "lib": ["dom", "es2017"],
+    "lib": ["dom", "esnext"],
     "maxNodeModuleJsDepth": 5,
-    "module": "esnext",
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
     "target": "esnext"
   },
-  "include": ["components", "pages", "api", "scripts"]
+  "include": ["components", "pages", "api", "data", "scripts"]
 }
