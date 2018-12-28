@@ -1,6 +1,9 @@
 import { map } from '../data/links'
 import { LinkProps, default as Link } from 'next/link'
-type CustomLinkProps = Partial<LinkProps> & { id: string; text?: string }
+interface CustomLinkProps extends Partial<LinkProps> {
+	id: string
+	text?: string
+}
 export default (props: CustomLinkProps) => {
 	const { id, text } = props
 	const link = map.get(id)
