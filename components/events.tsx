@@ -1,40 +1,57 @@
-import { Layout, Banner, Card, TextStyle, CalloutCard } from '@shopify/polaris'
+import { Layout, Banner, CalloutCard, ComplexAction } from '@shopify/polaris'
 import { EventsType, EventType } from '../api/calendar'
+import moment from 'moment'
 function firstLine(str?: string): string {
 	return (str || '').split(/\s*\n\s*/)[0]
 }
 
 const Event = ({ event }: { event: EventType }) => {
-	const live = !Boolean(event.hangoutLink)
-	const illustration = live
-		? '/static/illustrations/undraw_conference_uo36.svg'
-		: '/static/illustrations/undraw_security_o890.svg'
-	const secondaryAction = live ? { content: 'Watch live' } : undefined
+	const confidential = Boolean(event.hangoutLink)
+	const illustration = confidential
+		? '/static/illustrations/undraw_security_o890.svg'
+		: '/static/illustrations/undraw_conference_uo36.svg'
+	const start = moment(event.start.dateTime)
+	const end = moment(event.end.dateTime)
+	const now = moment()
+	const live = now.isBetween(start, end)
+	const when = live ? (
+		<Banner title="Live Now" status="success">
+			<p>Session is happening right now.</p>
+		</Banner>
+	) : (
+		<Banner title={`Live ${start.fromNow()}`} status="info">
+			<p>Join us {start.calendar()} your time.</p>
+		</Banner>
+	)
+	const joinUrl = event.hangoutLink
+	const watchUrl = confidential ? undefined : '/youtube'
+	const primaryAction = {
+		content: 'Join the call',
+		disabled: !live,
+		url: joinUrl,
+		external: true
+	} as ComplexAction
+	const secondaryAction = confidential
+		? undefined
+		: ({
+				content: 'Watch live',
+				disabled: !live,
+				url: watchUrl,
+				external: true
+		  } as ComplexAction)
 	return (
 		<div>
 			<CalloutCard
 				title={event.summary as string}
 				illustration={illustration}
-				primaryAction={{
-					content: 'Join the call'
-				}}
+				primaryAction={primaryAction}
 				secondaryAction={secondaryAction}
 			>
 				<p>{firstLine(event.description)}</p>
 			</CalloutCard>
-			<Banner title="Live Now" status="success">
-				<p>This order was archived on March 7, 2017 at 3:12pm EDT.</p>
-			</Banner>
+			{when}
 		</div>
 	)
-
-	/* <Card title={event.summary} actions={[{ content: 'Manage' }]}>
-			<Card.Section>
-				<TextStyle variation="subdued">
-					{firstLine(event.description)}
-				</TextStyle>
-			</Card.Section>
-		</Card> */
 }
 export default ({ events }: { events: EventsType }) => (
 	<Layout sectioned={true}>

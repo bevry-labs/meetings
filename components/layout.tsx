@@ -1,6 +1,13 @@
 import Head from 'next/head'
 import { AppProvider, Page } from '@shopify/polaris'
-export default ({ children, title = 'Jordan B Peterson Community' }) => (
+interface LayoutProps {
+	children: JSX.Element[]
+	title?: string
+}
+export default ({
+	children,
+	title = 'Jordan B Peterson Community'
+}: LayoutProps) => (
 	<div>
 		<Head>
 			<title key="title">{title}</title>

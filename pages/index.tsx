@@ -1,13 +1,13 @@
 import fetch from 'isomorphic-unfetch'
 import { filter } from '../data/links'
 import Link from '../components/link'
-import AppLayout from '../components/layout'
+import Layout from '../components/layout'
 import Events from '../components/events'
 import { DisplayText } from '@shopify/polaris'
 import { EventsType } from '../api/calendar'
 type Props = { events: EventsType }
 const Page = ({ events }: Props) => (
-	<AppLayout>
+	<Layout>
 		<DisplayText size="small">
 			The Jordan B Peterson Community is a fan-led initiative of a{' '}
 			<Link id="study-group" />, <Link id="reading-group" />,{' '}
@@ -21,7 +21,7 @@ const Page = ({ events }: Props) => (
 				</li>
 			))}
 		</ul>
-	</AppLayout>
+	</Layout>
 )
 
 Page.getInitialProps = function(): Promise<Props> {

@@ -67,5 +67,10 @@ export async function getEvents(start: string, finish: string) {
 	return events
 }
 
-export type EventType = calendar_v3.Schema$Event
+type Time = { dateTime: string; timeZone: string }
+export interface EventType extends calendar_v3.Schema$Event {
+	start: Time
+	end: Time
+	originalStartTime: Time
+}
 export type EventsType = EventType[]
