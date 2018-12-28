@@ -1,5 +1,5 @@
 import { Layout, Banner, CalloutCard, ComplexAction } from '@shopify/polaris'
-import { EventsType, EventType } from '../api/calendar'
+import { EventsType, EventType } from '../types'
 import moment from 'moment'
 function firstLine(str?: string): string {
 	return (str || '').split(/\s*\n\s*/)[0]
@@ -56,7 +56,7 @@ const Event = ({ event }: { event: EventType }) => {
 export default ({ events }: { events: EventsType }) => (
 	<Layout sectioned={true}>
 		{events.map(event => (
-			<Layout.Section secondary>
+			<Layout.Section key={event.id} secondary>
 				<Event event={event} />
 			</Layout.Section>
 		))}

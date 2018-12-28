@@ -4,7 +4,7 @@ import Link from '../components/link'
 import Layout from '../components/layout'
 import Events from '../components/events'
 import { DisplayText } from '@shopify/polaris'
-import { EventsType } from '../api/calendar'
+import { EventsType } from '../types'
 type Props = { events: EventsType }
 const Page = ({ events }: Props) => (
 	<Layout>
