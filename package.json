@@ -63,6 +63,7 @@
     }
   ],
   "dependencies": {
+    "@shopify/polaris": "^3.3.0",
     "googleapis": "^36.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "luxon": "^1.8.3",
