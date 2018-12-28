@@ -1,24 +1,35 @@
-import Head from 'next/head'
+import fetch from 'isomorphic-unfetch'
 import { filter } from '../data/links'
-export default () => (
-	<div>
-		<Head>
-			<title>Jordan B Peterson Community</title>
-			<meta
-				name="keywords"
-				content="jordan b peterson, jbp, jordan peterson, peterson, psychology, philosophy, maps of meaning, psychological signficance of the biblical stories, bible, community, fans, study group, lecture notes, reading group, forum, discussion"
-			/>
-			<meta name="viewport" content="width=device-width, initial-scale=1" />
-			<link rel="stylesheet" href="//unpkg.com/normalize.css/normalize.css" />
-			<link rel="stylesheet" href="/static/style.css" />
-		</Head>
-		<h1>Jordan B Peterson Community</h1>
+import Link from '../components/link'
+import AppLayout from '../components/layout'
+import Events from '../components/events'
+import { DisplayText } from '@shopify/polaris'
+import { EventsType } from '../api/calendar'
+type Props = { events: EventsType }
+const Page = ({ events }: Props) => (
+	<AppLayout>
+		<DisplayText size="small">
+			The Jordan B Peterson Community is a fan-led initiative of a{' '}
+			<Link id="study-group" />, <Link id="reading-group" />,{' '}
+			<Link id="lecture-notes" />, and <Link id="podcast" text="Podcast" />.
+		</DisplayText>
+		<Events events={events} />
 		<ul>
 			{filter('home').map(link => (
 				<li key={link.id}>
-					<a href={link.url}>{link.text}</a>
+					<Link id={link.id} />
 				</li>
 			))}
 		</ul>
-	</div>
+	</AppLayout>
 )
+
+Page.getInitialProps = function(): Promise<Props> {
+	return fetch('//jordanbpeterson.community/api/events/')
+		.then(response => response.json())
+		.then(events => ({
+			events
+		}))
+}
+
+export default Page

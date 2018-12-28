@@ -1,7 +1,7 @@
 /* eslint camelcase:0 */
 
 // Import
-import { google } from 'googleapis'
+import { google, calendar_v3 } from 'googleapis'
 
 // Prepare
 const calendarId =
@@ -66,3 +66,6 @@ export async function getEvents(start: string, finish: string) {
 	const events = data.data.items
 	return events
 }
+
+export type EventType = calendar_v3.Schema$Event
+export type EventsType = EventType[]

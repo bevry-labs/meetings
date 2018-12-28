@@ -3,18 +3,18 @@ type LinkRaw = {
 	url: string
 	tags?: string[]
 }
-interface LinksMap {
+interface LinksRaw {
 	[index: string]: string | LinkRaw
 }
-type LinkHydrated = {
+
+type Link = {
 	id: string
 	text: string
 	url: string
 	tags: string[]
 }
-type LinksArray = LinkHydrated[]
 
-export const Links: LinksMap = {
+const raw: LinksRaw = {
 	newsletter: {
 		text: 'Newsletter',
 		url: 'https://goo.gl/forms/qgIjkJ8SYEpLCVY83',
@@ -126,25 +126,29 @@ export const Links: LinksMap = {
 }
 
 // fetch value recursively
-function delve(linksMap: LinksMap, key: string): LinkRaw {
-	const value = linksMap[key]
+function delve(key: string): Link {
+	const value = raw[key]
 	if (value == null) {
 		throw new Error(`The link alias [${key}] was not found.`)
 	}
 	if (typeof value === 'string') {
-		return Object.assign({ id: key }, delve(linksMap, value), {
+		return Object.assign({ id: key }, delve(value), {
 			tags: ['alias']
 		})
 	}
 	return Object.assign({ id: key, tags: [] }, value)
 }
 
-// export array
-export const links = Object.keys(Links).map(function(key) {
-	return delve(Links, key)
-}) as LinksArray
+// generate map
+export const map = new Map<String, Link>()
+Object.keys(raw).forEach(function(key) {
+	map.set(key, delve(key))
+})
+
+// genereate array
+export const array: Link[] = Array.from(map.values())
 
 // filters
-export function filter(tag: string): LinksArray {
-	return links.filter(link => link.tags.includes(tag))
+export function filter(tag: string): Link[] {
+	return array.filter(link => link.tags.includes(tag))
 }
