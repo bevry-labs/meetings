@@ -2,7 +2,7 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import { BasicComparator } from 'ts-comparators'
-import { links } from '../data/links'
+import { array } from '../data/links'
 
 // types
 type Route =
@@ -25,7 +25,7 @@ now.routes = [
 ]
 
 // epxand
-links.forEach(function(value) {
+array.forEach(function(value) {
 	const src = `/${value.id}/?`
 	const dest = value.url
 	now.routes.push({

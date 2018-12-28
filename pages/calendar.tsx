@@ -1,18 +1,18 @@
 import Head from 'next/head'
+import Layout from '../components/layout'
+
 function getRedirectScript(url: string): string {
 	return `setTimeout(function(){document.location.href = '${url}'}, 0)`
 }
 
 export default () => (
-	<div>
+	<Layout title="Study Group Calendar">
 		<Head>
-			<title>Study Group Calendar</title>
-			<link
+		<link
 				rel="canonical"
 				href="webcal://jordanbpeterson.community/calendar.ics"
 			/>
 		</Head>
-
 		<script>
 			{getRedirectScript('webcal://jordanbpeterson.community/calendar.ics')}
 		</script>
@@ -55,5 +55,5 @@ export default () => (
 			<br />
 			<code>https://jordanbpeterson.community/calendar.ics</code>
 		</p>
-	</div>
+	</Layout>
 )
