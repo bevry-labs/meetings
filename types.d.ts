@@ -7,3 +7,5 @@ export interface EventType extends calendar_v3.Schema$Event {
 	originalStartTime: Time
 }
 export type EventsType = EventType[]
+
+export type Children = Array<string | JSX.Element>
