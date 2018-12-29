@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import { AppProvider, Page } from '@shopify/polaris'
+import { Children } from '../types'
 interface LayoutProps {
-	children: JSX.Element[]
+	children: Children
 	title?: string
 }
 export default ({

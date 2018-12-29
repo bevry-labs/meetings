@@ -2,7 +2,7 @@
 
 // Import
 import { google } from 'googleapis'
-import { getEnv, parseEnv } from './auth'
+import { getEnv, parseEnv } from './env'
 
 // Scopes
 const scopes = [
@@ -28,7 +28,7 @@ interface GoogleService {
 	auth_provider_x509_cert_url: string
 	client_x509_cert_url: string
 }
-interface GoogleOauth {
+interface GoogleOAuth {
 	web: {
 		client_id: string
 		project_id: string
@@ -51,7 +51,7 @@ function getServiceAuth() {
 }
 
 export function getOAuth() {
-	const credentials = parseEnv<GoogleOauth>(getEnv('GOOGLE_OAUTH'))
+	const credentials = parseEnv<GoogleOAuth>(getEnv('GOOGLE_OAUTH'))
 	const redirect = credentials.web.redirect_uris[0]
 	return new google.auth.OAuth2(
 		credentials.web.client_id,
@@ -117,5 +117,3 @@ export async function getBroadcasts() {
 	})
 	*/
 }
-
-getBroadcasts()

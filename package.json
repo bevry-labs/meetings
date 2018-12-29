@@ -71,8 +71,8 @@
     "luxon": "^1.8.3",
     "moment": "^2.23.0",
     "next": "^7.0.2-canary.50",
-    "react": "^16.7.0-alpha.2",
-    "react-dom": "^16.7.0-alpha.2"
+    "react": "16.7.0-alpha.2",
+    "react-dom": "16.7.0-alpha.2"
   },
   "devDependencies": {
     "@types/luxon": "^1.4.1",
@@ -96,13 +96,13 @@
   },
   "scripts": {
     "my:api": "env GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c . | base64)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c . | base64)\" ts-node ./api/google.ts",
-    "my:compile": "ts-node scripts/compile.ts",
-    "my:deploy": "npm run our:verify:typescript && now",
+    "my:compile": "npm run build && ts-node scripts/compile.ts",
+    "my:deploy": "npm run our:verify && now",
     "my:secrets:google-oauth": "now secret rm google-oauth && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c . | base64)\"",
     "my:secrets:google-service": "now secret rm google-service && now secret add google-service \"$(cat ./.env/google-service.json | jq -c . | base64)\"",
     "my:secrets": "npm run my:secrets:google-oauth && npm run my:secrets:google-service",
     "our:api": "npm run my:api",
-    "our:clean": "rm -Rf ./docs ./edition* ./es2015 ./es5 ./out",
+    "our:clean": "rm -Rf ./docs ./edition* ./es2015 ./es5 ./out ./.next",
     "our:compile": "npm run my:compile",
     "our:deploy": "npm run my:deploy",
     "our:meta": "npm run our:meta:projectz",

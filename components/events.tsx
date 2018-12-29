@@ -1,5 +1,6 @@
 import { Layout, Banner, CalloutCard, ComplexAction } from '@shopify/polaris'
 import { EventsType, EventType } from '../types'
+import { useMoment } from '../hooks/moment'
 import moment from 'moment'
 function firstLine(str?: string): string {
 	return (str || '').split(/\s*\n\s*/)[0]
@@ -14,6 +15,8 @@ const Event = ({ event }: { event: EventType }) => {
 	const end = moment(event.end.dateTime)
 	const now = moment()
 	const live = now.isBetween(start, end)
+	useMoment(start)
+	console.log('refreshed')
 	const when = live ? (
 		<Banner title="Live Now" status="success">
 			<p>Session is happening right now.</p>

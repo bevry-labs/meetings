@@ -5,7 +5,7 @@ import Layout from '../components/layout'
 import Events from '../components/events'
 import { DisplayText } from '@shopify/polaris'
 import { EventsType } from '../types'
-type Props = { events: EventsType }
+type Props = { events: EventsType | null }
 const Page = ({ events }: Props) => (
 	<Layout>
 		<DisplayText size="small">
@@ -13,7 +13,7 @@ const Page = ({ events }: Props) => (
 			<Link id="study-group" />, <Link id="reading-group" />,{' '}
 			<Link id="lecture-notes" />, and <Link id="podcast" text="Podcast" />.
 		</DisplayText>
-		<Events events={events} />
+		{events ? <Events events={events} /> : ''}
 		<ul>
 			{filter('home').map(link => (
 				<li key={link.id}>
@@ -27,6 +27,10 @@ const Page = ({ events }: Props) => (
 Page.getInitialProps = function(): Promise<Props> {
 	return fetch('//jordanbpeterson.community/api/events/')
 		.then(response => response.json())
+		.catch(err => {
+			console.warn(err)
+			return null
+		})
 		.then(events => ({
 			events
 		}))
