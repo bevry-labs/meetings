@@ -4,8 +4,9 @@ import Link from '../components/link'
 import Layout from '../components/layout'
 import Events from '../components/events'
 import { DisplayText } from '@shopify/polaris'
-import { EventsType } from '../types'
-type Props = { events: EventsType | null }
+import { RawEventsType, RichEventsType } from '../types'
+import moment from 'moment'
+type Props = { events: RawEventsType | null }
 const Page = ({ events }: Props) => (
 	<Layout>
 		<DisplayText size="small">
@@ -29,11 +30,31 @@ Page.getInitialProps = function(): Promise<Props> {
 		.then(response => response.json())
 		.catch(err => {
 			console.warn(err)
-			return null
+			return { events: null }
 		})
-		.then(events => ({
-			events
-		}))
+		.then(function(rawEvents: RawEventsType) {
+			const events = rawEvents.map((rawEvent, index) => {
+				const result = Object.assign({}, rawEvent)
+				result.start.dateTime = moment()
+					.add({ minutes: 1 + index })
+					.set({ seconds: 0 })
+					.toISOString()
+				result.end.dateTime = moment()
+					.add({ minutes: 2 + index })
+					.set({ seconds: 0 })
+					.toISOString()
+				return result
+			})
+			/*
+			const richEvents = rawEvents.map(rawEvent =>
+				Object.assign({}, rawEvent, {
+					start: moment(rawEvent.start.dateTime),
+					end: moment(rawEvent.end.dateTime)
+				})
+			)
+			*/
+			return { events }
+		})
 }
 
 export default Page
