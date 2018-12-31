@@ -1,5 +1,5 @@
 // Import
-import { getEvents } from '../../util/google'
+import { getEvents } from '../lib/google'
 import { DateTime } from 'luxon'
 import { Http2ServerRequest, Http2ServerResponse } from 'http2'
 

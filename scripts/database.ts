@@ -1,8 +1,8 @@
 /* eslint new-cap:0 */
 import { Client, query as q } from 'faunadb'
-import { getEnv } from '../util/env'
-import { setSecret } from '../util/zeit'
-import { setKeyValue } from '../util/fauna'
+import { getEnv } from '../server/lib/env'
+import { setSecret } from '../server/lib/zeit'
+import { setKeyValue } from '../server/lib/fauna'
 import Errlop = require('errlop')
 
 const database = 'fountain_network_database'

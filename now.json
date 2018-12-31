@@ -4,8 +4,12 @@
   "alias": "jordanbpeterson.community",
   "routes": [
     {
+      "src": "/api/(?<key>[^.]*)",
+      "dest": "/api/$key.ts"
+    },
+    {
       "src": "/calendar.ics",
-      "dest": "/api/ics/"
+      "dest": "/api/ics"
     },
     {
       "src": "/discord/?",
@@ -186,7 +190,7 @@
   ],
   "builds": [
     {
-      "src": "api/**/index.*",
+      "src": "server/api/*",
       "use": "@now/node@canary"
     },
     {

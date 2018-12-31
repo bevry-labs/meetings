@@ -1,7 +1,7 @@
 import { Http2ServerRequest, Http2ServerResponse } from 'http2'
-import { createEnv } from '../../util/env'
-import { setKeyValue } from '../../util/fauna'
-import { getOAuthLoginUrl, getOAuth } from '../../util/google'
+import { createEnv } from '../lib/env'
+import { setKeyValue } from '../lib/fauna'
+import { getOAuthLoginUrl, getOAuth } from '../lib/google'
 import { URL } from 'url'
 
 function processUserAuth(code: string): Promise<ReturnType<typeof getOAuth>> {

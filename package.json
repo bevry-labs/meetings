@@ -64,13 +64,13 @@
   ],
   "dependencies": {
     "@shopify/polaris": "^3.3.0",
-    "errlop": "^1.1.0",
+    "errlop": "^1.1.1",
     "faunadb": "^2.5.2",
     "googleapis": "^36.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "luxon": "^1.8.3",
     "moment": "^2.23.0",
-    "next": "^7.0.2-canary.50",
+    "next": "^7.0.2",
     "react": "16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2"
   },
@@ -81,9 +81,11 @@
     "@types/react-dom": "^16.0.11",
     "@zeit/next-typescript": "^1.1.1",
     "eslint": "^5.11.1",
-    "eslint-config-bevry": "^1.0.2",
+    "eslint-config-bevry": "^1.1.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.12.0",
+    "eslint-plugin-react-hooks": "0.0.0",
     "eslint-plugin-typescript": "^0.14.0",
     "prettier": "^1.15.3",
     "projectz": "^1.7.4",
@@ -96,7 +98,7 @@
   },
   "scripts": {
     "my:api": "env GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c . | base64)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c . | base64)\" ts-node ./api/google.ts",
-    "my:compile": "npm run build && ts-node scripts/compile.ts",
+    "my:compile": "ts-node ./scripts/compile.ts && npm run build",
     "my:deploy": "npm run our:verify && now",
     "my:secrets:google-oauth": "now secret rm google-oauth && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c . | base64)\"",
     "my:secrets:google-service": "now secret rm google-service && now secret add google-service \"$(cat ./.env/google-service.json | jq -c . | base64)\"",
@@ -121,12 +123,16 @@
     "start": "next start",
     "test": "npm run build",
     "dev": "next",
-    "build": "next build"
+    "build": "next build",
+    "postinstall": "rm ./pages ./static && ln -s ./client/pages ./pages && ln -s ./client/static ./static"
   },
   "eslintConfig": {
     "extends": [
       "bevry"
-    ]
+    ],
+    "rules": {
+      "no-console": 0
+    }
   },
   "prettier": {
     "semi": false,

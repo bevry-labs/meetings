@@ -1,4 +1,4 @@
-import { map } from '../data/links'
+import { map } from '../../shared/links'
 import { LinkProps, default as Link } from 'next/link'
 interface CustomLinkProps {
 	id: string
