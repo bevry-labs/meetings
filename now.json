@@ -5,7 +5,10 @@
   "routes": [
     {
       "src": "/api/(?<key>[^./]*)/?",
-      "dest": "/server/api/$key.ts"
+      "dest": "/server/api/$key.ts",
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
     },
     {
       "src": "/calendar.ics",
@@ -107,6 +110,13 @@
       }
     },
     {
+      "src": "/podcast/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://www.youtube.com/channel/UCPkobzBsAIjpItonUT7AU9Q"
+      }
+    },
+    {
       "src": "/reading-group/?",
       "status": 302,
       "headers": {
@@ -146,10 +156,17 @@
       }
     },
     {
-      "src": "/study-group/?",
+      "src": "/study-group-hangout/?",
       "status": 302,
       "headers": {
         "Location": "https://discuss.jordanbpeterson.community/t/about-the-meetings/92"
+      }
+    },
+    {
+      "src": "/study-group-recordings/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://www.youtube.com/channel/UCPkobzBsAIjpItonUT7AU9Q"
       }
     },
     {
@@ -164,20 +181,6 @@
       "status": 302,
       "headers": {
         "Location": "https://twitter.com/JBPCommunity"
-      }
-    },
-    {
-      "src": "/youtube/?",
-      "status": 302,
-      "headers": {
-        "Location": "https://www.youtube.com/channel/UCPkobzBsAIjpItonUT7AU9Q"
-      }
-    },
-    {
-      "src": "/youtube/?",
-      "status": 302,
-      "headers": {
-        "Location": "https://www.youtube.com/channel/UCPkobzBsAIjpItonUT7AU9Q"
       }
     },
     {

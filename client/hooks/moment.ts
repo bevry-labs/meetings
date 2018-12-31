@@ -1,6 +1,13 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Moment, default as moment } from 'moment'
 
+function fromNow(input: Moment, subtraction: Object) {
+	return input
+		.clone()
+		.subtract(subtraction)
+		.fromNow()
+}
+
 function millisecondsUntil(input: Moment): number {
 	return input.diff(moment(), 'milliseconds')
 }
@@ -27,10 +34,14 @@ function determineClosest(...inputs: Moment[]): Moment {
 function determineClosestDelta(...inputs: Moment[]): number {
 	const closest = determineClosest(...inputs).clone()
 	const result = closest.fromNow()
-	if (result !== closest.add({ second: 1 }).fromNow()) {
+	console.log(result)
+	if (result !== fromNow(closest, { seconds: 1 })) {
 		return 1000
 	}
-	if (result !== closest.add({ minute: 1 }).fromNow()) {
+	if (result !== fromNow(closest, { seconds: 30 })) {
+		return 15 * 1000
+	}
+	if (result !== fromNow(closest, { minutes: 1 })) {
 		return (60 - moment().seconds()) * 1000
 	}
 	return 5 * 60 * 1000

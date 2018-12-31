@@ -3,12 +3,32 @@ import { RichEventsType, RichEventType } from '../../types'
 import { useFromNow, useWhen } from '../hooks/moment'
 import moment from 'moment'
 
+moment.updateLocale('en', {
+	relativeTime: {
+		future: 'in %s',
+		past: '%s ago',
+		s: '%d seconds',
+		ss: '%d seconds',
+		m: 'a minute',
+		mm: '%d minutes',
+		h: 'an hour',
+		hh: '%d hours',
+		d: 'a day',
+		dd: '%d days',
+		M: 'a month',
+		MM: '%d months',
+		y: 'a year',
+		yy: '%d years'
+	}
+})
+
 const Event = ({ event }: { event: RichEventType }) => {
 	// determine dates
 	const { description, summary, start, end, expires } = event
 	const now = moment()
-	const live = now.isBetween(start, end, 'minute', '[]')
+	const started = now.isSameOrAfter(start)
 	const ended = !now.isBefore(end, 'minute') // isBefore/isAfter are exclusive, so use !isBefore to ensure same handled
+	const live = started && !ended
 
 	// determine events
 	useFromNow(start)
@@ -63,17 +83,13 @@ const Event = ({ event }: { event: RichEventType }) => {
 	)
 }
 export default ({ events }: { events: RichEventsType }) => {
-	useWhen(...events.map(event => event.expires))
-	const now = moment()
 	return (
 		<Layout sectioned={true}>
-			{events
-				.filter(event => now.isBefore(event.expires, 'minute'))
-				.map(event => (
-					<Layout.Section key={event.id} secondary>
-						<Event event={event} />
-					</Layout.Section>
-				))}
+			{events.map(event => (
+				<Layout.Section key={event.id} secondary>
+					<Event event={event} />
+				</Layout.Section>
+			))}
 		</Layout>
 	)
 }

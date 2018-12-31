@@ -1,5 +1,7 @@
 // Import
 import { Http2ServerRequest, Http2ServerResponse } from 'http2'
+
+// Import fetch on server
 import * as fetchImport from 'isomorphic-unfetch'
 const fetch = (fetchImport.default || fetchImport) as typeof fetchImport.default
 
