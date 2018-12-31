@@ -120,11 +120,11 @@
     "our:verify:eslint": "eslint --fix --ignore-pattern '**/*.d.ts' --ignore-pattern '**/vendor/' --ignore-pattern '**/node_modules/' --ext .mjs,.js,.jsx,.ts,.tsx .",
     "our:verify:stylelint": "stylelint --fix './**/*.css'",
     "our:verify:typescript": "tsc --noEmit --project .",
-    "start": "next start",
+    "next": "next",
+    "start": "npm run next -- start",
+    "build": "npm run next -- build",
     "test": "npm run build",
-    "dev": "next",
-    "build": "next build",
-    "postinstall": "rm ./pages ./static && ln -s ./client/pages ./pages && ln -s ./client/static ./static"
+    "dev": "npm run next"
   },
   "eslintConfig": {
     "extends": [

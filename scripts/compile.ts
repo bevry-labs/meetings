@@ -14,7 +14,7 @@ interface NowConfig extends Object {
 }
 
 // read
-const nowFile = join(__dirname, '..', '..', 'now.json')
+const nowFile = join(__dirname, '..', 'now.json')
 const now = JSON.parse(readFileSync(nowFile, 'utf8')) as NowConfig
 
 // prefil

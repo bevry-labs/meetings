@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Layout from '../components/layout'
+import Layout from '../client/components/layout'
 
 function getRedirectScript(url: string): string {
 	return `setTimeout(function(){document.location.href = '${url}'}, 0)`
