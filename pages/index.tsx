@@ -1,16 +1,16 @@
 import fetch from 'isomorphic-unfetch'
-import { filter } from '../../client-server/links'
-import Link from '../components/link'
-import Layout from '../components/layout'
-import Events from '../components/events'
+import { filter } from '../shared/links'
+import Link from '../client/components/link'
+import Layout from '../client/components/layout'
+import Events from '../client/components/events'
+import { useWhen } from '../client/hooks/moment'
 import { DisplayText } from '@shopify/polaris'
-import { useWhen } from '../hooks/moment'
 import {
 	RawEventsType,
 	RichEventsType,
 	RichEventType,
 	RawEventType
-} from '../../types'
+} from '../types'
 import moment from 'moment'
 
 type RawProps = { rawEvents: RawEventsType }

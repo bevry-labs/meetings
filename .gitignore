@@ -41,7 +41,3 @@ docs/
 
 # =====================================
 # CUSTOM
-
-# ignore our symlinks
-pages
-static

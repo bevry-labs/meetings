@@ -1,6 +1,7 @@
 // Import
 import { Http2ServerRequest, Http2ServerResponse } from 'http2'
-import fetch from 'isomorphic-unfetch'
+import * as fetchImport from 'isomorphic-unfetch'
+const fetch = (fetchImport.default || fetchImport) as typeof fetchImport.default
 
 const url =
 	'https://calendar.google.com/calendar/ical/bevry.me_qeq66am9eji1bcll7ntrn3u830%40group.calendar.google.com/public/basic.ics'

@@ -12,5 +12,5 @@
     "strict": true,
     "target": "esnext"
   },
-  "include": ["client", "shared", "server"]
+  "include": ["client", "pages", "scripts", "server", "shared"]
 }
