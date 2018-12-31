@@ -2,7 +2,7 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import { BasicComparator } from 'ts-comparators'
-import { array } from '../data/links'
+import { array } from '../shared/links'
 
 // types
 type Route =
@@ -14,14 +14,15 @@ interface NowConfig extends Object {
 }
 
 // read
-const nowFile = join(__dirname, '..', 'now.json')
+const nowFile = join(__dirname, '..', '..', 'now.json')
 const now = JSON.parse(readFileSync(nowFile, 'utf8')) as NowConfig
 
 // prefil
 now.routes = [
 	{ src: '/favicon.ico', dest: '/static/favicon.ico' },
 	{ src: '/robots.txt', dest: '/static/robots.txt' },
-	{ src: '/calendar.ics', dest: '/api/ics/' }
+	{ src: '/calendar.ics', dest: '/api/ics' },
+	{ src: '/api/(?<key>[^./]*)/?', dest: '/server/api/$key.ts' }
 ]
 
 // epxand

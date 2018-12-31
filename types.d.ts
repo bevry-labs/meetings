@@ -8,10 +8,12 @@ export interface RawEventType extends calendar_v3.Schema$Event {
 	originalStartTime: Time
 }
 export type RawEventsType = RawEventType[]
-
 export type RichEventType = RawEventType & {
+	description: string
+	summary: string
 	start: Moment
 	end: Moment
+	expires: Moment
 }
 export type RichEventsType = RichEventType[]
 

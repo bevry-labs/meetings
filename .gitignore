@@ -42,18 +42,6 @@ docs/
 # =====================================
 # CUSTOM
 
-www/discord/
-www/lecture-notes/
-www/meetups/
-www/newsletter/
-www/podcast/
-www/podcast-join/
-www/reading-group/
-www/reading-list/
-www/reddit/
-www/study-group/
-www/study-group-calendar/
-www/study-group-hangout/
-www/study-group-recordings/
-www/twitter/
-www/youtube/
+# ignore our symlinks
+pages
+static
