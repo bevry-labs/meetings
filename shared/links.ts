@@ -132,7 +132,8 @@ function delve(key: string): Link {
 		throw new Error(`The link alias [${key}] was not found.`)
 	}
 	if (typeof value === 'string') {
-		return Object.assign({ id: key }, delve(value), {
+		return Object.assign({}, delve(value), {
+			id: key,
 			tags: ['alias']
 		})
 	}

@@ -3,6 +3,7 @@ import { filter } from '../shared/links'
 import Link from '../client/components/link'
 import Layout from '../client/components/layout'
 import Events from '../client/components/events'
+import { useEffect, useState } from 'react'
 import { useWhen } from '../client/hooks/moment'
 import { DisplayText } from '@shopify/polaris'
 import {
@@ -14,13 +15,40 @@ import {
 import moment from 'moment'
 
 type RawProps = { rawEvents: RawEventsType }
-type RichProps = { events: RichEventsType }
 
 const DEVELOPMENT = true
+const EVENTS_URL = 'https://jordanbpeterson.community/api/events/'
 const EXPIRES = { minutes: 1 }
 
 function firstLine(str?: string): string {
 	return (str || '').split(/\s*\n\s*/)[0]
+}
+
+function fetchRawEvents(): Promise<RawEventsType> {
+	return fetch(EVENTS_URL)
+		.then(response => response.json())
+		.then(function(rawEvents: RawEventsType) {
+			// if development, convert the events to more recent ones
+			if (DEVELOPMENT) {
+				rawEvents = rawEvents.map((rawEvent, index) => {
+					const start = moment()
+						.add({ minutes: 1 + index })
+						.toISOString()
+					const end = moment()
+						.add({ minutes: 2 + index })
+						.toISOString()
+					return Object.assign({}, rawEvent, {
+						start: { dateTime: start },
+						end: { dateTime: end }
+					})
+				})
+			}
+			return rawEvents
+		})
+		.catch(err => {
+			console.warn(err)
+			return []
+		})
 }
 
 /**
@@ -52,9 +80,17 @@ function enrichEvent(rawEvent: RawEventType): RichEventType {
 	})
 }
 
+function enrichEvents(rawEvents: RawEventsType): RichEventsType {
+	return rawEvents.map(enrichEvent)
+}
+
+function fetchRichEvents(): Promise<RichEventsType> {
+	return fetchRawEvents().then(enrichEvents)
+}
+
 const Page = ({ rawEvents }: RawProps) => {
-	const events = rawEvents.map(enrichEvent)
-	useWhen(...events.map(event => event.expires))
+	console.log('refresh page', { rawEvents })
+	const events = enrichEvents(rawEvents)
 	return (
 		<Layout>
 			<DisplayText size="small">
@@ -75,30 +111,7 @@ const Page = ({ rawEvents }: RawProps) => {
 }
 
 Page.getInitialProps = function(): Promise<RawProps> {
-	return fetch('//jordanbpeterson.community/api/events/')
-		.then(response => response.json())
-		.then(function(rawEvents: RawEventsType) {
-			// if development, convert the events to more recent ones
-			if (DEVELOPMENT) {
-				rawEvents = rawEvents.map((rawEvent, index) => {
-					const start = moment()
-						.add({ minutes: 1 + index })
-						.toISOString()
-					const end = moment()
-						.add({ minutes: 2 + index })
-						.toISOString()
-					return Object.assign({}, rawEvent, {
-						start: { dateTime: start },
-						end: { dateTime: end }
-					})
-				})
-			}
-			return { rawEvents }
-		})
-		.catch(err => {
-			console.warn(err)
-			return { rawEvents: [] }
-		})
+	return fetchRawEvents().then(rawEvents => ({ rawEvents }))
 }
 
 export default Page

@@ -1,7 +1,6 @@
 // 302 - temporary redirect
 import { readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
-import { BasicComparator } from 'ts-comparators'
 import { array } from '../shared/links'
 
 // types
@@ -22,7 +21,13 @@ now.routes = [
 	{ src: '/favicon.ico', dest: '/static/favicon.ico' },
 	{ src: '/robots.txt', dest: '/static/robots.txt' },
 	{ src: '/calendar.ics', dest: '/api/ics' },
-	{ src: '/api/(?<key>[^./]*)/?', dest: '/server/api/$key.ts' }
+	{
+		src: '/api/(?<key>[^./]*)/?',
+		dest: '/server/api/$key.ts',
+		headers: {
+			'Access-Control-Allow-Origin': '*'
+		}
+	}
 ]
 
 // epxand
@@ -39,8 +44,10 @@ array.forEach(function(value) {
 })
 
 // sort to reduce diff overheads
-const comparator = new BasicComparator<string>()
-now.routes = now.routes.sort((a, b) => comparator.compare(a.src, b.src))
+function comparator(a: string, b: string) {
+	return a < b ? -1 : a === b ? 0 : 1
+}
+now.routes = now.routes.sort((a, b) => comparator(a.src, b.src))
 
 // write
 writeFileSync(nowFile, JSON.stringify(now, null, '  ') + '\n')
