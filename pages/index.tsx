@@ -4,7 +4,6 @@ import Link from '../client/components/link'
 import Layout from '../client/components/layout'
 import Events from '../client/components/events'
 import { useEffect, useState } from 'react'
-import { useWhen } from '../client/hooks/moment'
 import { DisplayText } from '@shopify/polaris'
 import {
 	RawEventsType,
@@ -31,17 +30,15 @@ function fetchRawEvents(): Promise<RawEventsType> {
 			// if development, convert the events to more recent ones
 			if (DEVELOPMENT) {
 				rawEvents = rawEvents.map((rawEvent, index) => {
-					const start = moment()
-						.add({ minutes: 1 + index })
-						.toISOString()
-					const end = moment()
-						.add({ minutes: 2 + index })
-						.toISOString()
+					const minutes = 1 * (index + 1)
+					const start = moment().add({ minutes })
+					const end = start.clone().add({ minutes })
 					return Object.assign({}, rawEvent, {
-						start: { dateTime: start },
-						end: { dateTime: end }
+						start: { dateTime: start.toISOString() },
+						end: { dateTime: end.toISOString() }
 					})
 				})
+				rawEvents = rawEvents.slice(0, 1)
 			}
 			return rawEvents
 		})
