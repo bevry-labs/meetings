@@ -1,13 +1,39 @@
 import { Layout, Banner, CalloutCard, ComplexAction } from '@shopify/polaris'
 import { RichEventsType, RichEventType } from '../../types'
-import { useFromNow, useWhen } from '../hooks/moment'
+import { useFutureDate, usePastDate } from '../hooks/moment'
 import moment from 'moment'
 
+function log(prefix: string) {
+	console.log([
+		prefix,
+		moment()
+			.add({ seconds: 3 })
+			.fromNow(),
+		moment()
+			.add({ seconds: 7 })
+			.fromNow(),
+		moment()
+			.add({ seconds: 13 })
+			.fromNow()
+	])
+}
+function attempt(s: number, ss: number) {
+	moment.relativeTimeThreshold('s', s)
+	moment.relativeTimeThreshold('ss', ss)
+	log(`s=${s}, ss=${ss}`)
+	moment.relativeTimeThreshold('ss', ss)
+	moment.relativeTimeThreshold('s', s)
+	log(`ss=${ss}, s=${s}`)
+}
+
+attempt(-1, 5)
+
+/*
 moment.updateLocale('en', {
 	relativeTime: {
 		future: 'in %s',
 		past: '%s ago',
-		s: '%d seconds',
+		s: 'a few seconds',
 		ss: '%d seconds',
 		m: 'a minute',
 		mm: '%d minutes',
@@ -20,19 +46,22 @@ moment.updateLocale('en', {
 		y: 'a year',
 		yy: '%d years'
 	}
-})
+})*/
 
 const Event = ({ event }: { event: RichEventType }) => {
 	// determine dates
 	const { description, summary, start, end, expires } = event
 	const now = moment()
 	const started = now.isSameOrAfter(start)
-	const ended = !now.isBefore(end, 'minute') // isBefore/isAfter are exclusive, so use !isBefore to ensure same handled
+	const ended = now.isSameOrAfter(end, 'minute')
 	const live = started && !ended
 
 	// determine events
-	useFromNow(start)
-	useWhen(end, expires)
+	// useDates([start, end], [end]])
+	useFutureDate(start) // we say how long until it starts
+	useFutureDate(end) // we say how long until it ends
+	usePastDate(end) // we say how long ago it ended
+	// useDate(expires)  // we currnently don't do anything with expires
 
 	// determine rendering
 	const confidential = Boolean(event.hangoutLink)
@@ -40,12 +69,12 @@ const Event = ({ event }: { event: RichEventType }) => {
 		? '/static/illustrations/undraw_security_o890.svg'
 		: '/static/illustrations/undraw_conference_uo36.svg'
 	const statusBar = ended ? (
-		<Banner title={`Live ${start.fromNow()}`} status="warning">
-			<p>Session has just ended.</p>
+		<Banner title={`Ended ${end.fromNow()}`} status="warning">
+			<p>This session has ended.</p>
 		</Banner>
 	) : live ? (
 		<Banner title="Live Now" status="success">
-			<p>Session is happening right now.</p>
+			<p>This session is happening right now! It will end {end.fromNow()}.</p>
 		</Banner>
 	) : (
 		<Banner title={`Live ${start.fromNow()}`} status="info">

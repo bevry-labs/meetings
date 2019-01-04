@@ -2,6 +2,7 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import { array } from '../shared/links'
+import { stringComparator } from '../shared/comparators'
 
 // types
 type Route =
@@ -44,10 +45,7 @@ array.forEach(function(value) {
 })
 
 // sort to reduce diff overheads
-function comparator(a: string, b: string) {
-	return a < b ? -1 : a === b ? 0 : 1
-}
-now.routes = now.routes.sort((a, b) => comparator(a.src, b.src))
+now.routes = now.routes.sort((a, b) => stringComparator(a.src, b.src))
 
 // write
 writeFileSync(nowFile, JSON.stringify(now, null, '  ') + '\n')
