@@ -7,9 +7,9 @@ type Input = string | number | Date
 
 interface Tier {
 	limit?: number
-	when?: number
-	message?: string
-	custom?: (delta: number, when: Daet) => string
+	when?: (opts: { past: boolean }) => number
+	message?: (opts: { past: boolean }) => string
+	custom?: (opts: { past: boolean; delta: number; when: Daet }) => string
 }
 
 export const Millisecond = 1
@@ -20,7 +20,6 @@ export const Day = Hour * 24
 export const Week = Day * 7
 
 const intl = {
-	now: 'right now',
 	seconds: `{
 		seconds, plural,
 			=0 {}
@@ -44,10 +43,6 @@ const intl = {
 		  one { # minute}
 		other { # minutes}
 	}`,
-	laterToday: `later today`,
-	earlierToday: 'earlier today',
-	tomorrow: `tomorrow`,
-	yesterday: `yesterday`,
 	thisWeek: `this {value}`,
 	nextWeek: `next {value}`
 }
@@ -60,67 +55,98 @@ export default class Daet {
 	readonly raw: Date
 	static get tiers(): Tier[] {
 		return [
-			{ limit: Second, message: intl.now },
+			{ limit: Second, message: () => 'right now' },
 			{
 				limit: Minute,
-				custom: delta =>
-					formatMessage(intl.seconds, { seconds: Math.floor(delta / Second) })
-			},
-			{
-				limit: Hour,
-				custom: delta =>
-					formatMessage(intl.minutes, { minutes: Math.floor(delta / Minute) })
-			},
-			{
-				limit: 12 * Hour,
-				custom: delta => {
-					const hours = Math.floor(delta / Hour)
-					const minutes = Math.floor((delta - hours * Hour) / Minute)
-					return formatMessage(intl.hours, { hours, minutes })
+				custom: ({ past, delta }) => {
+					const ticks = formatMessage(intl.seconds, {
+						seconds: Math.floor(delta / Second)
+					})
+					return past ? `${ticks} ago` : `in ${ticks}`
 				}
 			},
 			{
-				when: new Daet()
-					.add(1, 'day')
-					.reset('hour')
-					.getTime(),
-				message: 'later today'
-			},
-			{
-				when: new Daet()
-					.add(2, 'day')
-					.reset('hour')
-					.getTime(),
-				message: 'tomorrow'
-			},
-			{
-				when: new Daet().nextWeek().getTime(),
-				custom: (delta, when) =>
-					formatMessage(intl.thisWeek, {
-						value: when.format('en', {
-							weekday: 'long'
-							// hour: 'numeric',
-							// minute: 'numeric'
-						})
+				limit: Hour,
+				custom: ({ past, delta }) => {
+					const ticks = formatMessage(intl.minutes, {
+						minutes: Math.floor(delta / Minute)
 					})
+					return past ? `${ticks} ago` : `in ${ticks}`
+				}
 			},
 			{
-				when: new Daet()
-					.nextWeek()
-					.nextWeek()
-					.getTime(),
-				custom: (delta, when) =>
-					formatMessage(intl.nextWeek, {
-						value: when.format('en', {
-							weekday: 'long'
-							// hour: 'numeric',
-							// minute: 'numeric'
-						})
-					})
+				limit: 12 * Hour,
+				custom: ({ past, delta }) => {
+					const hours = Math.floor(delta / Hour)
+					const minutes = Math.floor((delta - hours * Hour) / Minute)
+					const ticks = formatMessage(intl.hours, { hours, minutes })
+					return past ? `${ticks} ago` : `in ${ticks}`
+				}
+			},
+			{
+				when: ({ past }) =>
+					past
+						? new Daet().reset('hour').getTime()
+						: new Daet()
+								.add(1, 'day')
+								.reset('hour')
+								.getTime(),
+				message: ({ past }) => (past ? 'earlier today' : 'later today')
+			},
+			{
+				when: ({ past }) =>
+					past
+						? new Daet()
+								.minus(1, 'day')
+								.reset('hour')
+								.getTime()
+						: new Daet()
+								.add(2, 'day')
+								.reset('hour')
+								.getTime(),
+				message: ({ past }) => (past ? 'yesterday' : 'tomorrow')
+			},
+			{
+				when: ({ past }) =>
+					past
+						? new Daet().lastWeek().getTime()
+						: new Daet().nextWeek().getTime(),
+				custom: ({ past, delta, when }) =>
+					past
+						? 'earlier this week'
+						: formatMessage(intl.thisWeek, {
+								value: when.format('en', {
+									weekday: 'long'
+									// hour: 'numeric',
+									// minute: 'numeric'
+								})
+						  })
+			},
+			{
+				when: ({ past }) =>
+					past
+						? new Daet()
+								.lastWeek()
+								.lastWeek()
+								.getTime()
+						: new Daet()
+								.nextWeek()
+								.nextWeek()
+								.getTime(),
+				custom: ({ past, delta, when }) =>
+					past
+						? 'earlier last week'
+						: formatMessage(intl.nextWeek, {
+								value: when.format('en', {
+									weekday: 'long'
+									// hour: 'numeric',
+									// minute: 'numeric'
+								})
+						  })
 			},
 			{
 				limit: Infinity,
-				message: 'sometime later'
+				message: ({ past }) => (past ? 'sometime earlier' : 'sometime later')
 			}
 		]
 	}
@@ -229,20 +255,29 @@ export default class Daet {
 		}
 		return latest.reset('hour')
 	}
+	lastWeek(): Daet {
+		let latest = this.minus(1, 'day')
+		while (latest.raw.getDay() !== 6) {
+			latest = latest.minus(1, 'day')
+		}
+		return latest.reset('hour')
+	}
 	fromNow(): string {
-		const delta = Math.abs(this.getDelta())
+		const _delta = this.getDelta()
+		const past = _delta < 0
+		const delta = Math.abs(_delta)
 		const time = this.getRoundedTime()
 		const tiers = Daet.tiers
 		for (const tier of tiers) {
 			const limit = !tier.limit || delta < tier.limit
-			const when = !tier.when || time < tier.when
+			const when = !tier.when || time < tier.when({ past })
 			const within = limit && when
 			if (within) {
 				const message =
 					tier.message != null
-						? tier.message
+						? tier.message({ past })
 						: tier.custom
-						? tier.custom(delta, this)
+						? tier.custom({ past, delta, when: this })
 						: ''
 				return message
 			}

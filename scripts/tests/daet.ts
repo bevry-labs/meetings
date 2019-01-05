@@ -19,28 +19,28 @@ suite('Daet', function(suite, test) {
 	test('fromNow', function() {
 		const d = Daet.create()
 		equal(d.fromNow(), 'right now')
-		equal(d.add(1, 'second').fromNow(), '1 second')
-		equal(d.add(15, 'second').fromNow(), '15 seconds')
-		equal(d.add(1, 'minute').fromNow(), '1 minute')
+		equal(d.add(1, 'second').fromNow(), 'in 1 second')
+		equal(d.add(15, 'second').fromNow(), 'in 15 seconds')
+		equal(d.add(1, 'minute').fromNow(), 'in 1 minute')
 		equal(
 			d
 				.add(1, 'minute')
 				.add(30, 'second')
 				.fromNow(),
-			'1 minute',
-			'1 minute 30 seconds'
+			'in 1 minute',
+			'in 1 minute 30 seconds'
 		)
-		equal(d.add(15, 'minute').fromNow(), '15 minutes')
-		equal(d.add(1, 'hour').fromNow(), '1 hour')
+		equal(d.add(15, 'minute').fromNow(), 'in 15 minutes')
+		equal(d.add(1, 'hour').fromNow(), 'in 1 hour')
 		equal(
 			d
 				.add(1, 'hour')
 				.add(30, 'minute')
 				.fromNow(),
-			'1 hour 30 minutes'
+			'in 1 hour 30 minutes'
 		)
 		// equal(d.add(13, 'hour').fromNow(), 'later today', '13 hours')
-		equal(d.add(1, 'day').fromNow(), 'tomorrow', '1 day')
+		equal(d.add(1, 'day').fromNow(), 'tomorrow', 'in 1 day')
 		equal(
 			d
 				.nextWeek()
@@ -48,7 +48,7 @@ suite('Daet', function(suite, test) {
 				.fromNow(),
 			'next Tuesday'
 		)
-		equal(d.add(15, 'day').fromNow(), 'sometime later', '15 days')
-		equal(d.add(400, 'day').fromNow(), 'sometime later', '400 days')
+		equal(d.add(15, 'day').fromNow(), 'sometime later', 'in 15 days')
+		equal(d.add(400, 'day').fromNow(), 'sometime later', 'in 400 days')
 	})
 })
