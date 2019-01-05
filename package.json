@@ -123,6 +123,7 @@
     "our:verify:eslint": "echo 'eslint is disabled because of prettier issue'",
     "our:verify:stylelint": "stylelint --fix './**/*.css'",
     "our:verify:typescript": "tsc --noEmit --project .",
+    "now-build": "next build",
     "next": "next",
     "start": "npm run next -- start",
     "build": "npm run our:compile",
