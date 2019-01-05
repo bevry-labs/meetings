@@ -1,66 +1,22 @@
 import { Layout, Banner, CalloutCard, ComplexAction } from '@shopify/polaris'
 import { RichEventsType, RichEventType } from '../../types'
-import { useFutureDate, usePastDate } from '../hooks/moment'
-import moment from 'moment'
-
-function log(prefix: string) {
-	console.log([
-		prefix,
-		moment()
-			.add({ seconds: 3 })
-			.fromNow(),
-		moment()
-			.add({ seconds: 7 })
-			.fromNow(),
-		moment()
-			.add({ seconds: 13 })
-			.fromNow()
-	])
-}
-function attempt(s: number, ss: number) {
-	moment.relativeTimeThreshold('s', s)
-	moment.relativeTimeThreshold('ss', ss)
-	log(`s=${s}, ss=${ss}`)
-	moment.relativeTimeThreshold('ss', ss)
-	moment.relativeTimeThreshold('s', s)
-	log(`ss=${ss}, s=${s}`)
-}
-
-attempt(-1, 5)
-
-/*
-moment.updateLocale('en', {
-	relativeTime: {
-		future: 'in %s',
-		past: '%s ago',
-		s: 'a few seconds',
-		ss: '%d seconds',
-		m: 'a minute',
-		mm: '%d minutes',
-		h: 'an hour',
-		hh: '%d hours',
-		d: 'a day',
-		dd: '%d days',
-		M: 'a month',
-		MM: '%d months',
-		y: 'a year',
-		yy: '%d years'
-	}
-})*/
+import { useInterval } from '../hooks/time'
+import Daet from '../../shared/daet'
 
 const Event = ({ event }: { event: RichEventType }) => {
 	// determine dates
 	const { description, summary, start, end, expires } = event
-	const now = moment()
-	const started = now.isSameOrAfter(start)
-	const ended = now.isSameOrAfter(end, 'minute')
+	const now = new Daet()
+	const started = now.getRoundedTime() >= start.getRoundedTime()
+	const ended = now.getRoundedTime() >= end.getRoundedTime()
 	const live = started && !ended
 
 	// determine events
 	// useDates([start, end], [end]])
-	useFutureDate(start) // we say how long until it starts
-	useFutureDate(end) // we say how long until it ends
-	usePastDate(end) // we say how long ago it ended
+	useInterval(1000) // every second
+	// useFutureDate(start) // we say how long until it starts
+	// useFutureDate(end) // we say how long until it ends
+	// usePastDate(end) // we say how long ago it ended
 	// useDate(expires)  // we currnently don't do anything with expires
 
 	// determine rendering
