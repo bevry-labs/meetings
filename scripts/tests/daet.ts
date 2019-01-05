@@ -1,10 +1,10 @@
 import { suite } from 'kava'
-import { Second, Minute, Hour, Day, default as Dato } from '../../shared/dato'
+import { Second, Minute, Hour, Day, default as Daet } from '../../shared/daet'
 import { equal } from 'assert-helpers'
 
-suite('dato', function(suite, test) {
+suite('Daet', function(suite, test) {
 	test('add', function() {
-		const d = Dato.create()
+		const d = Daet.create()
 		equal(d.getDelta(), 0, 'zero')
 		equal(d.add(1, 'second').getDelta(), Second, '1 second')
 		equal(d.add(15, 'second').getDelta(), 15 * Second, '15 seconds')
@@ -17,7 +17,7 @@ suite('dato', function(suite, test) {
 		equal(d.add(400, 'day').getDelta(), 400 * Day, '400 days')
 	})
 	test('fromNow', function() {
-		const d = Dato.create()
+		const d = Daet.create()
 		equal(d.fromNow(), 'right now')
 		equal(d.add(1, 'second').fromNow(), '1 second')
 		equal(d.add(15, 'second').fromNow(), '15 seconds')

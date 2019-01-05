@@ -3,7 +3,7 @@ import * as formatMessage from 'format-message'
 
 /* eslint no-dupe-class-members:0, no-throw-literal:0, no-case-declarations:0 */
 
-type CustomMessageOptions = { now: Dato; seconds: number }
+type CustomMessageOptions = { now: Daet; seconds: number }
 
 type Input = string | number | Date
 type Unit = 'millisecond' | 'second' | 'minute' | 'hour' | 'day'
@@ -122,14 +122,14 @@ interface Tier {
 	limit?: number
 	when?: number
 	message?: string
-	custom?: (delta: number, when: Dato) => string
+	custom?: (delta: number, when: Daet) => string
 }
 
 formatMessage.setup({
 	missingTranslation: 'ignore'
 })
 
-export default class Dato {
+export default class Daet {
 	readonly raw: Date
 	static get tiers(): Tier[] {
 		return [
@@ -153,21 +153,21 @@ export default class Dato {
 				}
 			},
 			{
-				when: new Dato()
+				when: new Daet()
 					.add(1, 'day')
 					.reset('hour')
 					.getTime(),
 				message: 'later today'
 			},
 			{
-				when: new Dato()
+				when: new Daet()
 					.add(2, 'day')
 					.reset('hour')
 					.getTime(),
 				message: 'tomorrow'
 			},
 			{
-				when: new Dato().nextWeek().getTime(),
+				when: new Daet().nextWeek().getTime(),
 				custom: (delta, when) =>
 					formatMessage(intl.thisWeek, {
 						value: when.format('en', {
@@ -178,7 +178,7 @@ export default class Dato {
 					})
 			},
 			{
-				when: new Dato()
+				when: new Daet()
 					.nextWeek()
 					.nextWeek()
 					.getTime(),
@@ -197,20 +197,20 @@ export default class Dato {
 			}
 		]
 	}
-	static create(input?: Input): Dato {
+	static create(input?: Input): Daet {
 		return new this(input)
 	}
 	constructor(input?: Input) {
 		this.raw = input ? new Date(input) : new Date()
 	}
-	minus(value: number, unit: Unit): Dato {
+	minus(value: number, unit: Unit): Daet {
 		return this.add(value * -1, unit)
 	}
-	add(value: number, unit: Unit): Dato {
+	add(value: number, unit: Unit): Daet {
 		switch (unit) {
 			case 'millisecond': {
 				const next = new Date(this.raw.getTime() + value)
-				return new Dato(next)
+				return new Daet(next)
 			}
 			case 'second': {
 				return this.add(value * Second, 'millisecond')
@@ -233,23 +233,23 @@ export default class Dato {
 	private rawClone() {
 		return new Date(this.raw)
 	}
-	set(value: number, unit: 'millisecond' | 'second' | 'minute' | 'hour'): Dato {
+	set(value: number, unit: 'millisecond' | 'second' | 'minute' | 'hour'): Daet {
 		switch (unit) {
 			case 'millisecond': {
 				const next = this.rawClone().setMilliseconds(value)
-				return new Dato(next)
+				return new Daet(next)
 			}
 			case 'second': {
 				const next = this.rawClone().setSeconds(value)
-				return new Dato(next)
+				return new Daet(next)
 			}
 			case 'minute': {
 				const next = this.rawClone().setMinutes(value)
-				return new Dato(next)
+				return new Daet(next)
 			}
 			case 'hour': {
 				const next = this.rawClone().setHours(value)
-				return new Dato(next)
+				return new Daet(next)
 			}
 			default:
 				// https://basarat.gitbooks.io/typescript/docs/types/discriminated-unions.html
@@ -257,23 +257,23 @@ export default class Dato {
 				throw new Error('unknown unit')
 		}
 	}
-	reset(unit: 'millisecond' | 'second' | 'minute' | 'hour'): Dato {
+	reset(unit: 'millisecond' | 'second' | 'minute' | 'hour'): Daet {
 		switch (unit) {
 			case 'millisecond': {
 				const next = this.rawClone().setMilliseconds(0)
-				return new Dato(next)
+				return new Daet(next)
 			}
 			case 'second': {
 				const next = this.rawClone().setSeconds(0, 0)
-				return new Dato(next)
+				return new Daet(next)
 			}
 			case 'minute': {
 				const next = this.rawClone().setMinutes(0, 0, 0)
-				return new Dato(next)
+				return new Daet(next)
 			}
 			case 'hour': {
 				const next = this.rawClone().setHours(0, 0, 0, 0)
-				return new Dato(next)
+				return new Daet(next)
 			}
 			default:
 				// https://basarat.gitbooks.io/typescript/docs/types/discriminated-unions.html
@@ -288,14 +288,14 @@ export default class Dato {
 		return Math.round(this.getTime() / 1000) * 1000
 	}
 	getDelta(): number {
-		const now = new Dato().getRoundedTime()
+		const now = new Daet().getRoundedTime()
 		const time = this.getRoundedTime()
 		return time - now
 	}
 	format(locale: string, options: object): string {
 		return new Intl.DateTimeFormat(locale, options).format(this.raw)
 	}
-	nextWeek(): Dato {
+	nextWeek(): Daet {
 		let latest = this.add(1, 'day')
 		while (latest.raw.getDay() !== 0) {
 			latest = latest.add(1, 'day')
@@ -306,7 +306,7 @@ export default class Dato {
 		const delta = Math.abs(this.getDelta())
 		const time = this.getRoundedTime()
 		console.log('--', delta, '-------------')
-		const tiers = Dato.tiers
+		const tiers = Daet.tiers
 		console.log('--', delta, '-------------')
 		for (const tier of tiers) {
 			const limit = !tier.limit || delta < tier.limit
@@ -353,7 +353,7 @@ export default class Dato {
 			time: raw.getTime()
 		}
 	}
-	diff(B: Dato): Parts {
+	diff(B: Daet): Parts {
 		const a = this.getParts()
 		const b = B.getParts()
 		return {
@@ -377,6 +377,6 @@ export default class Dato {
 }
 
 /*
-import Dato from './shared/dato'
-Dato.create().add(30, 'second').getSecondsDelta()
+import Daet from './shared/Daet'
+Daet.create().add(30, 'second').getSecondsDelta()
 */
