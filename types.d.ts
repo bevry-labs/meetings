@@ -1,5 +1,5 @@
 import { calendar_v3 } from 'googleapis'
-import { Moment } from 'moment'
+import Daet from './shared/daet'
 
 type Time = { dateTime: string; timeZone: string }
 export interface RawEventType extends calendar_v3.Schema$Event {
@@ -11,9 +11,9 @@ export type RawEventsType = RawEventType[]
 export type RichEventType = RawEventType & {
 	description: string
 	summary: string
-	start: Moment
-	end: Moment
-	expires: Moment
+	start: Daet
+	end: Daet
+	expires: Daet
 }
 export type RichEventsType = RichEventType[]
 

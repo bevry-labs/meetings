@@ -1,12 +1,12 @@
 // Import
 import { getEvents } from '../lib/google'
-import { DateTime } from 'luxon'
+import Daet from '../../shared/daet'
 import { Http2ServerRequest, Http2ServerResponse } from 'http2'
 
 async function processEvents() {
-	const start = DateTime.local().setZone('Atlantic/Reykjavik')
-	const finish = start.plus({ weeks: 1 })
-	const events = await getEvents(start.toISO(), finish.toISO())
+	const start = new Daet()
+	const finish = start.add(1, 'week')
+	const events = await getEvents(start.toISOString(), finish.toISOString())
 	return events
 }
 

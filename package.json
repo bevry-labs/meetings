@@ -69,8 +69,6 @@
     "format-message": "^6.2.1",
     "googleapis": "^36.0.0",
     "isomorphic-unfetch": "^3.0.0",
-    "luxon": "^1.8.3",
-    "moment": "^2.23.0",
     "next": "^7.0.2",
     "react": "16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2"

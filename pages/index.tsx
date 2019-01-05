@@ -3,7 +3,6 @@ import { filter } from '../shared/links'
 import Link from '../client/components/link'
 import Layout from '../client/components/layout'
 import Events from '../client/components/events'
-import { useEffect, useState } from 'react'
 import { DisplayText } from '@shopify/polaris'
 import {
 	RawEventsType,
@@ -11,13 +10,12 @@ import {
 	RichEventType,
 	RawEventType
 } from '../types'
-import moment from 'moment'
+import Daet from '../shared/daet'
 
 type RawProps = { rawEvents: RawEventsType }
 
-const DEVELOPMENT = true
+const DEVELOPMENT = false
 const EVENTS_URL = 'https://jordanbpeterson.community/api/events/'
-const EXPIRES = { minutes: 1 }
 
 function firstLine(str?: string): string {
 	return (str || '').split(/\s*\n\s*/)[0]
@@ -31,8 +29,8 @@ function fetchRawEvents(): Promise<RawEventsType> {
 			if (DEVELOPMENT) {
 				rawEvents = rawEvents.map((rawEvent, index) => {
 					const minutes = 1 * (index + 1)
-					const start = moment().add({ minutes })
-					const end = start.clone().add({ minutes })
+					const start = new Daet().add(minutes, 'minute')
+					const end = start.clone().add(minutes, 'minute')
 					return Object.assign({}, rawEvent, {
 						start: { dateTime: start.toISOString() },
 						end: { dateTime: end.toISOString() }
@@ -53,7 +51,7 @@ function fetchRawEvents(): Promise<RawEventsType> {
  *
  * Why here instead of getInitialProps?
  * Because "Data returned from getInitialProps is serialized when server rendering, similar to a JSON.stringify. Make sure the returned object from getInitialProps is a plain Object and not using Date, Map or Set.".
- * As such, getInitialProps would turn the moment instances into strings.
+ * As such, getInitialProps would turn the date instances into strings.
  *
  * Why do this at all?
  * To pevent components having to redo the same calculations on each render.
@@ -62,12 +60,9 @@ function fetchRawEvents(): Promise<RawEventsType> {
 function enrichEvent(rawEvent: RawEventType): RichEventType {
 	const description = firstLine(rawEvent.description)
 	const summary = rawEvent.summary || 'Untitled'
-	const start = moment(rawEvent.start.dateTime).set({
-		seconds: 0,
-		milliseconds: 0
-	})
-	const end = moment(rawEvent.end.dateTime).set({ seconds: 0, milliseconds: 0 })
-	const expires = end.clone().add(EXPIRES)
+	const start = new Daet(rawEvent.start.dateTime).reset('second')
+	const end = new Daet(rawEvent.end.dateTime).reset('second')
+	const expires = end.clone().add(1, 'minute')
 	return Object.assign({}, rawEvent, {
 		description,
 		summary,

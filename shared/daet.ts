@@ -1,9 +1,15 @@
 /* eslint no-dupe-class-members:0, no-throw-literal:0, no-case-declarations:0 */
 import * as formatMessage from 'format-message'
 
-type UnitsToHour = 'millisecond' | 'second' | 'minute' | 'hour'
-type UnitsToDay = 'millisecond' | 'second' | 'minute' | 'hour' | 'day'
-type Input = string | number | Date
+type SetUnits = 'millisecond' | 'second' | 'minute' | 'hour'
+type ArithmeticUnits =
+	| 'millisecond'
+	| 'second'
+	| 'minute'
+	| 'hour'
+	| 'week'
+	| 'day'
+type Input = string | number | Date | Daet
 
 interface Tier {
 	limit?: number
@@ -18,6 +24,11 @@ export const Minute = Second * 60
 export const Hour = Minute * 60
 export const Day = Hour * 24
 export const Week = Day * 7
+
+const Saturday = 6
+const Sunday = 0
+const Monday = 1
+const StartOfWeek = Monday
 
 const intl = {
 	seconds: `{
@@ -50,6 +61,11 @@ const intl = {
 formatMessage.setup({
 	missingTranslation: 'ignore'
 })
+
+function memo<T>(callback: () => T) {
+	let value: T
+	return () => (typeof value !== 'undefined' ? value : (value = callback()))
+}
 
 export default class Daet {
 	readonly raw: Date
@@ -117,8 +133,6 @@ export default class Daet {
 						: formatMessage(intl.thisWeek, {
 								value: when.format('en', {
 									weekday: 'long'
-									// hour: 'numeric',
-									// minute: 'numeric'
 								})
 						  })
 			},
@@ -139,8 +153,6 @@ export default class Daet {
 						: formatMessage(intl.nextWeek, {
 								value: when.format('en', {
 									weekday: 'long'
-									// hour: 'numeric',
-									// minute: 'numeric'
 								})
 						  })
 			},
@@ -154,12 +166,17 @@ export default class Daet {
 		return new this(input)
 	}
 	constructor(input?: Input) {
-		this.raw = input ? new Date(input) : new Date()
+		this.raw =
+			input instanceof Daet
+				? new Date(input.raw)
+				: input
+				? new Date(input)
+				: new Date()
 	}
-	minus(value: number, unit: UnitsToDay): Daet {
+	minus(value: number, unit: ArithmeticUnits): Daet {
 		return this.add(value * -1, unit)
 	}
-	add(value: number, unit: UnitsToDay): Daet {
+	add(value: number, unit: ArithmeticUnits): Daet {
 		switch (unit) {
 			case 'millisecond': {
 				const next = new Date(this.raw.getTime() + value)
@@ -177,6 +194,9 @@ export default class Daet {
 			case 'day': {
 				return this.add(value * Day, 'millisecond')
 			}
+			case 'week': {
+				return this.add(value * Week, 'millisecond')
+			}
 			default:
 				// https://basarat.gitbooks.io/typescript/docs/types/discriminated-unions.html
 				const neverCheck: never = unit
@@ -186,7 +206,10 @@ export default class Daet {
 	private rawClone() {
 		return new Date(this.raw)
 	}
-	set(value: number, unit: UnitsToHour): Daet {
+	clone() {
+		return new Daet(this)
+	}
+	set(value: number, unit: SetUnits): Daet {
 		switch (unit) {
 			case 'millisecond': {
 				const next = this.rawClone().setMilliseconds(value)
@@ -210,7 +233,7 @@ export default class Daet {
 				throw new Error('unknown unit')
 		}
 	}
-	reset(unit: UnitsToHour): Daet {
+	reset(unit: SetUnits): Daet {
 		switch (unit) {
 			case 'millisecond': {
 				const next = this.rawClone().setMilliseconds(0)
@@ -237,33 +260,45 @@ export default class Daet {
 	getTime(): number {
 		return this.raw.getTime()
 	}
-	getRoundedTime(): number {
-		return Math.round(this.getTime() / 1000) * 1000
-	}
-	getDelta(): number {
-		const now = new Daet().getRoundedTime()
+	getRoundedTime = memo((): number => Math.round(this.getTime() / 1000) * 1000)
+	getDelta(from: Daet = new Daet()): number {
+		const now = from.getRoundedTime()
 		const time = this.getRoundedTime()
 		return time - now
 	}
 	format(locale: string, options: object): string {
 		return new Intl.DateTimeFormat(locale, options).format(this.raw)
 	}
-	nextWeek(): Daet {
-		let latest = this.add(1, 'day')
-		while (latest.raw.getDay() !== 0) {
-			latest = latest.add(1, 'day')
+	nextWeek = memo(
+		(): Daet => {
+			let latest = this.add(1, 'day')
+			while (latest.raw.getDay() !== StartOfWeek) {
+				latest = latest.add(1, 'day')
+			}
+			return latest.reset('hour')
 		}
-		return latest.reset('hour')
-	}
-	lastWeek(): Daet {
-		let latest = this.minus(1, 'day')
-		while (latest.raw.getDay() !== 6) {
-			latest = latest.minus(1, 'day')
+	)
+	lastWeek = memo(
+		(): Daet => {
+			let latest = this.minus(1, 'day')
+			while (latest.raw.getDay() !== StartOfWeek) {
+				latest = latest.minus(1, 'day')
+			}
+			return latest.reset('hour')
 		}
-		return latest.reset('hour')
+	)
+	calendar(): string {
+		return this.format('en', {
+			weekday: 'long',
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: 'numeric'
+		})
 	}
-	fromNow(): string {
-		const _delta = this.getDelta()
+	from(from: Daet) {
+		const _delta = this.getDelta(from)
 		const past = _delta < 0
 		const delta = Math.abs(_delta)
 		const time = this.getRoundedTime()
@@ -284,10 +319,9 @@ export default class Daet {
 		}
 		throw new Error('no tier matched the input delta')
 	}
-	toISOString(): string {
-		return this.raw.toISOString()
+	fromNow() {
+		return this.from(new Daet())
 	}
-	toJSON(): string {
-		return this.raw.toJSON()
-	}
+	toISOString = memo(() => this.raw.toISOString())
+	toJSON = memo(() => this.raw.toJSON())
 }

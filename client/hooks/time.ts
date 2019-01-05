@@ -1,26 +1,26 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Moment, default as moment } from 'moment'
+import Daet from '../../shared/daet'
 import { numberComparator } from '../../shared/comparators'
 
-export function useTimeout(time: number) {
-	const [delta, setDelta] = useState(time)
+export function useTimeout(milliseconds: number): boolean {
+	const [done, setDone] = useState(false)
 	useEffect(function() {
-		if (delta < 0) return
+		if (done || milliseconds < 0) return
 		const timer = setTimeout(() => {
-			setDelta(-1)
-		}, time)
+			setDone(true)
+		}, milliseconds)
 		return () => timer && clearTimeout(timer)
 	})
-	return delta
+	return done
 }
 
-export function useInterval(time: number) {
+export function useInterval(milliseconds: number): number {
 	const [iterations, setIterations] = useState(0)
 	useEffect(function() {
-		if (time < 0) return
+		if (milliseconds < 0) return
 		const timer = setTimeout(() => {
 			setIterations(iterations + 1)
-		}, time)
+		}, milliseconds)
 		return () => clearTimeout(timer)
 	})
 	return iterations
@@ -30,6 +30,7 @@ export function useInterval(time: number) {
 function overSecond(delta: number) {
 	return delta < 0 || delta > 1000 ? delta : 1000
 }
+/*
 
 // http://momentjs.com/docs/#/displaying/fromnow/
 const thresholdBases: { [index: string]: number } = {
@@ -93,3 +94,4 @@ export function useDate(input: Moment) {
 	// console.log('useDate', milliseconds, new Date())
 	return useInterval(milliseconds)
 }
+*/
