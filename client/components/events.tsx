@@ -1,39 +1,47 @@
 import { Layout, Banner, CalloutCard, ComplexAction } from '@shopify/polaris'
-import { RichEventsType, RichEventType } from '../../types'
+import { RichEventsType, RichEventType } from '../../shared/events'
 import { useInterval } from '../hooks/time'
 import Daet from '../../shared/daet'
 
+// Event
 const Event = ({ event }: { event: RichEventType }) => {
-	// determine dates
 	const { description, summary, start, end, expires } = event
 	const now = new Daet()
 	const started = now.getRoundedTime() >= start.getRoundedTime()
 	const ended = now.getRoundedTime() >= end.getRoundedTime()
-	const live = started && !ended
+	const expired = now.getRoundedTime() >= expires.getRoundedTime()
+	const active = started && !expired
+	const fromNow = expired
+		? expires.fromNowDetails()
+		: started
+		? start.fromNowDetails()
+		: end.fromNowDetails()
 
-	// determine events
-	// useDates([start, end], [end]])
-	useInterval(1000) // every second
-	// useFutureDate(start) // we say how long until it starts
-	// useFutureDate(end) // we say how long until it ends
-	// usePastDate(end) // we say how long ago it ended
-	// useDate(expires)  // we currnently don't do anything with expires
+	// Hooks
+	useInterval(fromNow.refresh)
 
-	// determine rendering
+	// Render
 	const confidential = Boolean(event.hangoutLink)
 	const illustration = confidential
 		? '/static/illustrations/undraw_security_o890.svg'
 		: '/static/illustrations/undraw_conference_uo36.svg'
-	const statusBar = ended ? (
-		<Banner title={`Ended ${end.fromNow()}`} status="warning">
-			<p>This session has ended.</p>
+	const statusBar = expires ? (
+		<Banner title={`Expired ${fromNow.message}`} status="warning">
+			<p>The event window has passed.</p>
 		</Banner>
-	) : live ? (
+	) : ended ? (
+		<Banner title={`Live ${fromNow.message}`} status="warning">
+			<p>
+				The initial availibility window has passed. Discussion may or may not be
+				ongoing.
+			</p>
+		</Banner>
+	) : started ? (
 		<Banner title="Live Now" status="success">
-			<p>This session is happening right now! It will end {end.fromNow()}.</p>
+			<p>This session is happening right now! It will end {fromNow.message}.</p>
 		</Banner>
 	) : (
-		<Banner title={`Live ${start.fromNow()}`} status="info">
+		<Banner title={`Live ${fromNow.message}`} status="info">
 			<p>Join us {start.calendar()} your time.</p>
 		</Banner>
 	)
@@ -41,7 +49,7 @@ const Event = ({ event }: { event: RichEventType }) => {
 	const watchUrl = confidential ? undefined : '/youtube'
 	const primaryAction = {
 		content: 'Join the call',
-		disabled: !live,
+		disabled: !active,
 		url: joinUrl,
 		external: true
 	} as ComplexAction
@@ -49,7 +57,7 @@ const Event = ({ event }: { event: RichEventType }) => {
 		? undefined
 		: ({
 				content: 'Watch live',
-				disabled: !live,
+				disabled: !active,
 				url: watchUrl,
 				external: true
 		  } as ComplexAction)
@@ -67,6 +75,8 @@ const Event = ({ event }: { event: RichEventType }) => {
 		</div>
 	)
 }
+
+// Events
 export default ({ events }: { events: RichEventsType }) => {
 	return (
 		<Layout sectioned={true}>

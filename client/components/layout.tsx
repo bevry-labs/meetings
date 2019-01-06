@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { AppProvider, Page } from '@shopify/polaris'
-import { Children } from '../../types'
+import { Children } from '../../shared/types'
 interface LayoutProps {
 	children: Children
 	title?: string

@@ -5,20 +5,29 @@ import { equal } from 'assert-helpers'
 suite('Daet', function(suite, test) {
 	test('plus', function() {
 		const d = Daet.create()
-		equal(d.getDelta(), 0, 'zero')
-		equal(d.plus(1, 'second').getDelta(), Second, '1 second')
-		equal(d.plus(15, 'second').getDelta(), 15 * Second, '15 seconds')
-		equal(d.plus(1, 'minute').getDelta(), Minute, '1 minute')
-		equal(d.plus(15, 'minute').getDelta(), 15 * Minute, '15 minutes')
-		equal(d.plus(1, 'hour').getDelta(), Hour, '1 hour')
-		equal(d.plus(15, 'hour').getDelta(), 15 * Hour, '15 hours')
-		equal(d.plus(1, 'day').getDelta(), Day, '1 day')
-		equal(d.plus(15, 'day').getDelta(), 15 * Day, '15 days')
-		equal(d.plus(400, 'day').getDelta(), 400 * Day, '400 days')
+		equal(d.getMillisecondsFromNow(), 0, 'zero')
+		equal(d.plus(1, 'second').getMillisecondsFromNow(), Second, '1 second')
+		equal(
+			d.plus(15, 'second').getMillisecondsFromNow(),
+			15 * Second,
+			'15 seconds'
+		)
+		equal(d.plus(1, 'minute').getMillisecondsFromNow(), Minute, '1 minute')
+		equal(
+			d.plus(15, 'minute').getMillisecondsFromNow(),
+			15 * Minute,
+			'15 minutes'
+		)
+		equal(d.plus(1, 'hour').getMillisecondsFromNow(), Hour, '1 hour')
+		equal(d.plus(15, 'hour').getMillisecondsFromNow(), 15 * Hour, '15 hours')
+		equal(d.plus(1, 'day').getMillisecondsFromNow(), Day, '1 day')
+		equal(d.plus(15, 'day').getMillisecondsFromNow(), 15 * Day, '15 days')
+		equal(d.plus(400, 'day').getMillisecondsFromNow(), 400 * Day, '400 days')
 	})
 	test('fromNow', function() {
 		const d = Daet.create()
 		equal(d.fromNow(), 'right now')
+		equal(d.plus(2, 'second').fromNow(), 'in 2 seconds')
 		equal(d.plus(1, 'second').fromNow(), 'in 1 second')
 		equal(d.plus(15, 'second').fromNow(), 'in 15 seconds')
 		equal(d.plus(1, 'minute').fromNow(), 'in 1 minute')

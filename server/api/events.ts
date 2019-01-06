@@ -2,10 +2,12 @@
 import { getEvents } from '../lib/google'
 import Daet from '../../shared/daet'
 import { Http2ServerRequest, Http2ServerResponse } from 'http2'
+import { expiresValue, expiresUnit } from '../../shared/config'
 
 async function processEvents() {
-	const start = new Daet()
-	const finish = start.plus(1, 'week')
+	const now = new Daet()
+	const start = now.minus(expiresValue, expiresUnit)
+	const finish = now.plus(1, 'week')
 	const events = await getEvents(start.toISOString(), finish.toISOString())
 	return events
 }
