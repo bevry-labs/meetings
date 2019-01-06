@@ -29,8 +29,8 @@ function fetchRawEvents(): Promise<RawEventsType> {
 			if (DEVELOPMENT) {
 				rawEvents = rawEvents.map((rawEvent, index) => {
 					const minutes = 1 * (index + 1)
-					const start = new Daet().add(minutes, 'minute')
-					const end = start.clone().add(minutes, 'minute')
+					const start = new Daet().plus(minutes, 'minute')
+					const end = start.clone().plus(minutes, 'minute')
 					return Object.assign({}, rawEvent, {
 						start: { dateTime: start.toISOString() },
 						end: { dateTime: end.toISOString() }
@@ -62,7 +62,7 @@ function enrichEvent(rawEvent: RawEventType): RichEventType {
 	const summary = rawEvent.summary || 'Untitled'
 	const start = new Daet(rawEvent.start.dateTime).reset('second')
 	const end = new Daet(rawEvent.end.dateTime).reset('second')
-	const expires = end.clone().add(1, 'minute')
+	const expires = end.clone().plus(1, 'minute')
 	return Object.assign({}, rawEvent, {
 		description,
 		summary,

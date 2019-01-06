@@ -30,8 +30,8 @@ export function useInterval(milliseconds: number): number {
 function overSecond(delta: number) {
 	return delta < 0 || delta > 1000 ? delta : 1000
 }
-/*
 
+/*
 // http://momentjs.com/docs/#/displaying/fromnow/
 const thresholdBases: { [index: string]: number } = {
 	s: 1,
