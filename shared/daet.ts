@@ -124,6 +124,7 @@ export default class Daet {
 				: input
 				? new Date(input)
 				: new Date()
+		this.raw.setMilliseconds(0)
 	}
 	minus(value: number, unit: ArithmeticUnits): Daet {
 		return this.plus(value * -1, unit)
@@ -209,13 +210,10 @@ export default class Daet {
 				throw new Error('unknown unit')
 		}
 	}
-	getTime(): number {
-		return this.raw.getTime()
-	}
-	getRoundedTime = memo((): number => Math.round(this.getTime() / 1000) * 1000)
+	getTime = memo((): number => this.raw.getTime())
 	getMillisecondsFrom(from: Daet): number {
-		const now = from.getRoundedTime()
-		const time = this.getRoundedTime()
+		const now = from.getTime()
+		const time = this.getTime()
 		return time - now
 	}
 	getMillisecondsFromNow(): number {
@@ -258,18 +256,16 @@ export default class Daet {
 	}
 	fromNowDetails() {
 		const now = new Daet()
-		const nowTime = now.getRoundedTime()
-		const eventTime = this.getRoundedTime()
+		const nowTime = now.getTime()
+		const eventTime = this.getTime()
 		const past = nowTime > eventTime
 		const delta = Math.abs(eventTime - nowTime)
 		const tiers = Daet.tiers
 		let lastTierDelta: number = 0
-		// console.log('---')
 		for (const tier of tiers) {
 			const limit = tier.limit
 			const when = tier.when ? tier.when({ past }) : 0
 			const tierDelta = limit || Math.abs(when - nowTime)
-			// console.log({ limit, when, eventTime, nowTime, tierDelta, delta, tier })
 			if (delta < tierDelta) {
 				const message = tier.message({ past, delta, when: this })
 				const refresh = tier.refresh || delta - lastTierDelta

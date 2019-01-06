@@ -50,7 +50,7 @@
     "url": "https://github.com/bevry/jordanbpeterson.community.git"
   },
   "engines": {
-    "node": "8"
+    "node": ">=8"
   },
   "editions": [
     {
@@ -73,7 +73,6 @@
     "react-dom": "16.7.0-alpha.2"
   },
   "devDependencies": {
-    "@types/luxon": "^1.4.1",
     "@types/next": "^7.0.6",
     "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.11",
@@ -98,7 +97,7 @@
   "scripts": {
     "my:api": "env GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c . | base64)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c . | base64)\" ts-node ./api/google.ts",
     "my:compile": "ts-node ./scripts/compile.ts && next build",
-    "my:deploy": " npm run our:verify && npm run our:compile && now",
+    "my:deploy": " npm run our:test && npm run our:compile && now",
     "my:deploy:live": "npm run my:deploy && now alias",
     "my:secrets:google-oauth": "now secret rm google-oauth && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c . | base64)\"",
     "my:secrets:google-service": "now secret rm google-service && now secret add google-service \"$(cat ./.env/google-service.json | jq -c . | base64)\"",
@@ -122,7 +121,7 @@
     "our:verify:typescript": "tsc --noEmit --project .",
     "now-build": "npm run our:compile",
     "build": "npm run our:compile",
-    "test": "npm run our:compile",
+    "test": "ts-node ./scripts/tests/daet.ts",
     "start": "npm run our:verify && next dev"
   },
   "eslintConfig": {

@@ -1,3 +1,4 @@
+/* eslint camelcase:0 */
 import fetch from 'isomorphic-unfetch'
 import { calendar_v3 } from 'googleapis'
 import Daet from './daet'
@@ -27,12 +28,13 @@ export function fetchRawEvents(): Promise<RawEventsType> {
 	return fetch(EVENTS_URL)
 		.then(response => response.json())
 		.then(function(rawEvents: RawEventsType) {
+			const now = new Daet()
 			// if development, convert the events to more recent ones
 			if (DEVELOPMENT) {
 				rawEvents = rawEvents.map((rawEvent, index) => {
-					const minutes = 1 * (index + 1)
-					const start = new Daet().plus(minutes, 'minute')
-					const end = start.clone().plus(minutes, 'minute')
+					const minutes = 1 + index
+					const start = now.plus(minutes, 'minute').reset('second')
+					const end = start.plus(1, 'minute')
 					return Object.assign({}, rawEvent, {
 						start: { dateTime: start.toISOString() },
 						end: { dateTime: end.toISOString() }
@@ -64,7 +66,9 @@ export function enrichEvent(rawEvent: RawEventType): RichEventType {
 	const summary = rawEvent.summary || 'Untitled'
 	const start = new Daet(rawEvent.start.dateTime).reset('second')
 	const end = new Daet(rawEvent.end.dateTime).reset('second')
-	const expires = end.plus(expiresValue, expiresUnit)
+	const expires = DEVELOPMENT
+		? end.plus(1, 'minute')
+		: end.plus(expiresValue, expiresUnit)
 	return Object.assign({}, rawEvent, {
 		description,
 		summary,

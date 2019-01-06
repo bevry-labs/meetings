@@ -5,10 +5,11 @@ import Events from '../client/components/events'
 import { DisplayText } from '@shopify/polaris'
 import { RawEventsType, enrichEvents, fetchRawEvents } from '../shared/events'
 
-type RawProps = { rawEvents: RawEventsType }
+type Props = {
+	rawEvents: RawEventsType
+}
 
-const Page = ({ rawEvents }: RawProps) => {
-	console.log('refresh page', { rawEvents })
+const Page = ({ rawEvents }: Props) => {
 	const events = enrichEvents(rawEvents)
 	return (
 		<Layout>
@@ -29,7 +30,7 @@ const Page = ({ rawEvents }: RawProps) => {
 	)
 }
 
-Page.getInitialProps = function(): Promise<RawProps> {
+Page.getInitialProps = function({ req }: { req: any }): Promise<Props> {
 	return fetchRawEvents().then(rawEvents => ({ rawEvents }))
 }
 
