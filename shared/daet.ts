@@ -1,5 +1,5 @@
 /* eslint no-dupe-class-members:0, no-throw-literal:0, no-case-declarations:0 */
-import * as formatMessage from 'format-message'
+import * as intl from './intl'
 
 type SetUnits = 'millisecond' | 'second' | 'minute' | 'hour'
 type ArithmeticUnits =
@@ -11,13 +11,6 @@ type ArithmeticUnits =
 	| 'day'
 type Input = string | number | Date | Daet
 
-interface Tier {
-	limit?: number
-	when?: (opts: { past: boolean }) => number
-	message?: (opts: { past: boolean }) => string
-	custom?: (opts: { past: boolean; delta: number; when: Daet }) => string
-}
-
 export const Millisecond = 1
 export const Second = Millisecond * 1000
 export const Minute = Second * 60
@@ -25,89 +18,43 @@ export const Hour = Minute * 60
 export const Day = Hour * 24
 export const Week = Day * 7
 
-const Saturday = 6
-const Sunday = 0
-const Monday = 1
-const StartOfWeek = Monday
-
-const intl = {
-	seconds: `{
-		seconds, plural,
-			=0 {}
-		  one {# second}
-		other {# seconds}
-	}`,
-	minutes: `{
-		minutes, plural,
-			=0 {}
-		  one {# minute}
-		other {# minutes}
-	}`,
-	hours: `{
-		hours, plural,
-			=0 {}
-		  one {# hour}
-		other {# hours}
-	}{
-		minutes, plural,
-			=0 {}
-		  one { # minute}
-		other { # minutes}
-	}`,
-	thisWeek: `this {value}`,
-	nextWeek: `next {value}`
-}
-
-formatMessage.setup({
-	missingTranslation: 'ignore'
-})
-
 function memo<T>(callback: () => T) {
 	let value: T
 	return () => (typeof value !== 'undefined' ? value : (value = callback()))
+}
+interface Tier {
+	limit?: number
+	refresh?: () => number
+	when?: (opts: { past: boolean }) => number
+	message: (opts: { past: boolean; delta: number; when: Daet }) => string
 }
 
 export default class Daet {
 	readonly raw: Date
 	static get tiers(): Tier[] {
 		return [
-			{ limit: Second, message: () => 'right now' },
+			{ limit: Second, message: intl.rightNow },
 			{
 				limit: Minute,
-				custom: ({ past, delta }) => {
-					const ticks = formatMessage(intl.seconds, {
-						seconds: Math.floor(delta / Second)
-					})
-					return past ? `${ticks} ago` : `in ${ticks}`
-				}
+				message: intl.relativeDelta
 			},
 			{
 				limit: Hour,
-				custom: ({ past, delta }) => {
-					const ticks = formatMessage(intl.minutes, {
-						minutes: Math.floor(delta / Minute)
-					})
-					return past ? `${ticks} ago` : `in ${ticks}`
-				}
+				message: intl.relativeDelta
 			},
 			{
 				limit: 12 * Hour,
-				custom: ({ past, delta }) => {
-					const hours = Math.floor(delta / Hour)
-					const minutes = Math.floor((delta - hours * Hour) / Minute)
-					const ticks = formatMessage(intl.hours, { hours, minutes })
-					return past ? `${ticks} ago` : `in ${ticks}`
-				}
+				message: intl.relativeDelta
 			},
 			{
 				when: ({ past }) =>
 					past
 						? new Daet().reset('hour').getTime()
 						: new Daet()
-								.add(1, 'day')
+								.plus(1, 'day')
 								.reset('hour')
 								.getTime(),
-				message: ({ past }) => (past ? 'earlier today' : 'later today')
+				message: intl.earlierOrLaterToday
 			},
 			{
 				when: ({ past }) =>
@@ -117,48 +64,34 @@ export default class Daet {
 								.reset('hour')
 								.getTime()
 						: new Daet()
-								.add(2, 'day')
+								.plus(2, 'day')
 								.reset('hour')
 								.getTime(),
-				message: ({ past }) => (past ? 'yesterday' : 'tomorrow')
+				message: intl.yesterdayOrTommorow
 			},
 			{
 				when: ({ past }) =>
 					past
-						? new Daet().lastWeek().getTime()
-						: new Daet().nextWeek().getTime(),
-				custom: ({ past, delta, when }) =>
-					past
-						? 'earlier this week'
-						: formatMessage(intl.thisWeek, {
-								value: when.format('en', {
-									weekday: 'long'
-								})
-						  })
+						? new Daet().endOfLastWeek().getTime()
+						: new Daet().startOfNextWeek().getTime(),
+				message: intl.relativeThisWeek
 			},
 			{
 				when: ({ past }) =>
 					past
 						? new Daet()
-								.lastWeek()
-								.lastWeek()
+								.endOfLastWeek()
+								.endOfLastWeek()
 								.getTime()
 						: new Daet()
-								.nextWeek()
-								.nextWeek()
+								.startOfNextWeek()
+								.startOfNextWeek()
 								.getTime(),
-				custom: ({ past, delta, when }) =>
-					past
-						? 'earlier last week'
-						: formatMessage(intl.nextWeek, {
-								value: when.format('en', {
-									weekday: 'long'
-								})
-						  })
+				message: intl.relativeSecondWeek
 			},
 			{
 				limit: Infinity,
-				message: ({ past }) => (past ? 'sometime earlier' : 'sometime later')
+				message: intl.earlierOrLater
 			}
 		]
 	}
@@ -174,28 +107,28 @@ export default class Daet {
 				: new Date()
 	}
 	minus(value: number, unit: ArithmeticUnits): Daet {
-		return this.add(value * -1, unit)
+		return this.plus(value * -1, unit)
 	}
-	add(value: number, unit: ArithmeticUnits): Daet {
+	plus(value: number, unit: ArithmeticUnits): Daet {
 		switch (unit) {
 			case 'millisecond': {
 				const next = new Date(this.raw.getTime() + value)
 				return new Daet(next)
 			}
 			case 'second': {
-				return this.add(value * Second, 'millisecond')
+				return this.plus(value * Second, 'millisecond')
 			}
 			case 'minute': {
-				return this.add(value * Minute, 'millisecond')
+				return this.plus(value * Minute, 'millisecond')
 			}
 			case 'hour': {
-				return this.add(value * Hour, 'millisecond')
+				return this.plus(value * Hour, 'millisecond')
 			}
 			case 'day': {
-				return this.add(value * Day, 'millisecond')
+				return this.plus(value * Day, 'millisecond')
 			}
 			case 'week': {
-				return this.add(value * Week, 'millisecond')
+				return this.plus(value * Week, 'millisecond')
 			}
 			default:
 				// https://basarat.gitbooks.io/typescript/docs/types/discriminated-unions.html
@@ -269,22 +202,26 @@ export default class Daet {
 	format(locale: string, options: object): string {
 		return new Intl.DateTimeFormat(locale, options).format(this.raw)
 	}
-	nextWeek = memo(
+	startOfNextWeek = memo(
 		(): Daet => {
-			let latest = this.add(1, 'day')
-			while (latest.raw.getDay() !== StartOfWeek) {
-				latest = latest.add(1, 'day')
+			// continue until we become the start of next week
+			let latest: Daet = this.plus(1, 'day')
+			while (latest.raw.getDay() !== intl.StartOfWeek) {
+				latest = latest.plus(1, 'day')
 			}
+			// reset the time, so we become the start time of that week
 			return latest.reset('hour')
 		}
 	)
-	lastWeek = memo(
+	endOfLastWeek = memo(
 		(): Daet => {
-			let latest = this.minus(1, 'day')
-			while (latest.raw.getDay() !== StartOfWeek) {
+			// continue until we become the start of this week
+			let latest: Daet = this
+			while (latest.raw.getDay() !== intl.StartOfWeek) {
 				latest = latest.minus(1, 'day')
 			}
-			return latest.reset('hour')
+			// reset the time, then minus a second, so we become the end of the prior week
+			return latest.reset('hour').minus(1, 'second')
 		}
 	)
 	calendar(): string {
@@ -308,13 +245,7 @@ export default class Daet {
 			const when = !tier.when || time < tier.when({ past })
 			const within = limit && when
 			if (within) {
-				const message =
-					tier.message != null
-						? tier.message({ past })
-						: tier.custom
-						? tier.custom({ past, delta, when: this })
-						: ''
-				return message
+				return tier.message({ past, delta, when: this })
 			}
 		}
 		throw new Error('no tier matched the input delta')

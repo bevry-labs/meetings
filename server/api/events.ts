@@ -5,7 +5,7 @@ import { Http2ServerRequest, Http2ServerResponse } from 'http2'
 
 async function processEvents() {
 	const start = new Daet()
-	const finish = start.add(1, 'week')
+	const finish = start.plus(1, 'week')
 	const events = await getEvents(start.toISOString(), finish.toISOString())
 	return events
 }
