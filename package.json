@@ -87,7 +87,6 @@
     "eslint-plugin-react-hooks": "0.0.0",
     "eslint-plugin-typescript": "^0.14.0",
     "kava": "^3.1.0",
-    "now": "^13.0.0-canary.38",
     "prettier": "^1.15.3",
     "projectz": "^1.7.4",
     "stylelint": "^9.9.0",
@@ -98,7 +97,7 @@
   },
   "scripts": {
     "my:api": "env GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c . | base64)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c . | base64)\" ts-node ./api/google.ts",
-    "my:compile": "ts-node ./scripts/compile.ts && npm run next -- build",
+    "my:compile": "ts-node ./scripts/compile.ts && next build",
     "my:deploy": " npm run our:verify && npm run our:compile && now",
     "my:deploy:live": "npm run my:deploy && now alias",
     "my:secrets:google-oauth": "now secret rm google-oauth && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c . | base64)\"",
@@ -121,12 +120,10 @@
     "our:verify:eslint": "echo 'eslint is disabled because of prettier issue'",
     "our:verify:stylelint": "stylelint --fix './**/*.css'",
     "our:verify:typescript": "tsc --noEmit --project .",
-    "now-build": "next build",
-    "next": "next",
-    "start": "npm run next -- start",
+    "now-build": "npm run our:compile",
     "build": "npm run our:compile",
     "test": "npm run our:compile",
-    "dev": "npm run next"
+    "start": "npm run our:verify && next dev"
   },
   "eslintConfig": {
     "extends": [

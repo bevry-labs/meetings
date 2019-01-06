@@ -1,5 +1,7 @@
 /* eslint no-dupe-class-members:0, no-throw-literal:0, no-case-declarations:0 */
 import * as intl from './intl'
+import { StrictUnion } from './types'
+import memo from './memo'
 
 type SetUnits = 'millisecond' | 'second' | 'minute' | 'hour'
 type ArithmeticUnits =
@@ -18,35 +20,48 @@ export const Hour = Minute * 60
 export const Day = Hour * 24
 export const Week = Day * 7
 
-function memo<T>(callback: () => T) {
-	let value: T
-	return () => (typeof value !== 'undefined' ? value : (value = callback()))
-}
-interface Tier {
-	limit?: number
-	refresh?: () => number
-	when?: (opts: { past: boolean }) => number
+type BaseTier = {
+	refresh?: number
 	message: (opts: { past: boolean; delta: number; when: Daet }) => string
 }
+type LimitTier = BaseTier & {
+	limit: number
+}
+type WhenTier = BaseTier & {
+	when: (opts: { past: boolean }) => number
+}
+type Tier = StrictUnion<LimitTier | WhenTier>
 
 export default class Daet {
 	readonly raw: Date
 	static get tiers(): Tier[] {
 		return [
-			{ limit: Second, message: intl.rightNow },
 			{
+				// right now
+				limit: Second,
+				refresh: Second,
+				message: intl.rightNow
+			},
+			{
+				// x seconds
 				limit: Minute,
+				refresh: Second,
 				message: intl.relativeDelta
 			},
 			{
+				// x minutes
 				limit: Hour,
+				refresh: Minute,
 				message: intl.relativeDelta
 			},
 			{
+				// x hours x minutes
 				limit: 12 * Hour,
+				refresh: Minute,
 				message: intl.relativeDelta
 			},
 			{
+				// later/earlier today
 				when: ({ past }) =>
 					past
 						? new Daet().reset('hour').getTime()
@@ -57,6 +72,7 @@ export default class Daet {
 				message: intl.earlierOrLaterToday
 			},
 			{
+				// yesterday or tomorrow
 				when: ({ past }) =>
 					past
 						? new Daet()
@@ -70,6 +86,7 @@ export default class Daet {
 				message: intl.yesterdayOrTommorow
 			},
 			{
+				// this week
 				when: ({ past }) =>
 					past
 						? new Daet().endOfLastWeek().getTime()
@@ -77,6 +94,7 @@ export default class Daet {
 				message: intl.relativeThisWeek
 			},
 			{
+				// next or last week
 				when: ({ past }) =>
 					past
 						? new Daet()
@@ -90,6 +108,7 @@ export default class Daet {
 				message: intl.relativeSecondWeek
 			},
 			{
+				// earlier or later
 				limit: Infinity,
 				message: intl.earlierOrLater
 			}
@@ -194,10 +213,13 @@ export default class Daet {
 		return this.raw.getTime()
 	}
 	getRoundedTime = memo((): number => Math.round(this.getTime() / 1000) * 1000)
-	getDelta(from: Daet = new Daet()): number {
+	getMillisecondsFrom(from: Daet): number {
 		const now = from.getRoundedTime()
 		const time = this.getRoundedTime()
 		return time - now
+	}
+	getMillisecondsFromNow(): number {
+		return this.getMillisecondsFrom(new Daet())
 	}
 	format(locale: string, options: object): string {
 		return new Intl.DateTimeFormat(locale, options).format(this.raw)
@@ -234,24 +256,31 @@ export default class Daet {
 			minute: 'numeric'
 		})
 	}
-	from(from: Daet) {
-		const _delta = this.getDelta(from)
-		const past = _delta < 0
-		const delta = Math.abs(_delta)
-		const time = this.getRoundedTime()
+	fromNowDetails() {
+		const now = new Daet()
+		const nowTime = now.getRoundedTime()
+		const eventTime = this.getRoundedTime()
+		const past = nowTime > eventTime
+		const delta = Math.abs(eventTime - nowTime)
 		const tiers = Daet.tiers
+		let lastTierDelta: number = 0
+		// console.log('---')
 		for (const tier of tiers) {
-			const limit = !tier.limit || delta < tier.limit
-			const when = !tier.when || time < tier.when({ past })
-			const within = limit && when
-			if (within) {
-				return tier.message({ past, delta, when: this })
+			const limit = tier.limit
+			const when = tier.when ? tier.when({ past }) : 0
+			const tierDelta = limit || Math.abs(when - nowTime)
+			// console.log({ limit, when, eventTime, nowTime, tierDelta, delta, tier })
+			if (delta < tierDelta) {
+				const message = tier.message({ past, delta, when: this })
+				const refresh = tier.refresh || delta - lastTierDelta
+				return { message, refresh }
 			}
+			lastTierDelta = tierDelta
 		}
 		throw new Error('no tier matched the input delta')
 	}
 	fromNow() {
-		return this.from(new Daet())
+		return this.fromNowDetails().message
 	}
 	toISOString = memo(() => this.raw.toISOString())
 	toJSON = memo(() => this.raw.toJSON())
