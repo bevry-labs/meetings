@@ -68,6 +68,12 @@ export function weekdayThisWeek({ weekday }: { weekday: string }) {
 export function weekdayNextWeek({ weekday }: { weekday: string }) {
 	return `next ${weekday}`
 }
+export function fewSeconds({ past }: { past: boolean }) {
+	return past ? 'a few seconds ago' : 'in a few seconds'
+}
+export function underMinute({ past }: { past: boolean }) {
+	return past ? 'under a minute ago' : 'in under a minute'
+}
 export function earlierOrLaterToday({ past }: { past: boolean }) {
 	return past ? 'earlier today' : 'later today'
 }

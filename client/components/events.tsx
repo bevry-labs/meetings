@@ -1,47 +1,52 @@
 import { Layout, Banner, CalloutCard, ComplexAction } from '@shopify/polaris'
 import { RichEventsType, RichEventType } from '../../shared/events'
-import { useInterval } from '../hooks/time'
+import { useInterval } from '../hooks'
 import Daet from '../../shared/daet'
 
 // Event
 const Event = ({ event }: { event: RichEventType }) => {
 	const { description, summary, start, end, expires } = event
 	const now = new Daet()
-	const started = now.getRoundedTime() >= start.getRoundedTime()
-	const ended = now.getRoundedTime() >= end.getRoundedTime()
-	const expired = now.getRoundedTime() >= expires.getRoundedTime()
+	const expired = now.getTime() > expires.getTime()
+	const ended = now.getTime() > end.getTime()
+	const started = now.getTime() >= start.getTime()
 	const active = started && !expired
-	const fromNow = expired
-		? expires.fromNowDetails()
-		: started
-		? start.fromNowDetails()
-		: end.fromNowDetails()
+	const startDelta = start.fromNowDetails()
+	const endDelta = end.fromNowDetails()
+	const expiresDelta = expires.fromNowDetails()
 
 	// Hooks
-	useInterval(fromNow.refresh)
+	const interval = Math.max(
+		Math.min(startDelta.refresh, endDelta.refresh, expiresDelta.refresh),
+		1000
+	)
+	useInterval(interval)
 
 	// Render
 	const confidential = Boolean(event.hangoutLink)
 	const illustration = confidential
 		? '/static/illustrations/undraw_security_o890.svg'
 		: '/static/illustrations/undraw_conference_uo36.svg'
-	const statusBar = expires ? (
-		<Banner title={`Expired ${fromNow.message}`} status="warning">
-			<p>The event window has passed.</p>
+	const statusBar = expired ? (
+		<Banner title={`Expired ${expiresDelta.message}`} status="critical">
+			<p>
+				You've missed out on this session. Its availability window expired
+				earlier.
+			</p>
 		</Banner>
 	) : ended ? (
-		<Banner title={`Live ${fromNow.message}`} status="warning">
-			<p>
-				The initial availibility window has passed. Discussion may or may not be
-				ongoing.
-			</p>
+		<Banner title={`Live ${endDelta.message}`} status="warning">
+			<p>We may or may not still be there.</p>
 		</Banner>
 	) : started ? (
 		<Banner title="Live Now" status="success">
-			<p>This session is happening right now! It will end {fromNow.message}.</p>
+			<p>
+				This session is happening right now! Come join us! We guarantee
+				availability for another {endDelta.message.replace('in ', '')}.
+			</p>
 		</Banner>
 	) : (
-		<Banner title={`Live ${fromNow.message}`} status="info">
+		<Banner title={`Live ${startDelta.message}`} status="info">
 			<p>Join us {start.calendar()} your time.</p>
 		</Banner>
 	)
