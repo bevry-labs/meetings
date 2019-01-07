@@ -48,15 +48,19 @@ const Event = ({ event }: { event: RichEventType }) => {
 			undefined
 		)
 	const statusBar = expired ? (
-		<Banner title={`Expired ${expiresDelta.message}`} status="critical">
+		<Banner title={`Expired`} status="critical">
 			<p>
-				You've missed out on this session. Its availability window expired
-				earlier.
+				You've missed out on this session and are no longer able to participate.
+				The availability window ended {expiresDelta.message}.
 			</p>
 		</Banner>
 	) : ended ? (
-		<Banner title={`Live ${endDelta.message}`} status="warning">
-			<p>We may or may not still be there.</p>
+		<Banner title={`Lingering`} status="warning">
+			<p>
+				The guaranteed availability window ended {endDelta.message}. If the
+				discussion is still ongoing, you may still be able to join, so please
+				try.
+			</p>
 		</Banner>
 	) : started ? (
 		<Banner title="Live Now" status="success">
