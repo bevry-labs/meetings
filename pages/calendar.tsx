@@ -1,12 +1,12 @@
 import Head from 'next/head'
-import Layout from '../client/components/layout'
+import Page from '../client/components/page'
 
 function getRedirectScript(url: string): string {
 	return `setTimeout(function(){document.location.href = '${url}'}, 0)`
 }
 
 export default () => (
-	<Layout title="Study Group Calendar">
+	<Page title="Study Group Calendar">
 		<Head>
 		<link
 				rel="canonical"
@@ -55,5 +55,5 @@ export default () => (
 			<br />
 			<code>https://jordanbpeterson.community/calendar.ics</code>
 		</p>
-	</Layout>
+	</Page>
 )
