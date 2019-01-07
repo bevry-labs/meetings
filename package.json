@@ -96,7 +96,7 @@
   },
   "scripts": {
     "my:api": "env GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\" ts-node ./api/google.ts",
-    "my:compile": "ts-node ./scripts/compile.ts && next build",
+    "my:compile": "ts-node ./scripts/compile.ts && npm run now-build",
     "my:deploy": " npm run our:test && npm run our:compile && now",
     "my:deploy:live": "npm run my:deploy && now alias",
     "my:secrets:google-oauth": "now secret rm google-oauth && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c .)\"",
@@ -119,8 +119,7 @@
     "our:verify:eslint": "echo 'eslint is disabled because of prettier issue'",
     "our:verify:stylelint": "stylelint --fix './**/*.css'",
     "our:verify:typescript": "tsc --noEmit --project .",
-    "now-build": "npm run our:compile",
-    "build": "npm run our:compile",
+    "now-build": "next build",
     "test": "ts-node ./scripts/tests/daet.ts",
     "start": "npm run our:verify && next dev"
   },
