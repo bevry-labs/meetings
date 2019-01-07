@@ -202,7 +202,6 @@
     }
   ],
   "env": {
-    "GOOGLE_CALENDAR_ID": "bevry.me_qeq66am9eji1bcll7ntrn3u830@group.calendar.google.com",
     "GOOGLE_SERVICE": "@google-service",
     "GOOGLE_OAUTH": "@google-oauth",
     "FAUNA_SERVER_KEY": "@fauna-server-key"
