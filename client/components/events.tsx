@@ -1,4 +1,10 @@
-import { Layout, Banner, CalloutCard, ComplexAction } from '@shopify/polaris'
+import {
+	Layout,
+	Banner,
+	CalloutCard,
+	ComplexAction,
+	ProgressBar
+} from '@shopify/polaris'
 import { RichEventsType, RichEventType } from '../../shared/events'
 import { useInterval } from '../hooks'
 import Daet from '../../shared/daet'
@@ -14,6 +20,14 @@ const Event = ({ event }: { event: RichEventType }) => {
 	const startDelta = start.fromNowDetails()
 	const endDelta = end.fromNowDetails()
 	const expiresDelta = expires.fromNowDetails()
+	let phasePercent
+	if (active) {
+		const phaseStart = ended ? end : start
+		const phaseEnd = ended ? expires : end
+		const phaseLength = phaseEnd.getTime() - phaseStart.getTime()
+		const phaseProgress = now.getTime() - phaseStart.getTime()
+		phasePercent = (phaseProgress / phaseLength) * 100
+	}
 
 	// Hooks
 	const interval = Math.max(
@@ -27,6 +41,12 @@ const Event = ({ event }: { event: RichEventType }) => {
 	const illustration = confidential
 		? '/static/illustrations/undraw_security_o890.svg'
 		: '/static/illustrations/undraw_conference_uo36.svg'
+	const progressBar =
+		phasePercent != null ? (
+			<ProgressBar progress={phasePercent} size="small" />
+		) : (
+			undefined
+		)
 	const statusBar = expired ? (
 		<Banner title={`Expired ${expiresDelta.message}`} status="critical">
 			<p>
@@ -77,6 +97,7 @@ const Event = ({ event }: { event: RichEventType }) => {
 				<p>{description}</p>
 			</CalloutCard>
 			{statusBar}
+			{progressBar}
 		</div>
 	)
 }
