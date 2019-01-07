@@ -1,4 +1,4 @@
-export const DEVELOPMENT = false
+export const DEVELOPMENT = process.env.NODE_ENV === 'development'
 export const EVENTS_URL = 'https://jordanbpeterson.community/api/events/'
 export const expiresValue = 3
 export const expiresUnit = 'hour'
