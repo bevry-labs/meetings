@@ -2,7 +2,7 @@
 import fetch from 'isomorphic-unfetch'
 import { calendar_v3 } from 'googleapis'
 import Daet from './daet'
-import { EVENTS_URL, DEVELOPMENT, expiresUnit, expiresValue } from './config'
+import { eventsUrl, DEVELOPMENT, expiresUnit, expiresValue } from './config'
 
 type Time = { dateTime: string; timeZone: string }
 export interface RawEventType extends calendar_v3.Schema$Event {
@@ -25,7 +25,7 @@ function firstLine(str?: string): string {
 }
 
 export function fetchRawEvents(): Promise<RawEventsType> {
-	return fetch(EVENTS_URL)
+	return fetch(eventsUrl)
 		.then(response => response.json())
 		.then(function(rawEvents: RawEventsType) {
 			const now = new Daet()

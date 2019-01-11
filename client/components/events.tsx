@@ -8,6 +8,7 @@ import {
 import { RichEventsType, RichEventType } from '../../shared/events'
 import { useInterval } from '../hooks'
 import Daet from '../../shared/daet'
+import { podcastJoinUrl, podcastWatchUrl } from '../../shared/config'
 
 // Event
 const Event = ({ event }: { event: RichEventType }) => {
@@ -38,6 +39,8 @@ const Event = ({ event }: { event: RichEventType }) => {
 
 	// Render
 	const confidential = Boolean(event.hangoutLink)
+	const joinUrl = confidential ? event.hangoutLink : podcastJoinUrl
+	const watchUrl = confidential ? undefined : podcastWatchUrl
 	const illustration = confidential
 		? '/static/illustrations/undraw_security_o890.svg'
 		: '/static/illustrations/undraw_conference_uo36.svg'
@@ -74,8 +77,6 @@ const Event = ({ event }: { event: RichEventType }) => {
 			<p>Join us {start.calendar()} your time.</p>
 		</Banner>
 	)
-	const joinUrl = event.hangoutLink
-	const watchUrl = confidential ? undefined : '/youtube'
 	const primaryAction = {
 		content: 'Join the call',
 		disabled: !active,
