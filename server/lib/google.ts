@@ -3,7 +3,7 @@
 // Import
 import { google } from 'googleapis'
 import { getEnv, parseEnv } from './env'
-import { GOOGLE_CALENDAR_ID } from '../../shared/config'
+import { googleCalendarId } from '../../shared/config'
 
 // Scopes
 const scopes = [
@@ -84,7 +84,7 @@ export async function getCalendar() {
 }
 
 export async function getEvents(start: string, finish: string) {
-	const calendarId = GOOGLE_CALENDAR_ID
+	const calendarId = googleCalendarId
 	const api = await getCalendar()
 	const data = await api.events.list({
 		calendarId,
