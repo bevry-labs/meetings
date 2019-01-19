@@ -21,7 +21,6 @@ const now = JSON.parse(readFileSync(nowFile, 'utf8')) as NowConfig
 now.routes = [
 	{ src: '/favicon.ico', dest: '/static/favicon.ico' },
 	{ src: '/robots.txt', dest: '/static/robots.txt' },
-	{ src: '/calendar.ics', dest: '/api/ics' },
 	{
 		src: '/api/(?<key>[^./]*)/?',
 		dest: '/server/api/$key.ts',
