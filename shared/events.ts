@@ -21,7 +21,7 @@ export type RichEventType = RawEventType & {
 export type RichEventsType = RichEventType[]
 
 function firstLine(str?: string): string {
-	return (str || '').split(/\s*\n\s*/)[0]
+	return (str || '').split(/\s*(\n|<br>)\s*/)[0]
 }
 
 export function fetchRawEvents(): Promise<RawEventsType> {
