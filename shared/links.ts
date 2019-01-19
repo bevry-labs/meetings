@@ -30,9 +30,10 @@ const raw: LinksRaw = {
 		url: 'https://discuss.jordanbpeterson.community/t/about-the-meetings/92',
 		tags: ['home']
 	},
-	'study-group-calendar': {
-		text: 'Study Group Calendar',
-		url: '/calendar'
+	calendar: {
+		text: ' Jordan B Peterson Community Calendar',
+		url:
+			'https://discuss.jordanbpeterson.community/t/please-unsubscribe-from-the-calendar-subscription/474'
 	},
 	'lecture-notes': {
 		text: 'Lecture Notes',
@@ -102,27 +103,15 @@ const raw: LinksRaw = {
 		url:
 			'https://discuss.jordanbpeterson.community/t/jbp-community-podcast-join-links-scheduling/361'
 	},
-	'macos-calendar-support': {
-		text: 'macOS Calendar Support',
-		url: 'https://support.apple.com/kb/PH11523'
-	},
-	'ios-calendar-support': {
-		text: 'iOS Calendar Support',
-		url: 'https://support.apple.com/kb/HT202361'
-	},
-	'outlook-calendar-support': {
-		text: 'Outlook Calendar Support',
-		url:
-			'https://support.office.com/en-us/article/Import-or-subscribe-to-a-calendar-in-Outlook-com-or-Outlook-on-the-web-CFF1429C-5AF6-41EC-A5B4-74F2C278E98C'
-	},
-	'google-calendar-support': {
-		text: 'Google Calendar Support',
-		url:
-			'https://support.google.com/calendar/answer/37100?co=GENIE.Platform%3DDesktop&hl=en&oco=1'
-	},
 	podcast: 'youtube',
 	'study-group-recordings': 'youtube',
-	'study-group-hangout': 'study-group'
+	'study-group-hangout': 'study-group',
+	'study-group-calendar': 'calendar',
+	'calendar.ics': 'calendar',
+	'macos-calendar-support': 'calendar',
+	'ios-calendar-support': 'calendar',
+	'outlook-calendar-support': 'calendar',
+	'google-calendar-support': 'calendar'
 }
 
 // fetch value recursively

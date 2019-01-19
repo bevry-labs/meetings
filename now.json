@@ -11,8 +11,18 @@
       }
     },
     {
-      "src": "/calendar.ics",
-      "dest": "/api/ics"
+      "src": "/calendar.ics/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://discuss.jordanbpeterson.community/t/please-unsubscribe-from-the-calendar-subscription/474"
+      }
+    },
+    {
+      "src": "/calendar/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://discuss.jordanbpeterson.community/t/please-unsubscribe-from-the-calendar-subscription/474"
+      }
     },
     {
       "src": "/discord/?",
@@ -57,14 +67,14 @@
       "src": "/google-calendar-support/?",
       "status": 302,
       "headers": {
-        "Location": "https://support.google.com/calendar/answer/37100?co=GENIE.Platform%3DDesktop&hl=en&oco=1"
+        "Location": "https://discuss.jordanbpeterson.community/t/please-unsubscribe-from-the-calendar-subscription/474"
       }
     },
     {
       "src": "/ios-calendar-support/?",
       "status": 302,
       "headers": {
-        "Location": "https://support.apple.com/kb/HT202361"
+        "Location": "https://discuss.jordanbpeterson.community/t/please-unsubscribe-from-the-calendar-subscription/474"
       }
     },
     {
@@ -78,7 +88,7 @@
       "src": "/macos-calendar-support/?",
       "status": 302,
       "headers": {
-        "Location": "https://support.apple.com/kb/PH11523"
+        "Location": "https://discuss.jordanbpeterson.community/t/please-unsubscribe-from-the-calendar-subscription/474"
       }
     },
     {
@@ -99,7 +109,7 @@
       "src": "/outlook-calendar-support/?",
       "status": 302,
       "headers": {
-        "Location": "https://support.office.com/en-us/article/Import-or-subscribe-to-a-calendar-in-Outlook-com-or-Outlook-on-the-web-CFF1429C-5AF6-41EC-A5B4-74F2C278E98C"
+        "Location": "https://discuss.jordanbpeterson.community/t/please-unsubscribe-from-the-calendar-subscription/474"
       }
     },
     {
@@ -152,7 +162,7 @@
       "src": "/study-group-calendar/?",
       "status": 302,
       "headers": {
-        "Location": "/calendar"
+        "Location": "https://discuss.jordanbpeterson.community/t/please-unsubscribe-from-the-calendar-subscription/474"
       }
     },
     {
