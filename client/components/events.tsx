@@ -14,10 +14,13 @@ import { podcastJoinUrl, podcastWatchUrl } from '../../shared/config'
 const Event = ({ event }: { event: RichEventType }) => {
 	const { description, summary, start, end, expires } = event
 	const now = new Daet()
+	const cancelled =
+		description.toLowerCase().includes('cancelled') ||
+		summary.toLowerCase().includes('cancelled')
 	const expired = now.getTime() > expires.getTime()
 	const ended = now.getTime() > end.getTime()
 	const started = now.getTime() >= start.getTime()
-	const active = started && !expired
+	const active = started && !expired && !cancelled
 	const startDelta = start.fromNowDetails()
 	const endDelta = end.fromNowDetails()
 	const expiresDelta = expires.fromNowDetails()
@@ -50,7 +53,11 @@ const Event = ({ event }: { event: RichEventType }) => {
 		) : (
 			undefined
 		)
-	const statusBar = expired ? (
+	const statusBar = cancelled ? (
+		<Banner title={`Cancelled`} status="critical">
+			<p>This session has been cancelled. Sorry for the inconvenience.</p>
+		</Banner>
+	) : expired ? (
 		<Banner title={`Expired`} status="critical">
 			<p>
 				You've missed out on this session and are no longer able to participate.
