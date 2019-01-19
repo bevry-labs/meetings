@@ -88,8 +88,6 @@
     "next": "^7.0.2",
     "prettier": "^1.15.3",
     "projectz": "^1.7.4",
-    "stylelint": "^9.10.0",
-    "stylelint-config-standard": "^18.2.0",
     "ts-node": "^7.0.1",
     "typescript": "^3.2.4",
     "typescript-eslint-parser": "^22.0.0"
@@ -117,8 +115,8 @@
     "our:test": "npm run our:verify && npm test",
     "our:verify": "npm run our:verify:eslint && npm run our:verify:stylelint && npm run our:verify:typescript",
     "our:verify:eslint": "echo 'eslint is disabled because of prettier issue'",
-    "our:verify:stylelint": "stylelint --fix './**/*.css'",
-    "our:verify:typescript": "echo 'currently disabled due to typing bug in the reac definitions'",
+    "our:verify:stylelint": "echo 'disabled due to https://spectrum.chat/?t=d1b9f61a-65e8-42a3-9042-f9c6a6fae6fd'",
+    "our:verify:typescript": "echo 'disabled due to https://github.com/DefinitelyTyped/DefinitelyTyped/issues/32198'",
     "now-build": "next build",
     "test": "ts-node ./scripts/tests/daet.ts",
     "start": "npm run our:verify && next dev"
