@@ -15,6 +15,10 @@ type Link = {
 }
 
 const raw: LinksRaw = {
+	home: {
+		text: 'The Jordan B Peterson Community Homepage',
+		url: 'https://jordanbpeterson.community'
+	},
 	newsletter: {
 		text: 'Newsletter',
 		url: 'https://goo.gl/forms/qgIjkJ8SYEpLCVY83',
@@ -98,11 +102,7 @@ const raw: LinksRaw = {
 		url: 'https://discuss.jordanbpeterson.community/c/feedback',
 		tags: ['home']
 	},
-	'podcast-join': {
-		text: 'Join the Podcast Sessions',
-		url:
-			'https://discuss.jordanbpeterson.community/t/jbp-community-podcast-join-links-scheduling/361'
-	},
+	'podcast-join': 'home',
 	podcast: 'youtube',
 	'study-group-recordings': 'youtube',
 	'study-group-hangout': 'study-group',

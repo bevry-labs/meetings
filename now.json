@@ -71,6 +71,13 @@
       }
     },
     {
+      "src": "/home/?",
+      "status": 302,
+      "headers": {
+        "Location": "https://jordanbpeterson.community"
+      }
+    },
+    {
       "src": "/ios-calendar-support/?",
       "status": 302,
       "headers": {
@@ -116,7 +123,7 @@
       "src": "/podcast-join/?",
       "status": 302,
       "headers": {
-        "Location": "https://discuss.jordanbpeterson.community/t/jbp-community-podcast-join-links-scheduling/361"
+        "Location": "https://jordanbpeterson.community"
       }
     },
     {
