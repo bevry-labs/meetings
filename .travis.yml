@@ -5,10 +5,7 @@ node_js:
 matrix:
   fast_finish: true
   allow_failures: []
-cache:
-  directories:
-    - $HOME/.npm
-    - $HOME/.yarn-cache
+cache: yarn
 install:
   - >-
     eval "$(curl -fsSL
@@ -17,7 +14,6 @@ before_script:
   - >-
     eval "$(curl -fsSL
     https://raw.githubusercontent.com/bevry/awesome-travis/2d86ca6ebe8730048750eeeb3845e8857dc89aa0/scripts/node-verify.bash)"
-after_success: []
 notifications:
   email:
     recipients:
