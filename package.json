@@ -54,83 +54,121 @@
   },
   "editions": [
     {
-      "description": "website",
+      "description": "source",
       "directory": ".",
       "tags": [
         "typescript",
+        "react",
+        "jsx",
+        "html",
+        "css",
         "import"
       ]
     }
   ],
   "dependencies": {
     "@shopify/polaris": "^3.5.0",
+    "@types/react": "^16.7.20",
+    "@types/react-dom": "^16.0.11",
     "errlop": "^1.1.1",
     "faunadb": "^2.5.2",
     "googleapis": "^36.0.0",
     "isomorphic-unfetch": "^3.0.0",
-    "react": "^16.8.0-alpha.1",
-    "react-dom": "^16.8.0-alpha.1"
+    "react": "16.8.0-alpha.1",
+    "react-dom": "16.8.0-alpha.1"
   },
   "devDependencies": {
     "@types/next": "^7.0.6",
-    "@types/react": "^16.7.20",
-    "@types/react-dom": "^16.0.11",
-    "@zeit/next-typescript": "^1.1.2-canary.0",
+    "@typescript-eslint/eslint-plugin": "^1.1.0",
+    "@typescript-eslint/parser": "^1.1.0",
+    "@zeit/next-typescript": "1.1.2-canary.0",
     "assert-helpers": "^4.9.6",
     "eslint": "^5.12.1",
-    "eslint-config-bevry": "^1.1.2",
-    "eslint-config-prettier": "^3.5.0",
+    "eslint-config-bevry": "^1.2.0",
+    "eslint-config-prettier": "^3.6.0",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
-    "eslint-plugin-react-hooks": "0.0.0",
-    "eslint-plugin-typescript": "^0.14.0",
+    "eslint-plugin-react-hooks": "^0.0.0",
     "kava": "^3.1.0",
-    "next": "^8.0.0-canary.7",
-    "prettier": "^1.15.3",
+    "next": "8.0.0-canary.14",
+    "now": "13.1.2-canary.3",
+    "prettier": "^1.16.1",
     "projectz": "^1.7.4",
     "ts-node": "^7.0.1",
-    "typescript": "^3.2.4",
-    "typescript-eslint-parser": "^22.0.0"
+    "typescript": "^3.2.4"
   },
   "scripts": {
     "my:api": "env GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\" ts-node ./api/google.ts",
-    "my:compile": "ts-node ./scripts/compile.ts && npm run now-build",
-    "my:deploy": " npm run our:test && npm run our:compile && now",
-    "my:deploy:live": "npm run my:deploy && now alias",
+    "my:compile": "ts-node ./scripts/compile.ts && yarn run now-build",
+    "my:deploy": " yarn run our:test && yarn run our:compile && now",
+    "my:deploy:live": "yarn run my:deploy && now alias",
+    "my:secrets": "yarn run my:secrets:google-oauth && yarn run my:secrets:google-service",
     "my:secrets:google-oauth": "now secret rm google-oauth && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c .)\"",
     "my:secrets:google-service": "now secret rm google-service && now secret add google-service \"$(cat ./.env/google-service.json | jq -c .)\"",
-    "my:secrets": "npm run my:secrets:google-oauth && npm run my:secrets:google-service",
     "our:api": "npm run my:api",
     "our:clean": "rm -Rf ./docs ./edition* ./es2015 ./es5 ./out ./.next",
     "our:compile": "npm run my:compile",
+    "our:compile:next": "next build",
     "our:deploy": "npm run my:deploy",
+    "our:deploy:live": "npm run my:deploy:live",
     "our:meta": "npm run our:meta:projectz",
     "our:meta:projectz": "projectz compile",
-    "our:release": "npm run our:release:push",
-    "our:release:prepare": "npm run our:clean && npm run our:compile && npm run our:test && npm run our:meta",
+    "our:release": "yarn run our:release:push",
+    "our:release:prepare": "yarn run our:clean && yarn run our:compile && yarn run our:test && yarn run our:meta",
     "our:release:push": "git push origin master && git push origin --tags",
     "our:secrets": "npm run my:secrets",
-    "our:setup": "npm run our:setup:npm",
-    "our:setup:npm": "npm install",
-    "our:test": "npm run our:verify && npm test",
+    "our:secrets:google-oauth": "npm run my:secrets:google-oauth",
+    "our:secrets:google-service": "npm run my:secrets:google-service",
+    "our:setup": "npm run our:setup:install",
+    "our:setup:install": "yarn install",
+    "our:test": "yarn run our:verify && npm test",
     "our:verify": "npm run our:verify:eslint && npm run our:verify:stylelint && npm run our:verify:typescript",
-    "our:verify:eslint": "echo 'eslint is disabled because of prettier issue'",
+    "our:verify:eslint": "eslint --fix --ignore-pattern '**/*.d.ts' --ignore-pattern '**/vendor/' --ignore-pattern '**/node_modules/' --ext .mjs,.js,.jsx,.ts,.tsx .",
     "our:verify:stylelint": "echo 'disabled due to https://spectrum.chat/?t=d1b9f61a-65e8-42a3-9042-f9c6a6fae6fd'",
-    "our:verify:typescript": "echo 'disabled due to https://github.com/DefinitelyTyped/DefinitelyTyped/issues/32198'",
-    "now-build": "next build",
-    "test": "ts-node ./scripts/tests/daet.ts",
-    "start": "npm run our:verify && next dev"
+    "our:verify:typescript": "tsc --noEmit --project .",
+    "start": "yarn run our:verify && next dev",
+    "now-build": "yarn run our:compile:next"
   },
   "eslintConfig": {
     "extends": [
       "bevry"
     ],
     "rules": {
+      "no-undefined": 0,
       "no-console": 0
     }
   },
   "prettier": {
     "semi": false,
     "singleQuote": true
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard",
+    "rules": {
+      "at-rule-empty-line-before": null,
+      "custom-property-empty-line-before": null,
+      "declaration-empty-line-before": null,
+      "indentation": "tab",
+      "max-empty-lines": 2,
+      "no-descending-specificity": null,
+      "no-duplicate-selectors": null,
+      "rule-empty-line-before": null,
+      "selector-list-comma-newline-after": null,
+      "block-closing-brace-empty-line-before": null,
+      "block-closing-brace-newline-after": null,
+      "block-closing-brace-newline-before": null,
+      "block-closing-brace-space-before": null,
+      "block-opening-brace-newline-after": null,
+      "block-opening-brace-space-after": null,
+      "block-opening-brace-space-before": null,
+      "declaration-block-semicolon-newline-after": null,
+      "declaration-block-semicolon-space-after": null,
+      "declaration-block-semicolon-space-before": null,
+      "declaration-block-trailing-semicolon": null
+    },
+    "ignoreFiles": [
+      "**/vendor/*.css",
+      "node_modules"
+    ]
   }
 }

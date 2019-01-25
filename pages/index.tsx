@@ -1,3 +1,4 @@
+import React from 'react'
 import { filter } from '../shared/links'
 import Link from '../client/components/link'
 import Page from '../client/components/page'
@@ -9,7 +10,7 @@ type Props = {
 	rawEvents: RawEventsType
 }
 
-const IndexPage = ({ rawEvents }: Props) => {
+function IndexPage({ rawEvents }: Props) {
 	const events = enrichEvents(rawEvents)
 	return (
 		<Page>
