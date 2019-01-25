@@ -1,3 +1,4 @@
+import React from 'react'
 import {
 	Layout,
 	Banner,
@@ -11,7 +12,7 @@ import Daet from '../../shared/daet'
 import { podcastJoinUrl, podcastWatchUrl } from '../../shared/config'
 
 // Event
-const Event = ({ event }: { event: RichEventType }) => {
+function Event({ event }: { event: RichEventType }) {
 	const { description, summary, start, end, expires } = event
 	const now = new Daet()
 	const cancelled =
@@ -60,8 +61,8 @@ const Event = ({ event }: { event: RichEventType }) => {
 	) : expired ? (
 		<Banner title={`Expired`} status="critical">
 			<p>
-				You've missed out on this session and are no longer able to participate.
-				The availability window ended {expiresDelta.message}.
+				You&apos;ve missed out on this session and are no longer able to
+				participate. The availability window ended {expiresDelta.message}.
 			</p>
 		</Banner>
 	) : ended ? (
@@ -115,7 +116,7 @@ const Event = ({ event }: { event: RichEventType }) => {
 }
 
 // Events
-export default ({ events }: { events: RichEventsType }) => {
+function Events({ events }: { events: RichEventsType }) {
 	return (
 		<Layout sectioned={true}>
 			{events.map(event => (
@@ -126,3 +127,6 @@ export default ({ events }: { events: RichEventsType }) => {
 		</Layout>
 	)
 }
+
+// Export
+export default Events

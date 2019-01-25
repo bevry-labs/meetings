@@ -7,13 +7,19 @@ matrix:
   allow_failures: []
 cache:
   directories:
-    - '$HOME/.npm'
-    - '$HOME/.yarn-cache'
+    - $HOME/.npm
+    - $HOME/.yarn-cache
 install:
-  - eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/2d86ca6ebe8730048750eeeb3845e8857dc89aa0/scripts/node-install.bash)"
+  - >-
+    eval "$(curl -fsSL
+    https://raw.githubusercontent.com/bevry/awesome-travis/2d86ca6ebe8730048750eeeb3845e8857dc89aa0/scripts/node-install.bash)"
 before_script:
-  - eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/2d86ca6ebe8730048750eeeb3845e8857dc89aa0/scripts/node-verify.bash)"
+  - >-
+    eval "$(curl -fsSL
+    https://raw.githubusercontent.com/bevry/awesome-travis/2d86ca6ebe8730048750eeeb3845e8857dc89aa0/scripts/node-verify.bash)"
+after_success: []
 notifications:
   email:
     recipients:
-      secure: dzJ0PNTb+mB5qA/07Yoqfbx7ZdrWszYj09dbRERuktydnULpOAkBzIFmbGtfptaH/50NFa8qF48fbcnNPxkD6+o8+FXmK0mJSBoTNhEKg2DvMLxz5rBAJniDddPtpb515z1XeZ5VSFvspoG8WUqOML1FwlhwJN1wugIwggXhLMn+zZKJnrLq3RGUfgg3K6S1eaP8pr5SIHHMTWBLWUi4hSnbXJlowHpLTRX7T2BYl7lz0f18EWOawWKNjBtBq5LBgwPbtwpTVwuKyi38NwKWtZ+MZ/1jCRyNlL6tPtzXIBA77IALd7+seL4FVtWFhEO/4WRqawrRcwAiFTnvwkdvRDCph6wXHAATIP1Hobq32oXg6FCN2qq/5LG9Fu2MZftX8Loby4lJfzJaXnnfWB6qhN0H2aFlv9dBHTf/SFYV5xSqmHt5JLmZjAZbc+wqqlal+9nktxo331Zd0fDoanpnO9xoMoq5L1+8HKpoifkF47jk7xBfm+eVMDYWHPGVivkejNznOCTNknbPS0vq5p1pzfALowr8nQZAWpWbGHPxGcgX5kQ/uaaJPyMcqWjO5xtnr3lJrADcQRUj4aVjZlGQWXuY5k5Pgvs1oglYGryjBHSBS8TS0RWkKeEzo9ORBC1ArMGVryL4QJsDKZ5yyKtQ0JeSrmnA0wLUHJZPLR9utRk=
+      secure: >-
+        dzJ0PNTb+mB5qA/07Yoqfbx7ZdrWszYj09dbRERuktydnULpOAkBzIFmbGtfptaH/50NFa8qF48fbcnNPxkD6+o8+FXmK0mJSBoTNhEKg2DvMLxz5rBAJniDddPtpb515z1XeZ5VSFvspoG8WUqOML1FwlhwJN1wugIwggXhLMn+zZKJnrLq3RGUfgg3K6S1eaP8pr5SIHHMTWBLWUi4hSnbXJlowHpLTRX7T2BYl7lz0f18EWOawWKNjBtBq5LBgwPbtwpTVwuKyi38NwKWtZ+MZ/1jCRyNlL6tPtzXIBA77IALd7+seL4FVtWFhEO/4WRqawrRcwAiFTnvwkdvRDCph6wXHAATIP1Hobq32oXg6FCN2qq/5LG9Fu2MZftX8Loby4lJfzJaXnnfWB6qhN0H2aFlv9dBHTf/SFYV5xSqmHt5JLmZjAZbc+wqqlal+9nktxo331Zd0fDoanpnO9xoMoq5L1+8HKpoifkF47jk7xBfm+eVMDYWHPGVivkejNznOCTNknbPS0vq5p1pzfALowr8nQZAWpWbGHPxGcgX5kQ/uaaJPyMcqWjO5xtnr3lJrADcQRUj4aVjZlGQWXuY5k5Pgvs1oglYGryjBHSBS8TS0RWkKeEzo9ORBC1ArMGVryL4QJsDKZ5yyKtQ0JeSrmnA0wLUHJZPLR9utRk=
