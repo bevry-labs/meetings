@@ -1,8 +1,13 @@
 export const DEVELOPMENT = process.env.NODE_ENV === 'development'
 export const eventsUrl = 'https://jordanbpeterson.community/api/events/'
+
+// 'https://jordanbpeterson.community/podcast-join/'
 export const podcastJoinUrl =
-	'https://hangouts.google.com/hangouts/_/7coz2sbx5rfwdfdzrnmrgltrtye' // 'https://jordanbpeterson.community/podcast-join/'
-export const podcastWatchUrl = 'https://www.youtube.com/watch?v=6Buc3omnhpA' // 'https://jordanbpeterson.community/youtube/'
+	'https://hangouts.google.com/hangouts/_/eeze4pnaavecbl43rhe2qrtmkye'
+
+// 'https://jordanbpeterson.community/youtube/'
+export const podcastWatchUrl = 'https://www.youtube.com/watch?v=5lRURhpNcoo'
+
 export const expiresValue = 3
 export const expiresUnit = 'hour'
 export const googleCalendarId =
