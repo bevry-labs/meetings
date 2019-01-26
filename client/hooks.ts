@@ -23,3 +23,22 @@ export function useInterval(milliseconds: number): number {
 	})
 	return iterations
 }
+
+export function useShift(): boolean {
+	const [shift, setShift] = useState(false)
+	function onKeyDown(e: KeyboardEvent) {
+		setShift(e.shiftKey)
+	}
+	function onKeyUp(e: KeyboardEvent) {
+		setShift(e.shiftKey)
+	}
+	useEffect(function() {
+		document.addEventListener('keydown', onKeyDown)
+		document.addEventListener('keyup', onKeyUp)
+		return function() {
+			document.removeEventListener('keydown', onKeyDown)
+			document.removeEventListener('keyup', onKeyUp)
+		}
+	})
+	return shift
+}

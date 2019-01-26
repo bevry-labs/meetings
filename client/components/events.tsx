@@ -7,7 +7,7 @@ import {
 	ProgressBar
 } from '@shopify/polaris'
 import { RichEventsType, RichEventType } from '../../shared/events'
-import { useInterval } from '../hooks'
+import { useInterval, useShift } from '../hooks'
 import Daet from '../../shared/daet'
 import { podcastJoinUrl, podcastWatchUrl } from '../../shared/config'
 
@@ -40,8 +40,10 @@ function Event({ event }: { event: RichEventType }) {
 		1000
 	)
 	useInterval(interval)
+	const shift = useShift()
 
 	// Render
+	const enabled = active || shift
 	const confidential = Boolean(event.hangoutLink)
 	const joinUrl = confidential ? event.hangoutLink : podcastJoinUrl
 	const watchUrl = confidential ? undefined : podcastWatchUrl
@@ -87,7 +89,7 @@ function Event({ event }: { event: RichEventType }) {
 	)
 	const primaryAction = {
 		content: 'Join the call',
-		disabled: !active,
+		disabled: !enabled,
 		url: joinUrl,
 		external: true
 	} as ComplexAction
@@ -95,7 +97,7 @@ function Event({ event }: { event: RichEventType }) {
 		? undefined
 		: ({
 				content: 'Watch live',
-				disabled: !active,
+				disabled: !enabled,
 				url: watchUrl,
 				external: true
 		  } as ComplexAction)
