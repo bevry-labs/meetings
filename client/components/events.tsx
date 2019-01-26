@@ -78,8 +78,8 @@ function Event({ event }: { event: RichEventType }) {
 	) : started ? (
 		<Banner title="Live Now" status="success">
 			<p>
-				This session is happening right now! Come join us! We guarantee
-				availability for another {endDelta.message.replace('in ', '')}.
+				This session is happening right now! Come join us! We guarantee access
+				for another {endDelta.message.replace('in ', '')}.
 			</p>
 		</Banner>
 	) : (
