@@ -7,7 +7,7 @@ import {
 	ProgressBar
 } from '@shopify/polaris'
 import { RichEventsType, RichEventType } from '../../shared/events'
-import { useInterval, useShift } from '../hooks'
+import { useInterval, useKey } from '../hooks'
 import Daet from '../../shared/daet'
 import { podcastJoinUrl, podcastWatchUrl } from '../../shared/config'
 
@@ -40,10 +40,12 @@ function Event({ event }: { event: RichEventType }) {
 		1000
 	)
 	useInterval(interval)
-	const shift = useShift()
+	const forceEnable = useKey(
+		(e: KeyboardEvent) => e.shiftKey || e.metaKey || e.altKey || e.ctrlKey
+	)
 
 	// Render
-	const enabled = active || shift
+	const enabled = active || forceEnable
 	const confidential = Boolean(event.hangoutLink)
 	const joinUrl = confidential ? event.hangoutLink : podcastJoinUrl
 	const watchUrl = confidential ? undefined : podcastWatchUrl
