@@ -3,10 +3,10 @@ export const eventsUrl = 'https://jordanbpeterson.community/api/events/'
 
 // 'https://jordanbpeterson.community/podcast-join/'
 export const podcastJoinUrl =
-	'https://hangouts.google.com/hangouts/_/t2sc2h2jk5drvdqthwxlerfk44e'
+	'https://hangouts.google.com/hangouts/_/x5bnyxwt2jdjpbxe2adtjnhipue'
 
 // 'https://jordanbpeterson.community/youtube/'
-export const podcastWatchUrl = 'https://www.youtube.com/watch?v=AENl1gbQHmE'
+export const podcastWatchUrl = 'https://www.youtube.com/watch?v=G2KZR7U6i5E'
 
 export const expiresValue = 3
 export const expiresUnit = 'hour'
