@@ -41,7 +41,8 @@ const raw: LinksRaw = {
 	},
 	'lecture-notes': {
 		text: 'Lecture Notes',
-		url: 'https://discuss.jordanbpeterson.community/categories',
+		url:
+			'https://discuss.jordanbpeterson.community/search?q=tags%3Ajbp%2Blecture',
 		tags: ['home']
 	},
 	'reading-group': {
