@@ -1,10 +1,10 @@
 // Import fetch on server
-import { fetch } from 'fetch-h2'
+import fetch from 'fetch-lite'
 
 // Import
 import { getEnv } from './env'
 
-export async function setSecret(name: string, value: string) {
+export async function setSecret(name: string, value: string): Promise<{}> {
 	const team = getEnv('ZEIT_TEAM')
 	const token = getEnv('ZEIT_TOKEN')
 	const url = `https://api.zeit.co/v2/now/secrets/${name}?teamId=${team}`
@@ -16,7 +16,7 @@ export async function setSecret(name: string, value: string) {
 			headers: {
 				Authorization: `Bearer ${token}`
 			}
-		}).then(response => response.json())
+		})
 	} catch (err) {}
 
 	// create fresh
@@ -27,5 +27,5 @@ export async function setSecret(name: string, value: string) {
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`
 		}
-	}).then(response => response.json())
+	})
 }
