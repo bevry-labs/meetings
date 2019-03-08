@@ -42,3 +42,9 @@ export function useKey(handler: (e: KeyboardEvent) => boolean): boolean {
 	})
 	return key
 }
+
+export function useMetaKey() {
+	return useKey(
+		(e: KeyboardEvent) => e.shiftKey || e.metaKey || e.altKey || e.ctrlKey
+	)
+}
