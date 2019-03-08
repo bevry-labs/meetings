@@ -95,7 +95,7 @@ export async function getEvents(start: string, finish: string) {
 		timeMax: finish
 	})
 	const events = data.data.items
-	return events
+	return events || []
 }
 
 export async function getYoutube() {

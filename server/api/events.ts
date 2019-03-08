@@ -9,7 +9,7 @@ async function processEvents() {
 	const start = now.minus(expiresValue, expiresUnit)
 	const finish = now.plus(1, 'week').plus(1, 'day')
 	const events = await getEvents(start.toISOString(), finish.toISOString())
-	return events
+	return events.filter(item => item.visibility === 'public')
 }
 
 export default async function sendEvents(
