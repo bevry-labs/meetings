@@ -1,6 +1,5 @@
 // Import fetch on server
-import * as fetchImport from 'isomorphic-unfetch'
-const fetch = (fetchImport.default || fetchImport) as typeof fetchImport.default
+import { fetch } from 'fetch-h2'
 
 // Import
 import { getEnv } from './env'

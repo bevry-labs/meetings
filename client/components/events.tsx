@@ -6,8 +6,8 @@ import {
 	ComplexAction,
 	ProgressBar
 } from '@shopify/polaris'
-import { RichEventsType, RichEventType } from '../../shared/events'
-import { useInterval, useKey } from '../hooks'
+import { useInterval, useMetaKey } from '../hooks'
+import { RichEventsType, RichEventType } from '../../client/events'
 import Daet from '../../shared/daet'
 import { podcastJoinUrl, podcastWatchUrl } from '../../shared/config'
 
@@ -40,9 +40,7 @@ function Event({ event }: { event: RichEventType }) {
 		1000
 	)
 	useInterval(interval)
-	const forceEnable = useKey(
-		(e: KeyboardEvent) => e.shiftKey || e.metaKey || e.altKey || e.ctrlKey
-	)
+	const forceEnable = useMetaKey()
 
 	// Render
 	const enabled = active || forceEnable

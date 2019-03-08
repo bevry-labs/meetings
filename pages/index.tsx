@@ -1,10 +1,9 @@
 import React from 'react'
-import { filter } from '../shared/links'
 import Link from '../client/components/link'
 import Page from '../client/components/page'
-import Events from '../client/components/events'
+import { filter } from '../shared/links'
 import { DisplayText, List, Layout } from '@shopify/polaris'
-import { RawEventsType, enrichEvents, fetchRawEvents } from '../shared/events'
+import { RawEventsType, fetchRawEvents, enrichEvents } from '../client/events'
 
 type Props = {
 	rawEvents: RawEventsType
@@ -16,12 +15,11 @@ function IndexPage({ rawEvents }: Props) {
 		<Page>
 			<Layout.Section>
 				<DisplayText size="small">
-					The Jordan B Peterson Community is a fan-led initiative of a{' '}
-					<Link id="study-group" />, <Link id="reading-group" />,{' '}
-					<Link id="lecture-notes" />, and <Link id="podcast" text="Podcast" />.
+					A listing of everything that{' '}
+					<a href="https://jordanbpeterson.com">Jordan B Peterson</a> fans are
+					manifesting.
 				</DisplayText>
 			</Layout.Section>
-			{events.length ? <Events events={events} /> : ''}
 			<Layout.Section>
 				<List>
 					{filter('home').map(link => (
