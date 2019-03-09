@@ -1,12 +1,11 @@
 {
-  "name": "jordanbpeterson.community",
+  "name": "meet.bevry.me",
   "version": "1.1.0",
-  "description": "source-code for the Jordan B Peterson community website",
-  "homepage": "https://github.com/bevry/jordanbpeterson.community",
+  "description": "Source-code for Bevry's meeting website.",
+  "homepage": "https://github.com/bevry/meet",
   "license": "MIT",
   "keywords": [
-    "jordan b peterson",
-    "jbp",
+    "bevry",
     "website"
   ],
   "badges": {
@@ -32,7 +31,8 @@
       "opencollectiveUsername": "bevry",
       "patreonUsername": "bevry",
       "paypalURL": "https://bevry.me/paypal",
-      "wishlistURL": "https://bevry.me/wishlist"
+      "wishlistURL": "https://bevry.me/wishlist",
+      "travisTLD": "com"
     }
   },
   "author": "2017+ Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
@@ -43,11 +43,11 @@
     "Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
   ],
   "bugs": {
-    "url": "https://github.com/bevry/jordanbpeterson.community/issues"
+    "url": "https://github.com/bevry/meet/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bevry/jordanbpeterson.community.git"
+    "url": "https://github.com/bevry/meet.git"
   },
   "engines": {
     "node": ">=8"
