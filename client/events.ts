@@ -1,4 +1,5 @@
 /* eslint camelcase:0 */
+import fetch from 'isomorphic-unfetch'
 import { calendar_v3 } from 'googleapis'
 import Daet from '../shared/daet'
 
@@ -30,9 +31,6 @@ function firstLine(str?: string): string {
 }
 
 export function fetchRawEvents(): Promise<RawEventsType> {
-	// server-side rendering
-	if (typeof fetch === 'undefined') return Promise.resolve([])
-	// client-side
 	return fetch(eventsUrl)
 		.then(response => response.json())
 		.then(function(rawEvents: RawEventsType) {
