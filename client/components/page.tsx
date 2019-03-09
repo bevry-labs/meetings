@@ -8,10 +8,7 @@ interface LayoutProps {
 	title?: string
 }
 
-function Page({
-	children,
-	title = 'Jordan B Peterson Community'
-}: LayoutProps) {
+function Page({ children, title = 'Bevry Meetings' }: LayoutProps) {
 	return (
 		<div>
 			<Head>
@@ -21,10 +18,7 @@ function Page({
 					name="viewport"
 					content="width=device-width, initial-scale=1"
 				/>
-				<meta
-					name="keywords"
-					content="jordan b peterson, jbp, jordan peterson, peterson, psychology, philosophy, maps of meaning, psychological signficance of the biblical stories, bible, community, fans, study group, lecture notes, reading group, forum, discussion"
-				/>
+				<meta name="keywords" content="bevry, discussion, meetings, meet" />
 				<link
 					rel="stylesheet"
 					href="//sdks.shopifycdn.com/polaris/3.3.0/polaris.min.css"

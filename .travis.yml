@@ -1,21 +1,16 @@
 sudo: false
 language: node_js
 node_js:
-  - '8'
+- '8'
 matrix:
   fast_finish: true
   allow_failures: []
 cache: yarn
 install:
-  - >-
-    eval "$(curl -fsSL
-    https://raw.githubusercontent.com/bevry/awesome-travis/2d86ca6ebe8730048750eeeb3845e8857dc89aa0/scripts/node-install.bash)"
+- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/2d86ca6ebe8730048750eeeb3845e8857dc89aa0/scripts/node-install.bash)"
 before_script:
-  - >-
-    eval "$(curl -fsSL
-    https://raw.githubusercontent.com/bevry/awesome-travis/2d86ca6ebe8730048750eeeb3845e8857dc89aa0/scripts/node-verify.bash)"
+- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/2d86ca6ebe8730048750eeeb3845e8857dc89aa0/scripts/node-verify.bash)"
 notifications:
   email:
     recipients:
-      secure: >-
-        K9Fd7GN6gMRznmSdl1ypyO+uWKWjONyaiHjSQpREwQj2CkrhfqFDPpLZMdpUKThcGbeh0MCJP+9WcN8YLhvhwiP/EYeaM7qFcWAnnMw9OSSsr9cuY96XiRT0Cqc7LjV+Pt4iUi97Ii+mcNWSrHQK7rP4ffS5bQ4Fb7eCDKrnLtT0qBxb7FPwN8HtHKfdct0GfkkxBBqYePaohXQZG9ddDQn04kT258boooquokrXuabgGksHezw+9Da0aMckfMHKjn8xFYOeKgFBtgFbgcpLKlS+niMw4eybmI/z4WPTc5SgbIojkByUV4M+vQ91QEzRH6BeENPgUCuLZC2kg47BrdVrQetecSA6N6b3Ekr0LutWA5ZtQkEPVVQT4KSCegT7/VDdTgS22+4CYJHf7lkDXIHs3Jykjs3eDxGlBTc0g2i1X4yN8jBYgKtey6ZGh9Egj1uke3UPaivbTms69vztN+C6GjOOPwA0cX6fuRGodw9IcWM6nRbJDhh5AOBVJitTv0xMToCDZumKUATuqXti7aAql+lU3WNb49NaHCcZvWbZYYH5kuxBtnpAsaQTbgiCrGqF7hS1niM2VY1+95zsI3rCnJBGrXLtxAwNX1W05QnXk+oAo2/3aRs5VZX5WRfd31PPn7G1WvQpUoV0qwVM6m994A5RdkXM9Y+PvMfGB30=
+      secure: MTTh5MOVL9zgohXTYg5HEcWIzIg9NcZskP/AyWRSpGEwSLbfWNONQqcHLapyuTGUSKqTpJjKlS6pnpRnMXawHWqP3zAfwxuOppkaPkCeoB5FcC1LvDpnBqU99F/vS3aflChnVRYu0ZkSZgEmfowmzAiXhRSGFTO2CN3C1GC8O4geqsuIivZ/0IIordiyPXe1UkKuBwYy3sEiF282F5gKc39gOPdr7MXvXj+NGmIOlLQDv9v/q+XAz6lVKp6fs78CPqzfZB0J/PyYrX5757nzm18xTALMbfEF3dmimdayjrrVrpsZ1iQYIoSeNXsFjXzMeBNS5bWDRIa4ckurwvmvJuI4kBTlLsMOKopquqQE1p2M4jPdB1TWu6m51csZbHRKVleXLC3YK0SVEew8EBaDa7Ha8KN0il7O/aGoG0bYTQwpp67PR7uRetqaKxOZ0ik9m5arF4ZWGMIRe68nPfbE2Ne+Jm3opKmf+1ekjMRg6Alj11T7D6PTBa36wfD+tf0MTRqCmyysTnmelp6SgRWx3RhXDmOrKf5xouHrU7ylZ7utN65uc6Vu5Wu1cqZrk02QICAd4BYha0F0jbh7Bzu7a5oD4j31uI4uVdqvxjSVy2NuWLmPsNTcyE8vGzczj9rS06We3K9WFLycTvUXa/0AtbmP605EZqoPxKPgMX/epKc=
