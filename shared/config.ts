@@ -1,12 +1,10 @@
 export const DEVELOPMENT = process.env.NODE_ENV === 'development'
-export const eventsUrl = 'https://jordanbpeterson.community/api/events/'
+export const eventsUrl = 'https://meet.bevry.me/api/events/'
 
-// 'https://jordanbpeterson.community/podcast-join/'
 export const podcastJoinUrl =
-	'https://hangouts.google.com/hangouts/_/qt2ghg2lb5eyji5wn4ytaihnwee'
+	'https://hangouts.google.com/hangouts/_/r3p76gmvu5esteszx2g2biqtwee'
 
-// 'https://jordanbpeterson.community/youtube/'
-export const podcastWatchUrl = 'https://www.youtube.com/watch?v=0f7L6g4XjdU'
+export const podcastWatchUrl = 'https://www.youtube.com/watch?v=EqObmVj7Xgw'
 
 export const expiresValue = 3
 export const expiresUnit = 'hour'
