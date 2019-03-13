@@ -6,9 +6,11 @@ import {
 	ComplexAction,
 	ProgressBar
 } from '@shopify/polaris'
-import { useInterval, useMetaKey } from '../hooks'
+
+import { useInterval, useMetaKey } from '@bevry/hooks'
+import Daet from 'daet'
+
 import { RichEventsType, RichEventType } from '../../client/events'
-import Daet from '../../shared/daet'
 import { podcastJoinUrl, podcastWatchUrl } from '../../shared/config'
 
 // Event
@@ -35,11 +37,10 @@ function Event({ event }: { event: RichEventType }) {
 	}
 
 	// Hooks
-	const interval = Math.max(
-		Math.min(startDelta.refresh, endDelta.refresh, expiresDelta.refresh),
+	useInterval(
+		[startDelta.refresh, endDelta.refresh, expiresDelta.refresh],
 		1000
 	)
-	useInterval(interval)
 	const forceEnable = useMetaKey()
 
 	// Render

@@ -1,7 +1,7 @@
 /* eslint camelcase:0 */
 import fetch from 'isomorphic-unfetch'
 import { calendar_v3 } from 'googleapis'
-import Daet from '../shared/daet'
+import Daet from 'daet'
 
 import {
 	eventsUrl,
