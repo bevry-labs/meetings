@@ -67,9 +67,11 @@
     }
   ],
   "dependencies": {
+    "@bevry/hooks": "^1.0.0",
     "@shopify/polaris": "^3.10.0",
     "@types/react": "^16.8.7",
     "@types/react-dom": "^16.8.2",
+    "daet": "^1.0.0",
     "errlop": "^1.1.1",
     "faunadb": "^2.6.1",
     "googleapis": "^37.2.0",
