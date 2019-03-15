@@ -31,8 +31,7 @@
       "opencollectiveUsername": "bevry",
       "patreonUsername": "bevry",
       "paypalURL": "https://bevry.me/paypal",
-      "wishlistURL": "https://bevry.me/wishlist",
-      "travisTLD": "com"
+      "wishlistURL": "https://bevry.me/wishlist"
     }
   },
   "author": "2017+ Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
@@ -69,7 +68,7 @@
   "dependencies": {
     "@bevry/hooks": "^1.0.0",
     "@shopify/polaris": "^3.10.0",
-    "@types/react": "^16.8.7",
+    "@types/react": "^16.8.8",
     "@types/react-dom": "^16.8.2",
     "daet": "^1.0.0",
     "errlop": "^1.1.1",
@@ -84,16 +83,14 @@
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
     "@zeit/next-typescript": "1.1.2-canary.0",
-    "assert-helpers": "^4.9.6",
     "eslint": "^5.15.1",
     "eslint-config-bevry": "^1.2.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
-    "eslint-plugin-react-hooks": "^1.5.0",
-    "kava": "^3.1.0",
-    "next": "8.0.4-canary.9",
-    "now": "14.1.0-canary.6",
+    "eslint-plugin-react-hooks": "^1.5.1",
+    "next": "8.0.4-canary.10",
+    "now": "14.3.0-canary.6",
     "prettier": "^1.16.4",
     "projectz": "^1.7.4",
     "ts-node": "^8.0.3",
@@ -129,7 +126,7 @@
     "our:verify:stylelint": "echo 'disabled due to https://spectrum.chat/?t=d1b9f61a-65e8-42a3-9042-f9c6a6fae6fd'",
     "our:verify:typescript": "tsc --noEmit --project .",
     "start": "yarn run our:verify && next dev",
-    "test": "ts-node ./scripts/tests/daet.ts",
+    "test": "echo no need for this project",
     "now-build": "yarn run our:compile:next"
   },
   "eslintConfig": {

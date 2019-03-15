@@ -10,7 +10,6 @@
     "maxNodeModuleJsDepth": 5,
     "module": "commonjs",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
     "target": "esnext"
