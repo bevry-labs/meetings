@@ -2,9 +2,9 @@ export const DEVELOPMENT = process.env.NODE_ENV === 'development'
 export const eventsUrl = 'https://meet.bevry.me/api/events/'
 
 export const podcastJoinUrl =
-	'https://hangouts.google.com/hangouts/_/r3p76gmvu5esteszx2g2biqtwee'
+	'https://hangouts.google.com/hangouts/_/5dhp7r3vyvftbbsvnlpn4vtqzqe'
 
-export const podcastWatchUrl = 'https://www.youtube.com/watch?v=EqObmVj7Xgw'
+export const podcastWatchUrl = 'https://www.youtube.com/watch?v=viTe2e_3HpE'
 
 export const expiresValue = 3
 export const expiresUnit = 'hour'
