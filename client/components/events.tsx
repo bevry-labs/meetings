@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
 	Layout,
 	Banner,
@@ -37,11 +37,12 @@ function Event({ event }: { event: RichEventType }) {
 	}
 
 	// Hooks
+	const [forceEnable, setForceEnable] = useState()
 	useInterval(
 		[startDelta.refresh, endDelta.refresh, expiresDelta.refresh],
 		1000
 	)
-	const forceEnable = useMetaKey()
+	useMetaKey(active => setForceEnable(active))
 
 	// Render
 	const enabled = active || forceEnable
@@ -59,7 +60,11 @@ function Event({ event }: { event: RichEventType }) {
 		)
 	const statusBar = cancelled ? (
 		<Banner title={`Cancelled`} status="critical">
-			<p>This session has been cancelled. Sorry for the inconvenience.</p>
+			<p>
+				The session at {start.calendar()} has been cancelled. This likely
+				happened because none of the hosts were available. Sorry for the
+				inconvenience.
+			</p>
 		</Banner>
 	) : expired ? (
 		<Banner title={`Expired`} status="critical">

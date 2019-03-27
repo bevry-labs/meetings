@@ -66,35 +66,35 @@
     }
   ],
   "dependencies": {
-    "@bevry/hooks": "^1.0.0",
-    "@shopify/polaris": "^3.10.0",
+    "@bevry/hooks": "^2.0.0",
+    "@shopify/polaris": "^3.11.0",
     "@types/react": "^16.8.8",
-    "@types/react-dom": "^16.8.2",
-    "daet": "^1.0.0",
+    "@types/react-dom": "^16.8.3",
+    "daet": "^1.0.2",
     "errlop": "^1.1.1",
     "faunadb": "^2.6.1",
-    "googleapis": "^37.2.0",
+    "googleapis": "^38.0.0",
     "isomorphic-unfetch": "^3.0.0",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5"
   },
   "devDependencies": {
-    "@types/next": "^8.0.1",
-    "@typescript-eslint/eslint-plugin": "^1.4.2",
-    "@typescript-eslint/parser": "^1.4.2",
+    "@types/next": "^8.0.3",
+    "@typescript-eslint/eslint-plugin": "^1.5.0",
+    "@typescript-eslint/parser": "^1.5.0",
     "@zeit/next-typescript": "1.1.2-canary.0",
-    "eslint": "^5.15.1",
+    "eslint": "^5.15.3",
     "eslint-config-bevry": "^1.2.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
-    "eslint-plugin-react-hooks": "^1.5.1",
+    "eslint-plugin-react-hooks": "^1.6.0",
     "next": "8.0.4-canary.10",
     "now": "14.3.0-canary.6",
     "prettier": "^1.16.4",
     "projectz": "^1.7.4",
     "ts-node": "^8.0.3",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.3.4000"
   },
   "scripts": {
     "my:api": "env GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\" ts-node ./api/google.ts",
