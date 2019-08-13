@@ -3,22 +3,20 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "maxNodeModuleJsDepth": 5,
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "sourceMap": true,
     "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
-  "include": [
-    "client",
-    "pages",
-    "scripts",
-    "server",
-    "shared"
-  ]
+  "include": ["client", "pages", "scripts", "server", "shared"],
+  "exclude": ["node_modules"]
 }

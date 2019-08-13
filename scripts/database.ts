@@ -2,8 +2,8 @@
 import { Client, query as q } from 'faunadb'
 import { getEnv } from '../server/lib/env'
 import { setSecret } from '../server/lib/zeit'
-import { setKeyValue } from '../server/lib/fauna'
-import Errlop = require('errlop')
+// import { setKeyValue } from '../server/lib/fauna'
+import Errlop from 'errlop'
 
 const database = 'fountain_network_database'
 const table = 'kvp'

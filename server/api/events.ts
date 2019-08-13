@@ -4,7 +4,7 @@ import { getEvents } from '../lib/google'
 import { Http2ServerRequest, Http2ServerResponse } from 'http2'
 import { expiresValue, expiresUnit } from '../../shared/config'
 
-async function processEvents() {
+export async function processEvents() {
 	const now = new Daet()
 	const start = now.minus(expiresValue, expiresUnit)
 	const finish = now.plus(1, 'week').plus(1, 'day')
