@@ -1,5 +1,5 @@
 /* eslint camelcase:0 */
-import fetch from 'isomorphic-unfetch'
+import fetchJSON from '../shared/fetch'
 import { calendar_v3 } from 'googleapis'
 import Daet from 'daet'
 
@@ -31,8 +31,7 @@ function firstLine(str?: string): string {
 }
 
 export function fetchRawEvents(): Promise<RawEventsType> {
-	return fetch(eventsUrl)
-		.then(response => response.json())
+	return fetchJSON(eventsUrl)
 		.then(function(rawEvents: RawEventsType) {
 			const now = new Daet()
 			// if development, convert the events to more recent ones
@@ -51,7 +50,7 @@ export function fetchRawEvents(): Promise<RawEventsType> {
 			return rawEvents
 		})
 		.catch(err => {
-			console.warn(err)
+			console.warn('FAILED TO FETCH EVENTS FROM:', eventsUrl, err)
 			return []
 		})
 }

@@ -1,6 +1,5 @@
 // Import fetch on server
-import * as fetchImport from 'isomorphic-unfetch'
-const fetch = (fetchImport.default || fetchImport) as typeof fetchImport.default
+import fetchl from 'fetch-lite'
 
 // Import
 import { getEnv } from './env'
@@ -21,7 +20,7 @@ export async function setSecret(name: string, value: string): Promise<{}> {
 	} catch (err) {}
 
 	// create fresh
-	return fetch(url, {
+	return fetchl(url, {
 		method: 'POST',
 		body: JSON.stringify({ name, value }),
 		headers: {
