@@ -7,19 +7,19 @@ import {
 	RichEventsType
 } from '../shared/types'
 import Daet from 'daet'
-import {
-	eventsUrl,
-	DEVELOPMENT,
-	expiresUnit,
-	expiresValue
-} from '../shared/config'
+import { DEVELOPMENT, expiresUnit, expiresValue } from '../shared/config'
 
 function firstLine(str?: string): string {
 	return (str || '').split(/\s*(\n|<br>)\s*/)[0]
 }
 
-export function fetchRawEvents(): Promise<RawEventsType> {
-	return fetchJSON(eventsUrl)
+export function fetchRawEvents({
+	hostname
+}: {
+	hostname: string
+}): Promise<RawEventsType> {
+	const url = hostname + '/api/events'
+	return fetchJSON(url)
 		.then(function(rawEvents: RawEventsType) {
 			const now = new Daet()
 			// if development, convert the events to more recent ones
@@ -38,7 +38,7 @@ export function fetchRawEvents(): Promise<RawEventsType> {
 			return rawEvents
 		})
 		.catch(err => {
-			console.warn('FAILED TO FETCH EVENTS FROM:', eventsUrl, err)
+			console.warn('FAILED TO FETCH EVENTS FROM:', url, err)
 			return []
 		})
 }
@@ -73,8 +73,4 @@ export function enrichEvent(rawEvent: RawEventType): RichEventType {
 
 export function enrichEvents(rawEvents: RawEventsType): RichEventsType {
 	return rawEvents.map(enrichEvent)
-}
-
-export function fetchRichEvents(): Promise<RichEventsType> {
-	return fetchRawEvents().then(enrichEvents)
 }
