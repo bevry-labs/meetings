@@ -1,7 +1,4 @@
 export const DEVELOPMENT = process.env.NODE_ENV === 'development'
-export const eventsUrl = DEVELOPMENT
-	? 'http://localhost:3000/api/events'
-	: '/api/events'
 export const podcastJoinUrl = 'https://meet.bevry.me/join'
 export const podcastWatchUrl = 'https://meet.bevry.me/watch'
 export const expiresValue = 3

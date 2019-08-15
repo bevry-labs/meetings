@@ -8,6 +8,7 @@ import { DisplayText, Layout } from '@shopify/polaris'
 import Events from '../client/components/events'
 import { IndexProps } from '../shared/types'
 import { fetchRawEvents, enrichEvents } from '../client/events'
+import { IncomingMessage } from 'http'
 
 // Page
 function IndexPage({ rawEvents }: IndexProps) {
@@ -30,9 +31,17 @@ function IndexPage({ rawEvents }: IndexProps) {
 IndexPage.getInitialProps = function({
 	req
 }: {
-	req: any
+	req: IncomingMessage
 }): Promise<IndexProps> {
-	return fetchRawEvents().then(rawEvents => ({ rawEvents }))
+	const host = req.headers.host || ''
+	const hostname = host
+		? host.startsWith('localhost')
+			? `http://${host}`
+			: `https://${host}`
+		: 'https://meet.bevry.me/api/events'
+	return fetchRawEvents({ hostname }).then(rawEvents => ({
+		rawEvents
+	}))
 }
 
 // Export
