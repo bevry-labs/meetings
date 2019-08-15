@@ -17,6 +17,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": ["client", "pages", "scripts", "server", "shared"],
+  "include": [
+    "client",
+    "pages",
+    "scripts",
+    "server",
+    "shared",
+    ".dev/database.ts",
+    ".dev/zeit.ts",
+    ".env/data/google-oauth.ts"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,12 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import { AppProvider, Page as PolarisPage } from '@shopify/polaris'
-import { Children } from '../../shared/types'
-
-interface LayoutProps {
-	children: Children
-	title?: string
-}
+import { LayoutProps } from '../../shared/types'
 
 function Page({ children, title = 'Bevry Meetings' }: LayoutProps) {
 	return (

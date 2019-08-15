@@ -6,15 +6,11 @@ import { DisplayText, Layout } from '@shopify/polaris'
 
 // Events
 import Events from '../client/components/events'
-import { RawEventsType, fetchRawEvents, enrichEvents } from '../client/events'
-
-// Props
-type Props = {
-	rawEvents: RawEventsType
-}
+import { IndexProps } from '../shared/types'
+import { fetchRawEvents, enrichEvents } from '../client/events'
 
 // Page
-function IndexPage({ rawEvents }: Props) {
+function IndexPage({ rawEvents }: IndexProps) {
 	console.log({ rawEvents })
 	const events = enrichEvents(rawEvents)
 	return (
@@ -31,7 +27,11 @@ function IndexPage({ rawEvents }: Props) {
 }
 
 // Fetch
-IndexPage.getInitialProps = function({ req }: { req: any }): Promise<Props> {
+IndexPage.getInitialProps = function({
+	req
+}: {
+	req: any
+}): Promise<IndexProps> {
 	return fetchRawEvents().then(rawEvents => ({ rawEvents }))
 }
 
