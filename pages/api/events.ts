@@ -1,6 +1,6 @@
 // Import
 import Daet from 'daet'
-import { getEvents } from '../lib/google'
+import { getEvents } from '../../server/google'
 import { Http2ServerRequest, Http2ServerResponse } from 'http2'
 import { expiresValue, expiresUnit } from '../../shared/config'
 

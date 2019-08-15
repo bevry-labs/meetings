@@ -96,15 +96,14 @@
     "typescript": "^3.5.3"
   },
   "scripts": {
-    "my:compile": "ts-node --compiler-options '{\"module\":\"commonjs\"}' ./scripts/compile.ts && yarn run now-build",
-    "my:deploy": " yarn run our:test && yarn run our:compile && now",
-    "my:deploy:live": "yarn run my:deploy && now --target production",
+    "run:env": "env NODE_ENV=development GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\"",
+    "run:ts-node": "ts-node --compiler-options '{\"module\":\"commonjs\"}'",
+    "my:deploy": "yarn run our:compile && yarn run our:test && now",
     "my:secrets": "yarn run my:secrets:google-oauth && yarn run my:secrets:google-service",
     "my:secrets:google-oauth": "now secret rm google-oauth && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c .)\"",
     "my:secrets:google-service": "now secret rm google-service && now secret add google-service \"$(cat ./.env/google-service.json | jq -c .)\"",
     "our:clean": "rm -Rf ./docs ./edition* ./es2015 ./es5 ./out ./.next",
-    "our:compile": "yarn run my:compile",
-    "our:compile:next": "next build",
+    "our:compile": "yarn run now-build",
     "our:deploy": "yarn run my:deploy",
     "our:deploy:live": "yarn run my:deploy:live",
     "our:meta": "yarn run our:meta:projectz",
@@ -122,9 +121,9 @@
     "our:verify:eslint": "eslint --fix --ignore-pattern '**/*.d.ts' --ignore-pattern '**/vendor/' --ignore-pattern '**/node_modules/' --ext .mjs,.js,.jsx,.ts,.tsx .",
     "our:verify:stylelint": "echo 'disabled due to https://spectrum.chat/?t=d1b9f61a-65e8-42a3-9042-f9c6a6fae6fd'",
     "our:verify:typescript": "tsc --noEmit --project .",
-    "start": "yarn run our:verify && next dev",
-    "test": "env GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\" ts-node --compiler-options '{\"module\":\"commonjs\"}' ./scripts/test.ts",
-    "now-build": "yarn run our:compile:next"
+    "start": "yarn run our:verify && yarn run:env next dev",
+    "test": "yarn run:env yarn run:ts-node ./scripts/test.ts",
+    "now-build": "next build"
   },
   "eslintConfig": {
     "extends": [

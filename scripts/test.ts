@@ -1,4 +1,4 @@
-import { processEvents } from '../server/api/events'
+import { processEvents } from '../pages/api/events'
 
 processEvents()
 	.then(results => {

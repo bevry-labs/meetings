@@ -1,30 +1,18 @@
 /* eslint camelcase:0 */
 import fetchJSON from '../shared/fetch'
-import { calendar_v3 } from 'googleapis'
+import {
+	RawEventType,
+	RawEventsType,
+	RichEventType,
+	RichEventsType
+} from '../shared/types'
 import Daet from 'daet'
-
 import {
 	eventsUrl,
 	DEVELOPMENT,
 	expiresUnit,
 	expiresValue
 } from '../shared/config'
-
-type Time = { dateTime: string; timeZone: string }
-export interface RawEventType extends calendar_v3.Schema$Event {
-	start: Time
-	end: Time
-	originalStartTime: Time
-}
-export type RawEventsType = RawEventType[]
-export type RichEventType = RawEventType & {
-	description: string
-	summary: string
-	start: Daet
-	end: Daet
-	expires: Daet
-}
-export type RichEventsType = RichEventType[]
 
 function firstLine(str?: string): string {
 	return (str || '').split(/\s*(\n|<br>)\s*/)[0]
