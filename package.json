@@ -68,7 +68,7 @@
   "dependencies": {
     "@bevry/hooks": "^2.0.0",
     "@shopify/polaris": "^3.21.1",
-    "@types/react": "^16.9.1",
+    "@types/react": "^16.9.11",
     "@types/react-dom": "^16.8.5",
     "daet": "^1.2.0",
     "errlop": "^1.1.1",
