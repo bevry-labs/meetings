@@ -71,7 +71,7 @@
     "@types/react": "^16.9.1",
     "@types/react-dom": "^16.8.5",
     "daet": "^1.2.0",
-    "errlop": "^1.1.1",
+    "errlop": "^1.1.2",
     "faunadb": "^2.7.0",
     "fetch-lite": "^1.1.0",
     "googleapis": "42.0.0",
