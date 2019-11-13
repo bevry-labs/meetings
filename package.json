@@ -75,7 +75,7 @@
     "faunadb": "^2.7.0",
     "fetch-lite": "^1.1.0",
     "googleapis": "42.0.0",
-    "react": "^16.9.0",
+    "react": "^16.11.0",
     "react-dom": "^16.9.0"
   },
   "devDependencies": {
