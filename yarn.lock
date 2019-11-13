@@ -2463,13 +2463,13 @@ cyclist@~0.2.2:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
   integrity sha1-GzN5LhHpFKL9bW7WRHRkRE5fpkA=
 
-daet@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/daet/-/daet-1.2.0.tgz#8d70168e74fac1ba91f09b32f5924025066fa374"
-  integrity sha512-cINn3t0BjhKo53IOH1bksErDJlFUYGM1el81iw9rEHdtux/iz1ZznQqcCHLAIr5QXnzwlVtrxM01+JEn0sMdfw==
+daet@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/daet/-/daet-1.5.0.tgz#b51d6723fdd3282d7b82f4715740dafc26eafc9c"
+  integrity sha512-uHo2WSo32kxJEcwNn/98xA2HCouOhZ3hNy+bL3khTpUB/IXX36rsAEvunrlT7F56LvmV4Njq0DnAuDgtjRJcPw==
   dependencies:
     "@bevry/memo" "^1.1.0"
-    simplytyped "^3.1.0"
+    simplytyped "^3.2.3"
     start-of-week "^1.1.0"
 
 date-now@^0.1.4:
@@ -6179,7 +6179,7 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
 
-simplytyped@^3.1.0:
+simplytyped@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/simplytyped/-/simplytyped-3.2.3.tgz#312362f32c346380e1d21cc2712a983c45f09a9f"
   integrity sha512-b8z+pIt2NZfpARGRzTa/pNj8jnWN3Zg4PiPEOyBZfLaKGpZO15pzvnzNndlOGZNCv0VN6Ku2x/AaQVNtks9f9g==
