@@ -76,7 +76,7 @@
     "fetch-lite": "^1.1.0",
     "googleapis": "42.0.0",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.12.0"
   },
   "devDependencies": {
     "@types/node": "^12.7.1",
