@@ -980,10 +980,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@bevry/hooks@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@bevry/hooks/-/hooks-2.0.0.tgz#7e27e4e8caf344e81802adbcab16693288b1bef5"
-  integrity sha512-7KPUmkq1DxltlOnRmYBAF3vdGq9EQJfyyT/6NkgD+sXp6LqQh7Hv/HFcD+iFw5a8OJpoAWIxwPN9jG3X89AnvQ==
+"@bevry/hooks@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@bevry/hooks/-/hooks-2.0.1.tgz#89b28d8ec10878d6e7235a4a802727095cac8f45"
+  integrity sha512-pQ8KsuCeyM8qmOGww1k9jK6aKA7Xz6dczhmBm0GI2ci5ORHSnGGtFlbBOvU/WuUHFzhHj4KfznD9pa5107e4bw==
 
 "@bevry/memo@^1.1.0":
   version "1.1.0"
