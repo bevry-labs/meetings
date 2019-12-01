@@ -2843,12 +2843,12 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-config-bevry@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/eslint-config-bevry/-/eslint-config-bevry-1.2.1.tgz#26abaea84820a27ae6a625d47d00f6a73e59f931"
-  integrity sha512-sVMeRnWLf9yIhbbPU1zFYGZ4c4v3z3gqjU6Ei1vnOtPP0mQU/xWwij9yRMHa26h1YHFuoBDY5X2UwGELwEfR/Q==
+eslint-config-bevry@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-bevry/-/eslint-config-bevry-2.2.0.tgz#da83087d3877472eac88f48f37462317fa3b4136"
+  integrity sha512-YLQmlZIdEOQEeBbKpV7BCprcOb6jh/NZRQIciRE0+vAoa2RPiHLpcGGBYyJnxA3z/HkN7koD49setB3Y4KUsDg==
   dependencies:
-    semver "^6.0.0"
+    semver "^6.3.0"
 
 eslint-config-prettier@^6.5.0:
   version "6.5.0"
