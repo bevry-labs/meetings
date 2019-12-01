@@ -93,7 +93,7 @@
     "prettier": "^1.18.2",
     "projectz": "^1.13.0",
     "ts-node": "^8.5.4",
-    "typescript": "^3.5.3"
+    "typescript": "^3.7.2"
   },
   "scripts": {
     "run:env": "env NODE_ENV=development GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\"",
