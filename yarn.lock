@@ -985,10 +985,10 @@
   resolved "https://registry.yarnpkg.com/@bevry/hooks/-/hooks-2.0.1.tgz#89b28d8ec10878d6e7235a4a802727095cac8f45"
   integrity sha512-pQ8KsuCeyM8qmOGww1k9jK6aKA7Xz6dczhmBm0GI2ci5ORHSnGGtFlbBOvU/WuUHFzhHj4KfznD9pa5107e4bw==
 
-"@bevry/memo@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@bevry/memo/-/memo-1.1.0.tgz#ece7bd4cd5c5c61d62984f96462538f72ec86857"
-  integrity sha512-s/x8c6ymV+DTmtskhqJKWfuw6YUjTVCf6hJR6oijLCxypAe+rbUrIHRzC/B9BRdWHgekRrnNsSAOh0miI+n63A==
+"@bevry/memo@^1.4.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@bevry/memo/-/memo-1.5.0.tgz#46600e19a5f5b61c97f2d3df25c3214f5761abf0"
+  integrity sha512-3uBiL0N/O9Qow9FdumFqnSChMUCr/SDm4XJCvf69zVj8bAwBdF4j4GaqZf2PuP1MjwWN8CFV98lKRgZ6JWcC7g==
 
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
@@ -2464,14 +2464,14 @@ cyclist@~0.2.2:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
   integrity sha1-GzN5LhHpFKL9bW7WRHRkRE5fpkA=
 
-daet@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/daet/-/daet-1.5.0.tgz#b51d6723fdd3282d7b82f4715740dafc26eafc9c"
-  integrity sha512-uHo2WSo32kxJEcwNn/98xA2HCouOhZ3hNy+bL3khTpUB/IXX36rsAEvunrlT7F56LvmV4Njq0DnAuDgtjRJcPw==
+daet@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/daet/-/daet-1.9.0.tgz#a2590eaf8fe0e3a050f2b6529ee267c9d42d0860"
+  integrity sha512-4DtrtTq/pyNdnBy4WjgGl4PZ6jM8qGsLuPIu1uFp60mHMD8FN6uv4avEK0Y3tUv/HyCgRhDnIy11HMkUBD9qYQ==
   dependencies:
-    "@bevry/memo" "^1.1.0"
+    "@bevry/memo" "^1.4.0"
     simplytyped "^3.2.3"
-    start-of-week "^1.1.0"
+    start-of-week "^1.4.0"
 
 date-now@^0.1.4:
   version "0.1.4"
@@ -6403,10 +6403,10 @@ ssri@^6.0.1:
   dependencies:
     figgy-pudding "^3.5.1"
 
-start-of-week@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/start-of-week/-/start-of-week-1.1.0.tgz#9b729eea7b96fdfc29917727af005839d7483666"
-  integrity sha512-DkHTJJeb0MvakleVNpbfNLZ0TlCG7wJJPvV/kctkDyVdA4A2/5Dt6HNlei0i8CBi8gZ88cBN6LkTzzKkFSlXfQ==
+start-of-week@^1.4.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/start-of-week/-/start-of-week-1.5.0.tgz#234513fe8371cadb98640938076ab375cb7731e4"
+  integrity sha512-+gZEpO2nQPykj+sVGOrvlNRLh0Yf+OJnrPXjl/jOfs5BbdQAavnPG0LbQ4R2InUe6C76w4GBTtveMkMpq+PtCA==
 
 static-extend@^0.1.1:
   version "0.1.2"
