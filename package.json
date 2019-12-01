@@ -74,7 +74,7 @@
     "errlop": "^1.6.0",
     "faunadb": "^2.9.4",
     "fetch-lite": "^1.1.0",
-    "googleapis": "42.0.0",
+    "googleapis": "45.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.12.0"
   },
