@@ -4778,10 +4778,10 @@ normalize-url@1.9.1:
     query-string "^4.1.0"
     sort-keys "^1.0.0"
 
-now@16.1.1:
-  version "16.1.1"
-  resolved "https://registry.yarnpkg.com/now/-/now-16.1.1.tgz#692c406158c21bb0371de137b5f9957c861a4810"
-  integrity sha512-SXro0fOBTVBn+A2wEYV63It706egm7swgo6qb8zp6g07pOK0PQ1smeO0wmdYbx2Kuk5+Deh5t92KnZQi8wZjzA==
+now@16.6.0:
+  version "16.6.0"
+  resolved "https://registry.yarnpkg.com/now/-/now-16.6.0.tgz#09c7752eacfe6a2f571b8be378a685b2b066a9fc"
+  integrity sha512-OHWgh7QOgXi7IDI68yJ7SBTcQZr8rFGdM4w2W5CdOyCoISletVhb1+KO4g4iBQGVFVNp1W6hv4qJGAOODmib5Q==
 
 npm-bundled@^1.0.1:
   version "1.0.6"
