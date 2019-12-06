@@ -76,7 +76,7 @@
     "@shopify/polaris": "^4.7.1",
     "@types/react": "^16.9.15",
     "@types/react-dom": "^16.9.4",
-    "daet": "^1.2.0",
+    "daet": "^1.10.0",
     "errlop": "^1.1.2",
     "faunadb": "^2.9.3",
     "fetch-lite": "^1.1.0",
