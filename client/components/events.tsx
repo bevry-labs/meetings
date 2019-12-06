@@ -46,12 +46,14 @@ function Event({ event }: { event: RichEventType }) {
 
 	// Render
 	const enabled = active || forceEnable
-	const confidential = Boolean(event.hangoutLink)
-	const joinUrl = confidential ? event.hangoutLink : podcastJoinUrl
+	const confidential =
+		Boolean(event.hangoutLink) || summary.toLowerCase().includes('private')
+	const joinUrl =
+		confidential && event.hangoutLink ? event.hangoutLink : podcastJoinUrl
 	const watchUrl = confidential ? undefined : podcastWatchUrl
 	const illustration = confidential
-		? '/static/illustrations/undraw_security_o890.svg'
-		: '/static/illustrations/undraw_conference_uo36.svg'
+		? '/illustrations/undraw_security_o890.svg'
+		: '/illustrations/undraw_conference_uo36.svg'
 	const progressBar =
 		phasePercent != null ? (
 			<ProgressBar progress={phasePercent} size="small" />
@@ -128,7 +130,7 @@ function Events({ events }: { events: RichEventsType }) {
 	return (
 		<Layout sectioned={true}>
 			{events.map(event => (
-				<Layout.Section key={event.id} secondary>
+				<Layout.Section key={event.id as string} secondary>
 					<Event event={event} />
 				</Layout.Section>
 			))}

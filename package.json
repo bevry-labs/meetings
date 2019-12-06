@@ -1,8 +1,9 @@
 {
-  "name": "meet.bevry.me",
+  "name": "fountain",
   "version": "1.1.0",
+  "private": true,
   "description": "Source-code for Bevry's meeting website.",
-  "homepage": "https://github.com/bevry/meet",
+  "homepage": "https://github.com/bevry/fountain",
   "license": "MIT",
   "keywords": [
     "bevry",
@@ -12,11 +13,10 @@
     "list": [
       "travisci",
       "---",
+      "githubsponsors",
       "patreon",
       "flattr",
       "liberapay",
-      "thanksapp",
-      "boostlab",
       "buymeacoffee",
       "opencollective",
       "crypto",
@@ -24,6 +24,7 @@
       "wishlist"
     ],
     "config": {
+      "githubSponsorsUsername": "balupton",
       "buymeacoffeeUsername": "balupton",
       "cryptoURL": "https://bevry.me/crypto",
       "flattrUsername": "balupton",
@@ -31,25 +32,29 @@
       "opencollectiveUsername": "bevry",
       "patreonUsername": "bevry",
       "paypalURL": "https://bevry.me/paypal",
-      "wishlistURL": "https://bevry.me/wishlist"
+      "wishlistURL": "https://bevry.me/wishlist",
+      "travisTLD": "com"
     }
   },
+  "funding": "https://bevry.me/fund",
   "author": "2017+ Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
   "maintainers": [
     "Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
   ],
   "contributors": [
-    "Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
+    "Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
+    "dependabot-preview[bot] (http://github.com/apps/dependabot-preview)",
+    "dependabot[bot] (http://github.com/apps/dependabot)"
   ],
   "bugs": {
-    "url": "https://github.com/bevry/meet/issues"
+    "url": "https://github.com/bevry/fountain/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bevry/meet.git"
+    "url": "https://github.com/bevry/fountain.git"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=12"
   },
   "editions": [
     {
@@ -65,65 +70,71 @@
       ]
     }
   ],
+  "type": "commonjs",
   "dependencies": {
     "@bevry/hooks": "^2.0.1",
-    "@shopify/polaris": "^3.21.1",
-    "@types/react": "^16.9.11",
+    "@shopify/polaris": "^4.7.1",
+    "@types/react": "^16.9.15",
     "@types/react-dom": "^16.9.4",
-    "daet": "^1.5.0",
-    "errlop": "^1.6.0",
-    "faunadb": "^2.9.4",
+    "daet": "^1.2.0",
+    "errlop": "^1.1.2",
+    "faunadb": "^2.9.3",
     "fetch-lite": "^1.1.0",
-    "googleapis": "42.0.0",
-    "react": "^16.9.0",
+    "googleapis": "44.0.0",
+    "moment-timezone": "^0.5.27",
+    "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
-    "@types/node": "^12.12.14",
-    "@typescript-eslint/eslint-plugin": "^1.13.0",
-    "@typescript-eslint/parser": "^1.13.0",
+    "@types/next": "^9.0.0",
+    "@types/node": "^12.11.7",
+    "@typescript-eslint/eslint-plugin": "^2.10.0",
+    "@typescript-eslint/parser": "^2.10.0",
+    "@zeit/next-typescript": "1.1.2-canary.0",
+    "assert-helpers": "^5.7.0",
     "eslint": "^6.7.2",
-    "eslint-config-bevry": "^1.2.1",
-    "eslint-config-prettier": "^6.5.0",
+    "eslint-config-bevry": "^2.2.0",
+    "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.17.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
-    "next": "9.1.3",
-    "now": "16.1.1",
-    "prettier": "^1.18.2",
-    "projectz": "^1.13.0",
-    "ts-node": "^8.5.4",
-    "typescript": "^3.5.3"
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "kava": "^4.3.0",
+    "next": "9.1.5-canary.12",
+    "now": "16.6.1-canary.1",
+    "prettier": "^1.19.1",
+    "projectz": "^1.15.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.7.3"
   },
   "scripts": {
-    "run:env": "env NODE_ENV=development GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\"",
-    "run:ts-node": "ts-node --compiler-options '{\"module\":\"commonjs\"}'",
     "my:deploy": "yarn run our:compile && yarn run our:test && now",
     "my:secrets": "yarn run my:secrets:google-oauth && yarn run my:secrets:google-service",
     "my:secrets:google-oauth": "now secret rm google-oauth && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c .)\"",
     "my:secrets:google-service": "now secret rm google-service && now secret add google-service \"$(cat ./.env/google-service.json | jq -c .)\"",
     "our:clean": "rm -Rf ./docs ./edition* ./es2015 ./es5 ./out ./.next",
-    "our:compile": "yarn run now-build",
-    "our:deploy": "yarn run my:deploy",
-    "our:deploy:live": "yarn run my:deploy:live",
-    "our:meta": "yarn run our:meta:projectz",
+    "our:compile": "npm run our:compile:next",
+    "our:compile:next": "next build",
+    "our:deploy": "npm run my:deploy",
+    "our:meta": "npm run our:meta:projectz",
     "our:meta:projectz": "projectz compile",
-    "our:release": "yarn run our:release:push",
-    "our:release:prepare": "yarn run our:clean && yarn run our:compile && yarn run our:test && yarn run our:meta",
+    "our:release": "npm run our:release:push",
+    "our:release:prepare": "npm run our:clean && npm run our:compile && npm run our:test && npm run our:meta",
     "our:release:push": "git push origin master && git push origin --tags",
-    "our:secrets": "yarn run my:secrets",
-    "our:secrets:google-oauth": "yarn run my:secrets:google-oauth",
-    "our:secrets:google-service": "yarn run my:secrets:google-service",
-    "our:setup": "yarn run our:setup:install",
-    "our:setup:install": "yarn install",
-    "our:test": "yarn run our:verify && yarn test",
-    "our:verify": "yarn run our:verify:eslint && yarn run our:verify:stylelint && yarn run our:verify:typescript",
+    "our:secrets": "npm run my:secrets",
+    "our:secrets:google-oauth": "npm run my:secrets:google-oauth",
+    "our:secrets:google-service": "npm run my:secrets:google-service",
+    "our:setup": "npm run our:setup:install",
+    "our:setup:install": "npm install",
+    "our:test": "npm run our:verify && npm test",
+    "our:verify": "npm run our:verify:eslint && npm run our:verify:prettier && npm run our:verify:stylelint && npm run our:verify:typescript",
     "our:verify:eslint": "eslint --fix --ignore-pattern '**/*.d.ts' --ignore-pattern '**/vendor/' --ignore-pattern '**/node_modules/' --ext .mjs,.js,.jsx,.ts,.tsx .",
-    "our:verify:stylelint": "echo 'disabled due to https://spectrum.chat/?t=d1b9f61a-65e8-42a3-9042-f9c6a6fae6fd'",
-    "our:verify:typescript": "tsc --noEmit --project .",
-    "start": "yarn run our:verify && yarn run:env next dev",
-    "test": "yarn run:env yarn run:ts-node ./scripts/test.ts",
-    "now-build": "next build"
+    "our:verify:prettier": "prettier --write ./**",
+    "our:verify:stylelint": "echo 'disabled due to https://spectrum.chat/zeit/general/resolved-deployments-fail-with-enospc-no-space-left-on-device-write~d1b9f61a-65e8-42a3-9042-f9c6a6fae6fd'",
+    "our:verify:typescript": "tsc --noEmit --project tsconfig.json",
+    "env": "env NODE_ENV=development GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\"",
+    "start": "npm run our:verify && npm run env -- next dev",
+    "test": "npm run env -- ts-node --compiler-options '{\"module\":\"commonjs\"}' ./scripts/test.ts",
+    "now-build": "npm run our:compile:next"
   },
   "eslintConfig": {
     "extends": [

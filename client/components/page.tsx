@@ -1,5 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
+import translations from '@shopify/polaris/locales/en.json'
 import { AppProvider, Page as PolarisPage } from '@shopify/polaris'
 import { LayoutProps } from '../../shared/types'
 
@@ -16,10 +17,10 @@ function Page({ children, title = 'Bevry Meetings' }: LayoutProps) {
 				<meta name="keywords" content="bevry, discussion, meetings, meet" />
 				<link
 					rel="stylesheet"
-					href="//sdks.shopifycdn.com/polaris/3.3.0/polaris.min.css"
+					href="//unpkg.com/@shopify/polaris@4/styles.min.css"
 				/>
 			</Head>
-			<AppProvider>
+			<AppProvider i18n={translations}>
 				<PolarisPage fullWidth title={title}>
 					{children}
 				</PolarisPage>
