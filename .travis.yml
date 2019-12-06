@@ -1,16 +1,16 @@
 sudo: false
 language: node_js
 node_js:
-- '8'
+- '12'
 matrix:
   fast_finish: true
   allow_failures: []
-cache: yarn
+cache: npm
 install:
-- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/2d86ca6ebe8730048750eeeb3845e8857dc89aa0/scripts/node-install.bash)"
+- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/c91c9d5eef34ecb0e92029667fd5052640225fa3/scripts/node-install.bash)"
 before_script:
-- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/2d86ca6ebe8730048750eeeb3845e8857dc89aa0/scripts/node-verify.bash)"
+- eval "$(curl -fsSL https://raw.githubusercontent.com/bevry/awesome-travis/c91c9d5eef34ecb0e92029667fd5052640225fa3/scripts/node-verify.bash)"
 notifications:
   email:
     recipients:
-      secure: MTTh5MOVL9zgohXTYg5HEcWIzIg9NcZskP/AyWRSpGEwSLbfWNONQqcHLapyuTGUSKqTpJjKlS6pnpRnMXawHWqP3zAfwxuOppkaPkCeoB5FcC1LvDpnBqU99F/vS3aflChnVRYu0ZkSZgEmfowmzAiXhRSGFTO2CN3C1GC8O4geqsuIivZ/0IIordiyPXe1UkKuBwYy3sEiF282F5gKc39gOPdr7MXvXj+NGmIOlLQDv9v/q+XAz6lVKp6fs78CPqzfZB0J/PyYrX5757nzm18xTALMbfEF3dmimdayjrrVrpsZ1iQYIoSeNXsFjXzMeBNS5bWDRIa4ckurwvmvJuI4kBTlLsMOKopquqQE1p2M4jPdB1TWu6m51csZbHRKVleXLC3YK0SVEew8EBaDa7Ha8KN0il7O/aGoG0bYTQwpp67PR7uRetqaKxOZ0ik9m5arF4ZWGMIRe68nPfbE2Ne+Jm3opKmf+1ekjMRg6Alj11T7D6PTBa36wfD+tf0MTRqCmyysTnmelp6SgRWx3RhXDmOrKf5xouHrU7ylZ7utN65uc6Vu5Wu1cqZrk02QICAd4BYha0F0jbh7Bzu7a5oD4j31uI4uVdqvxjSVy2NuWLmPsNTcyE8vGzczj9rS06We3K9WFLycTvUXa/0AtbmP605EZqoPxKPgMX/epKc=
+      secure: U+Oad6kFOoSXkJe6gE4pxoRiDY6ao0HOV1I7xOBnfpYJsRvf1Y6/NDj4DyXdLF9wxaXYEbMtVOyOeXZKHJYqbUDbXYJ/UcC/kvljuoQclBsJBVCNw1WQVa317J2UoqqQ+rL7/rVab3TsI5ZRhPcCPNBt0ccP9UPy4Zi3kcXi819e11LlLwiiI/10tc0sdcYa2IqAonR1bBSUqGMyGE3bl9du4s6U5MBICHstFLvCoJ6THu+U0L+rjBz8kV8m7pX3VA/Qjf8y1kXLhQs/jtyh9ErJXVNhUHirVxcL6jWT8gS/eXQJIT6UZHdciXaq1+BW9lMtnHt5ybe4jKuaTlOa7Ox7JTCOO7HpCbRbU+0O0o8nHOvKi36yzeJICTpAuZtJCcLRDAAt6tBHWdmyPwtzp80bhkPUl0KP2sXPypOeNQlxZVLIAGP5vp9J8ed/axu9GH4fyLRvEZ4ou7BykIWiptGYmPj0cRY//2Z5n48YiQWtdltnWbSoLNC8DEKjsK8r7EoXZD6TXflwfHHzGuiEBIby1cqOhF6uTv4vNcM6T2dKbx/oLEYnvs/naF7kQ5d04WvPOBazJlAz0P2hZvTHOgk9PiWkc7Q+rSogl11uS/YibZQMPA6Qg7xBHavV12OFTiBOHL948ANMHMG0iDJnSLlUtMy1/siWBil6MbgI7fk=

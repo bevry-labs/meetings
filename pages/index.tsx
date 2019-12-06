@@ -33,6 +33,7 @@ IndexPage.getInitialProps = function({
 }: {
 	req: IncomingMessage
 }): Promise<IndexProps> {
+	// compat for dev and prod
 	const host = req.headers.host || ''
 	const hostname = host
 		? host.startsWith('localhost')

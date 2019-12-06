@@ -13,6 +13,8 @@ function firstLine(str?: string): string {
 	return (str || '').split(/\s*(\n|<br>)\s*/)[0]
 }
 
+// runs on client+server
+// export function fetchRawEvents(hostname: string) {}
 export function fetchRawEvents({
 	hostname
 }: {
@@ -21,9 +23,11 @@ export function fetchRawEvents({
 	const url = hostname + '/api/events'
 	return fetchJSON(url)
 		.then(function(rawEvents: RawEventsType) {
-			const now = new Daet()
 			// if development, convert the events to more recent ones
 			if (DEVELOPMENT) {
+				// modify the events we receive, to start one minute from now, and expire one minute later
+				// so that we can as the developer see the progression between the states quickly
+				const now = new Daet()
 				rawEvents = rawEvents.map((rawEvent, index) => {
 					const minutes = 1 + index
 					const start = now.plus(minutes, 'minute').reset('second')
@@ -55,7 +59,7 @@ export function fetchRawEvents({
  * To ensure that events start at second:0, millisecond:0, as otherwise weird bugs occur in time comparisons and display.
  */
 export function enrichEvent(rawEvent: RawEventType): RichEventType {
-	const description = firstLine(rawEvent.description)
+	const description = firstLine(rawEvent.description || '')
 	const summary = rawEvent.summary || 'Untitled'
 	const start = new Daet(rawEvent.start.dateTime).reset('second')
 	const end = new Daet(rawEvent.end.dateTime).reset('second')
