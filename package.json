@@ -131,7 +131,7 @@
     "our:verify:prettier": "prettier --write ./**",
     "our:verify:stylelint": "echo 'disabled due to https://spectrum.chat/zeit/general/resolved-deployments-fail-with-enospc-no-space-left-on-device-write~d1b9f61a-65e8-42a3-9042-f9c6a6fae6fd'",
     "our:verify:typescript": "tsc --noEmit --project tsconfig.json",
-    "env": "env NODE_ENV=development GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\"",
+    "env": "env NODE_ENV=development FAUNADB=\"$(cat ./.env/faunadb.json | jq -c .)\" GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\"",
     "start": "npm run our:verify && npm run env -- next dev",
     "test": "npm run env -- ts-node --compiler-options '{\"module\":\"commonjs\"}' ./scripts/test.ts",
     "now-build": "npm run our:compile:next"

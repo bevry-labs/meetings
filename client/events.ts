@@ -1,4 +1,4 @@
-/* eslint camelcase:0 */
+/* eslint camelcase:0, new-cap:0 */
 import fetchJSON from '../shared/fetch'
 import {
 	RawEventType,
@@ -11,6 +11,53 @@ import { DEVELOPMENT, expiresUnit, expiresValue } from '../shared/config'
 
 function firstLine(str?: string): string {
 	return (str || '').split(/\s*(\n|<br>)\s*/)[0]
+}
+
+// runs on client+server
+// export function fetchRawEventDb(hostname: string) {}
+export async function fetchRawEventDb({
+	dbname
+}: {
+	dbname: string
+}): Promise<RawEventsType> {
+	const faunadb = require('faunadb')
+	const q = faunadb.query
+	const faunaEnv = JSON.parse(process.env.FAUNADB || '{ }')
+	const faunaSecret = faunaEnv.FAUNADB_SECRET_KEY
+	const client = new faunadb.Client({ secret: faunaSecret })
+	let ids: String[] = []
+
+	/* Get the unique faunadb ID for all events. */
+	await client
+		.query(q.Paginate(q.Match(q.Index('all_posts'))))
+		.then(function(dbentry: any) {
+			ids = dbentry.data.map((x: { id: string }) => x.id)
+			return ids
+		})
+		.catch((err: any) => {
+			console.warn('FAILED TO FETCH EVENTS FROM FAUNADB:', dbname, err)
+			return []
+		})
+
+	/* Read the data for the events from faunadb.
+	 * TODO: It would be good if it can be done in one step i.e. read the data
+	 * for all the events in one go rather than first reading ids and then sending
+	 * a query for every id. */
+	const rawEvents: RawEventsType = []
+	for (const id of ids) {
+		console.log('Querying ID: ' + id)
+		await client
+			.query(q.Get(q.Ref(q.Collection(dbname), id)))
+			.then((dbentry: any) => {
+				rawEvents.push(dbentry.data)
+			})
+			.catch((err: any) => {
+				console.warn('FAILED TO FETCH EVENTS FROM FAUNADB:', dbname, err)
+				return []
+			})
+	}
+	console.log(rawEvents)
+	return rawEvents
 }
 
 // runs on client+server

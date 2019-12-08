@@ -11,6 +11,7 @@
   "env": {
     "GOOGLE_SERVICE": "@google-service",
     "GOOGLE_OAUTH": "@google-oauth",
-    "FAUNA_SERVER_KEY": "@fauna-server-key"
+    "FAUNA_SERVER_KEY": "@fauna-server-key",
+    "FAUNADB_SECRET_KEY": "@faunadb_secret_key"
   }
 }
