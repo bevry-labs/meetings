@@ -99,7 +99,7 @@
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
     "kava": "^4.4.0",
-    "next": "9.1.5-canary.17",
+    "next": "9.1.5",
     "now": "16.6.3-canary.0",
     "prettier": "^1.19.1",
     "projectz": "^1.16.0",
