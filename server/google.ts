@@ -3,7 +3,7 @@
 // Import
 import { google } from 'googleapis'
 import { getEnv, parseEnv } from './env'
-import { googleCalendarId } from '../shared/config'
+import { googleCalendarId } from '../server/config'
 
 // Scopes
 const scopes = [

@@ -5,12 +5,8 @@ import { Http2ServerRequest, Http2ServerResponse } from 'http2'
 import faunadb, { query as q } from 'faunadb'
 
 // Internal
-import {
-	expiresValue,
-	expiresUnit,
-	useFauna
-} from '../../../shared/config'
-import faunaConfig from'../../../server/fauna'
+import { expiresValue, expiresUnit, useFauna } from '../../../shared/config'
+import { faunaConfig } from '../../../server/config'
 import { RawEventsType } from '../../../shared/types'
 
 export async function getEventsFromCalendar() {

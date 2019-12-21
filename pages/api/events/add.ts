@@ -1,7 +1,7 @@
 /* eslint camelcase:0, new-cap:0 */
-import Daet from 'daet'
 import { NextApiRequest, NextApiResponse } from 'next'
 import fauna, { query as q } from 'faunadb'
+import cuid from 'cuid'
 import { faunaConfig } from '../../../server/config'
 
 /* Gets the data from client side when user creates a new event
@@ -15,17 +15,13 @@ export default async function sendEvents(
 	const client = new fauna.Client({ secret: faunaConfig.secret_key })
 
 	if (req.method === 'POST') {
-		const now = new Daet()
-		console.log(now.toISOString())
-		/* Must be unique for every event. Adding random to handle the case where
-		 * use clicks submit multiple times on dev machine and getTime() is the same. */
-		const id = now.getTime() + Math.random()
+		const data = {
+			id: cuid(),
+			...req.body
+		}
 
 		console.log('Post: New Event To be Added')
-		console.log({
-			id,
-			...req.body
-		})
+		console.log(data)
 
 		if (
 			req.body.summary &&
@@ -37,10 +33,7 @@ export default async function sendEvents(
 			await client
 				.query(
 					q.Create(q.Collection('posts'), {
-						data: {
-							id,
-							...req.body
-						}
+						data
 					})
 				)
 				.then((ret: any) => {

@@ -23,7 +23,7 @@ import Page from '../../components/page'
 type Status = { success: null } | { success: boolean; message: string }
 
 // Page
-function AddEventPage({ hostname }: { hostname: string }) {
+export default function AddEventPage() {
 	const now = new Date().toISOString()
 	const [eventName, setEventName] = useState('')
 	const [eventDesc, setEventDesc] = useState('')
@@ -33,7 +33,9 @@ function AddEventPage({ hostname }: { hostname: string }) {
 	const [endTime, setEndTime] = useState(now)
 	const [status, setStatus] = useState<Status>({ success: null })
 	const toast =
-		status.success == null ? null : status.success ? (
+		status.success == null ? (
+			''
+		) : status.success ? (
 			<Toast content={status.message} onDismiss={() => Router.push('/')} />
 		) : (
 			<Toast
@@ -51,7 +53,7 @@ function AddEventPage({ hostname }: { hostname: string }) {
 					start: { dateTime: startTime },
 					end: { dateTime: endTime }
 				}
-				const url = hostname + '/api/events/add'
+				const url = '/api/events/add'
 				const res = await fetch(url, {
 					method: 'POST', // *GET, POST, PUT, DELETE, etc.
 					mode: 'same-origin', // no-cors, *cors, same-origin
@@ -75,7 +77,7 @@ function AddEventPage({ hostname }: { hostname: string }) {
 				setStatus({ success: false, message })
 			}
 		},
-		[hostname, eventName, eventDesc, startTime, endTime]
+		[eventName, eventDesc, startTime, endTime]
 	)
 
 	/* TODO: Input needs to be checked. Name/Desc should not be empty and date time picker we     use will take care of date/time validation. */
@@ -138,6 +140,7 @@ function AddEventPage({ hostname }: { hostname: string }) {
 					</FormLayout>
 				</Form>
 			</Layout.Section>
+			{toast}
 		</Page>
 	)
 }
