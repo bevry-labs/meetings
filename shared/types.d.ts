@@ -29,3 +29,9 @@ interface LayoutProps {
 type IndexProps = {
 	rawEvents: RawEventsType
 }
+
+// Fauna Configuration
+interface FaunaConfig {
+	secret_key: string
+	events_database_name: string
+}
