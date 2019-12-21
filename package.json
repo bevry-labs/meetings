@@ -110,9 +110,9 @@
   "scripts": {
     "my:deploy": "npm run our:compile && npm run our:test && now",
     "my:secrets": "npm run my:secrets:google-oauth && npm run my:secrets:google-service && npm run my:secrets:fauna",
-    "my:secrets:google-oauth": "now secret rm google-oauth && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c .)\"",
-    "my:secrets:google-service": "now secret rm google-service && now secret add google-service \"$(cat ./.env/google-service.json | jq -c .)\"",
-    "my:secrets:fauna": "now secret rm fauna && now secret add fauna \"$(cat ./.env/fauna.json | jq -c .)\"",
+    "my:secrets:google-oauth": "(now secret rm google-oauth || true) && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c .)\"",
+    "my:secrets:google-service": "(now secret rm google-service || true) && now secret add google-service \"$(cat ./.env/google-service.json | jq -c .)\"",
+    "my:secrets:fauna": "(now secret rm fauna || true) && now secret add fauna \"$(cat ./.env/fauna.json | jq -c .)\"",
     "our:clean": "rm -Rf ./docs ./edition* ./es2015 ./es5 ./out ./.next",
     "our:compile": "npm run our:compile:next",
     "our:compile:next": "next build",
