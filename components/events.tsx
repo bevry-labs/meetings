@@ -10,8 +10,8 @@ import {
 import { useInterval, useMetaKey } from '@bevry/hooks'
 import Daet from 'daet'
 
-import { RichEventsType, RichEventType } from '../../shared/types'
-import { podcastJoinUrl, podcastWatchUrl } from '../../shared/config'
+import { RichEventsType, RichEventType } from '../shared/types'
+import { podcastJoinUrl, podcastWatchUrl } from '../shared/config'
 
 // Event
 function Event({ event }: { event: RichEventType }) {

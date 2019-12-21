@@ -1,8 +1,8 @@
 import React from 'react'
 import Head from 'next/head'
 import translations from '@shopify/polaris/locales/en.json'
-import { AppProvider, Page as PolarisPage } from '@shopify/polaris'
-import { LayoutProps } from '../../shared/types'
+import { AppProvider, Page as PolarisPage, Frame } from '@shopify/polaris'
+import { LayoutProps } from '../shared/types'
 
 function Page({ children, title = 'Bevry Meetings' }: LayoutProps) {
 	return (
@@ -21,9 +21,11 @@ function Page({ children, title = 'Bevry Meetings' }: LayoutProps) {
 				/>
 			</Head>
 			<AppProvider i18n={translations}>
-				<PolarisPage fullWidth title={title}>
-					{children}
-				</PolarisPage>
+				<Frame>
+					<PolarisPage fullWidth title={title}>
+						{children}
+					</PolarisPage>
+				</Frame>
 			</AppProvider>
 		</div>
 	)
