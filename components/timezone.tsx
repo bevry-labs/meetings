@@ -93,7 +93,7 @@ export default function TimezonePicker(props: TimezonePickerPropsT) {
 				const filterRegex = new RegExp(text, 'i')
 				options = options.filter(option => option.label.match(filterRegex))
 			}
-			// options = dereferenceObjects(options)
+			options = dereferenceObjects(options)
 			console.log(options)
 			return options
 		},
