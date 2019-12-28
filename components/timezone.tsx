@@ -88,13 +88,13 @@ export default function TimezonePicker(props: TimezonePickerPropsT) {
 	const options = useMemo(
 		function() {
 			let options = timezones
-			console.log('update timezones')
+			// console.log('update timezones')
 			if (text !== '') {
 				const filterRegex = new RegExp(text, 'i')
 				options = options.filter(option => option.label.match(filterRegex))
 			}
 			options = dereferenceObjects(options)
-			console.log(options)
+			// console.log(options)
 			return options
 		},
 		[text]

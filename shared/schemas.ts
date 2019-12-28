@@ -4,7 +4,7 @@ export const addSchema = yup.object({
 	name: yup
 		.string()
 		.label('Event Name')
-		.min(5)
+		.min(8)
 		.required(),
 	description: yup.string().label('Description'),
 	start: yup

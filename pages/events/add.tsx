@@ -49,19 +49,10 @@ export default function AddEventPage() {
 		}
 	})
 	useEffect(() => {
-		register(
-			{ name: 'name' },
-			{
-				required: 'Events require a name',
-				minLength: {
-					value: 5,
-					message: 'Event names have to be longer than 5 characters'
-				}
-			}
-		)
-		register({ name: 'description' }, { required: false })
-		register({ name: 'start' }, { required: 'Events require a start time' })
-		register({ name: 'end' }, { required: 'Events require an end time' })
+		register({ name: 'name' })
+		register({ name: 'description' })
+		register({ name: 'start' })
+		register({ name: 'end' })
 	}, [register])
 	const { name, description, start, end } = watch()
 
