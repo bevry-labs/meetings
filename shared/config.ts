@@ -6,3 +6,5 @@ export const expiresUnit = 'hour'
 export const useFauna = true
 /** Offset in milliseconds */
 export const timezoneOffset = new Date().getTimezoneOffset() * 60000
+export const isServer = typeof window === 'undefined'
+export const isBrowser = !isServer

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import Router from 'next/router'
 import Errlop from 'errlop'
 import { useForm, FieldError } from 'react-hook-form'
+import TimezonePicker from '../../components/timezone'
 
 // Polaris
 import {
@@ -63,6 +64,11 @@ export default function AddEventPage() {
 		register({ name: 'end' }, { required: 'Events require an end time' })
 	}, [register])
 	const { name, description, start, end } = watch()
+
+	// Timezone
+	const [timezone, setTimezone] = useState(
+		Intl.DateTimeFormat().resolvedOptions().timeZone
+	)
 
 	// Submit validation
 	const [status, setStatus] = useState<Status>({ success: null })
@@ -144,6 +150,9 @@ export default function AddEventPage() {
 							onChange={value => setValue('end', new Date(value), true)}
 							error={error(errors.end)}
 						/>
+
+						<TimezonePicker date={start} />
+
 						<PageActions
 							// @ts-ignore
 							primaryAction={{

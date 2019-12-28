@@ -63,6 +63,7 @@ export function fetchRawEvents({
 export function enrichEvent(rawEvent: RawEventType): RichEventType {
 	const description = firstLine(rawEvent.description || '')
 	const summary = rawEvent.summary || 'Untitled'
+	// new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"})
 	const start = new Daet(rawEvent.start.dateTime).reset('second')
 	const end = new Daet(rawEvent.end.dateTime).reset('second')
 	const expires = DEVELOPMENT
