@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import fauna, { query as q } from 'faunadb'
 import cuid from 'cuid'
 import { faunaConfig } from '../../../server/config'
+import { addSchema, AddSchema } from '../../../shared/schemas'
 
 /* Gets the data from client side when user creates a new event
  * by filling up a Form and clicking Submit. Here we should
@@ -15,25 +16,33 @@ export default async function sendEvents(
 	const client = new fauna.Client({ secret: faunaConfig.secret_key })
 
 	if (req.method === 'POST') {
-		const data = {
-			id: cuid(),
-			...req.body
-		}
+		// Prepare
+		const body: AddSchema = req.body
+		let event
 
-		console.log('Post: New Event To be Added')
-		console.log(data)
+		// validate
+		try {
+			const data = await addSchema.validate(body)
+			// @todo add a typescript type definition for this
+			// by trimming RawEvent
+			event = {
+				id: cuid(),
+				summary: data.name,
+				description: data.description,
+				start: {
+					dateTime: data.start.toISOString()
+				},
+				end: {
+					dateTime: data.end.toISOString()
+				}
+			}
 
-		if (
-			req.body.summary &&
-			req.body.description &&
-			req.body.start.dateTime.length === 24 &&
-			req.body.end.dateTime.length === 24
-		) {
-			console.log('Sending fauna query')
+			console.log('Post: New Event To be Added')
+			console.log(event)
 			await client
 				.query(
 					q.Create(q.Collection('posts'), {
-						data
+						data: event
 					})
 				)
 				.then((ret: any) => {
@@ -46,8 +55,9 @@ export default async function sendEvents(
 					console.warn('FAILED TO FETCH EVENTS FROM FAUNADB:', err)
 					res.status(500).end() // Server Error
 				})
-		} else {
-			res.status(400).end() // Bad request
+		} catch (err) {
+			console.error('failure', err)
+			return res.status(400).end(err?.message) // Bad request
 		}
 	}
 }

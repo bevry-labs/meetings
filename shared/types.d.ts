@@ -1,5 +1,7 @@
 import { calendar_v3 } from 'googleapis'
 
+// @todo add type that we actually use
+
 // Events
 type Time = { dateTime: string; timeZone: string }
 interface RawEventType extends calendar_v3.Schema$Event {
