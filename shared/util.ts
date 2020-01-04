@@ -29,3 +29,7 @@ export function getLocalISOString(date: Date) {
 		padDigits(date.getMinutes(), 2)
 	)
 }
+
+export function getTimezone() {
+	return Intl.DateTimeFormat().resolvedOptions().timeZone
+}

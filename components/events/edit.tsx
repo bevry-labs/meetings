@@ -1,9 +1,10 @@
 // External
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
+
+// External
 import Router from 'next/router'
-import Errlop from 'errlop'
-import { useForm, FieldError } from 'react-hook-form'
-import TimezonePicker from '../../components/timezone'
+import { useForm } from 'react-hook-form'
+import Daet from 'daet'
 
 // Polaris
 import {
@@ -14,69 +15,56 @@ import {
 	Toast,
 	TextField,
 	RadioButton,
-	Stack,
-	RangeSlider
+	Stack
 } from '@shopify/polaris'
 
 // Internal
-import Page from '../../components/page'
 import { addEventSchema, AddEventSchema } from '../../shared/schemas'
-import { getLocalISOString } from '../../shared/util'
-import Daet from 'daet'
+import { getLocalISOString, getTimezone } from '../../shared/util'
+import useErrors from '../../shared/errors'
 
 // Types
 type Status = { success: null } | { success: boolean; message: string }
-function error(err: FieldError | any | undefined): string | undefined {
-	if (err) {
-		if (err.message) {
-			return err.message
-		}
-		return 'invalid'
-	}
-}
 
 // Page
 export default function EditEvent() {
 	const now = new Daet()
 
 	// Field validation
-	const { register, setValue, watch, handleSubmit, errors } = useForm<
-		AddEventSchema
-	>({
+	const form = useForm<AddEventSchema>({
 		validationSchema: addEventSchema,
 		defaultValues: {
 			start: now.raw,
 			finish: now.plus(30, 'minute').raw,
-			expiry: now.plus(2.5, 'hour').raw
+			expiry: now.plus(2.5, 'hour').raw,
+			privacy: 'public',
+			tz: getTimezone()
 		}
 	})
 	useEffect(() => {
-		register({ name: 'title' })
-		register({ name: 'description' })
-		register({ name: 'start' })
-		register({ name: 'finish' })
-		register({ name: 'expiry' })
-		register({ name: 'tz' })
-		register({ name: 'privacy' })
-		register({ name: 'joinURL' })
-		register({ name: 'watchURL' })
-	}, [register])
-	const {
-		title,
-		description,
-		start,
-		finish,
-		expiry,
-		tz,
-		privacy,
-		joinURL,
-		watchURL
-	} = watch()
+		form.register({ name: 'title' })
+		form.register({ name: 'description' })
+		form.register({ name: 'start' })
+		form.register({ name: 'finish' })
+		form.register({ name: 'expiry' })
+		form.register({ name: 'tz' })
+		form.register({ name: 'privacy' })
+		form.register({ name: 'joinURL' })
+		form.register({ name: 'watchURL' })
+	}, [form.register])
+	const values = form.watch()
+
+	// Error handling
+	const { showError, showErrors } = useErrors(
+		// @ts-ignore
+		new Set(addEventSchema._nodes),
+		form.errors
+	)
 
 	// Timezone
-	const [timezone, setTimezone] = useState(
-		Intl.DateTimeFormat().resolvedOptions().timeZone
-	)
+	// const [timezone, setTimezone] = useState(
+	// 	Intl.DateTimeFormat().resolvedOptions().timeZone
+	// )
 
 	// Submit validation
 	const [status, setStatus] = useState<Status>({ success: null })
@@ -103,7 +91,6 @@ export default function EditEvent() {
 		joinURL,
 		watchURL
 	}: AddEventSchema) {
-		debugger
 		const url = '/api/events/add'
 		const event: AddEventSchema = {
 			title,
@@ -140,109 +127,100 @@ export default function EditEvent() {
 	return (
 		<>
 			<Layout.Section>
-				<Form onSubmit={handleSubmit(onSubmit)}>
+				<Form onSubmit={form.handleSubmit(onSubmit)}>
 					<FormLayout>
 						<TextField
-							value={title}
+							value={values.title}
 							name="title"
 							label="Event Title"
 							type="text"
-							onChange={value => setValue('title', value, true)}
-							error={error(errors.title)}
+							onChange={value => form.setValue('title', value, true)}
+							error={showError('title')}
 							helpText={<span>Your event will have this name.</span>}
 						/>
 						<TextField
-							value={description}
+							value={values.description}
 							name="description"
 							label="Description"
 							type="text"
-							onChange={value => setValue('description', value, true)}
-							error={error(errors.description)}
+							onChange={value => form.setValue('description', value, true)}
+							error={showError('description')}
 							helpText={<span>Description of this event.</span>}
 						/>
 						<TextField
-							value={getLocalISOString(start)}
+							value={getLocalISOString(values.start)}
 							name="start"
 							label="When will the guaranteed availability for the event begin?"
 							type="datetime-local"
-							onChange={value => setValue('start', new Date(value), true)}
-							error={error(errors.start)}
+							onChange={value => form.setValue('start', new Date(value), true)}
+							error={showError('start')}
 						/>
 						<TextField
-							value={getLocalISOString(finish)}
+							value={getLocalISOString(values.finish)}
 							name="finish"
 							label="When will the guaranteed availability for the event finish?"
 							type="datetime-local"
-							onChange={value => setValue('finish', new Date(value), true)}
-							error={error(errors.finish)}
+							onChange={value => form.setValue('finish', new Date(value), true)}
+							error={showError('finish')}
 						/>
 						<TextField
-							value={getLocalISOString(expiry)}
+							value={getLocalISOString(values.expiry)}
 							name="expiry"
 							label="When will the event be completely over and doors closed?"
 							type="datetime-local"
-							onChange={value => setValue('expiry', new Date(value), true)}
-							error={error(errors.finish)}
-						/>
-						<TimezonePicker
-							date={start}
-							value={tz}
-							onChange={value =>
-								setValue('tz', (value && value.id) || '', true)
-							}
+							onChange={value => form.setValue('expiry', new Date(value), true)}
+							error={showError('expiry')}
 						/>
 						{/* @todo show the start, finish, and expiry in a nice fashion to the local timezone */}
 						<TextField
-							value={joinURL}
+							value={values.joinURL}
 							name="joinURL"
 							label="The URL to join and participate in the event"
 							type="text"
-							onChange={value => setValue('joinURL', value, true)}
-							error={error(errors.joinURL)}
+							onChange={value => form.setValue('joinURL', value, true)}
+							error={showError('joinURL')}
 							clearButton={true}
-							onClearButtonClick={id => setValue('joinURL', '', true)}
+							onClearButtonClick={id => form.setValue('joinURL', '', true)}
 						/>
 						<TextField
-							value={watchURL}
+							value={values.watchURL}
 							name="watchURL"
 							label="The URL to watch the event"
 							type="url"
-							onChange={value => setValue('watchURL', value, true)}
-							error={error(errors.watchURL)}
+							onChange={value => form.setValue('watchURL', value, true)}
+							error={showError('watchURL')}
 							clearButton={true}
-							onClearButtonClick={id => setValue('watchURL', '', true)}
+							onClearButtonClick={id => form.setValue('watchURL', '', true)}
 						/>
 						<Stack vertical>
 							<RadioButton
 								label="Make Event Public"
 								helpText="Anyone will be able to join and watch the event."
-								checked={privacy === 'public'}
-								id="disabled"
-								name="accounts"
-								onChange={value => setValue('privacy', 'public', true)}
+								checked={values.privacy === 'public'}
+								name="privacy"
+								onChange={value => form.setValue('privacy', 'public', true)}
 							/>
 							<RadioButton
 								label="Make Event Protected"
 								helpText="Anyone will be able to watch the event, only specified members will be able to participate."
-								id="optional"
-								name="accounts"
-								checked={privacy === 'protected'}
-								onChange={value => setValue('privacy', 'protected', true)}
+								name="privacy"
+								checked={values.privacy === 'protected'}
+								onChange={value => form.setValue('privacy', 'protected', true)}
 							/>
 							<RadioButton
 								label="Make Event Private"
 								helpText="Only specified members will be able to watch and participate."
-								id="optional"
-								name="accounts"
-								checked={privacy === 'private'}
-								onChange={value => setValue('privacy', 'private', true)}
+								name="privacy"
+								checked={values.privacy === 'private'}
+								onChange={value => form.setValue('privacy', 'private', true)}
 							/>
 						</Stack>
+						{showErrors(new Set(['privacy', 'tz', 'cancelled']), true)}
 						<PageActions
 							// @ts-ignore
 							primaryAction={{
 								content: 'Save',
-								onAction: handleSubmit(onSubmit)
+								onAction: form.handleSubmit(onSubmit)
 							}}
 							secondaryActions={[
 								{
