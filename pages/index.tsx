@@ -9,16 +9,15 @@ import { DisplayText, Layout, PageActions } from '@shopify/polaris'
 
 // Local
 import Page from '../components/page'
-import { useFauna } from '../shared/config'
+import { RawEventSchema } from '../shared/schemas'
 
 // Events
-import Events from '../components/events'
-import { IndexProps, RichEventType, RichEventsType } from '../shared/types'
+import Events from '../components/events/view'
 import { fetchRawEvents, enrichEvents } from '../shared/events'
 import { getHostname } from '../shared/util'
 
 // Page
-function IndexPage({ rawEvents }: IndexProps) {
+function IndexPage({ rawEvents }: { rawEvents: RawEventSchema[] }) {
 	/* TODO: Implement Effect for getting events from fauna.
 	const [events, setEvents] = useState<RichEventsType>([])
 	useEffect(() => {
@@ -52,11 +51,12 @@ function IndexPage({ rawEvents }: IndexProps) {
 }
 
 // Fetch
+// Only serialisable data in here because if zeit has server rendered this, then it is a JSON object when instantiating the client-side initially, and waiting for the new props to be fetched
 IndexPage.getInitialProps = function({
 	req
 }: {
 	req: IncomingMessage
-}): Promise<IndexProps> {
+}): Promise<{ rawEvents: RawEventSchema[] }> {
 	const hostname = getHostname(req)
 	return fetchRawEvents({ hostname }).then(rawEvents => ({
 		rawEvents

@@ -10,29 +10,33 @@ import {
 import { useInterval, useMetaKey } from '@bevry/hooks'
 import Daet from 'daet'
 
-import { RichEventSchema, Privacy } from '../shared/schemas'
-import { privacyIllustrations } from '../shared/config'
+import { RichEventSchema, Privacy } from '../../shared/schemas'
+import { privacyIllustrations } from '../../shared/config'
 
 // Event
 function Event({ event }: { event: RichEventSchema }) {
 	// Prepare
 	const now = new Daet()
+	const start = new Daet(event.start)
+	const finish = new Daet(event.finish)
+	const expiry = new Daet(event.expiry)
 	// Detect
 	const cancelled =
+		event.cancelled ||
 		event.title.toLowerCase().includes('cancelled') ||
 		event.description.toLowerCase().includes('cancelled')
-	const expired = now.getTime() > event.expiry.getTime()
-	const ended = now.getTime() > event.finish.getTime()
-	const started = now.getTime() >= event.start.getTime()
+	const expired = now.getTime() > expiry.getTime()
+	const finished = now.getTime() > finish.getTime()
+	const started = now.getTime() >= start.getTime()
 	const active = started && !expired && !cancelled
-	const startDelta = event.start.fromNowDetails()
-	const endDelta = event.finish.fromNowDetails()
-	const expiresDelta = event.expiry.fromNowDetails()
+	const startDelta = start.fromNowDetails()
+	const endDelta = finish.fromNowDetails()
+	const expiresDelta = expiry.fromNowDetails()
 	let phasePercent
 	if (active) {
-		const phaseStart = ended ? event.finish : event.start
-		const phaseEnd = ended ? event.expiry : event.finish
-		const phaseLength = phaseEnd.getTime() - phaseStart.getTime()
+		const phaseStart = finished ? finish : start
+		const phaseFinish = finished ? expiry : finish
+		const phaseLength = phaseFinish.getTime() - phaseStart.getTime()
 		const phaseProgress = now.getTime() - phaseStart.getTime()
 		phasePercent = (phaseProgress / phaseLength) * 100
 	}
@@ -57,7 +61,7 @@ function Event({ event }: { event: RichEventSchema }) {
 	const statusBar = cancelled ? (
 		<Banner title={`Cancelled`} status="critical">
 			<p>
-				The session at {event.start.calendar()} has been cancelled. This likely
+				The session at {start.calendar()} has been cancelled. This likely
 				happened because none of the hosts were available. Sorry for the
 				inconvenience.
 			</p>
@@ -69,7 +73,7 @@ function Event({ event }: { event: RichEventSchema }) {
 				participate. The availability window ended {expiresDelta.message}.
 			</p>
 		</Banner>
-	) : ended ? (
+	) : finished ? (
 		<Banner title={`Lingering`} status="warning">
 			<p>
 				The guaranteed availability window ended {endDelta.message}. If the
@@ -86,7 +90,7 @@ function Event({ event }: { event: RichEventSchema }) {
 		</Banner>
 	) : (
 		<Banner title={`Live ${startDelta.message}`} status="info">
-			<p>Join us {event.start.calendar()} your time.</p>
+			<p>Join us {start.calendar()} your time.</p>
 		</Banner>
 	)
 	const joinAction = !event.joinURL
@@ -105,17 +109,17 @@ function Event({ event }: { event: RichEventSchema }) {
 				url: event.watchURL,
 				external: true
 		  } as ComplexAction)
-	const actions = [joinAction, watchAction].filter(i => i != null)
-	const noAction: ComplexAction = {
+	const noAction = {
 		content: 'N/A'
-	}
+	} as ComplexAction
+	const actions = [joinAction, watchAction].filter(i => i != null)
 	return (
 		<div>
 			<CalloutCard
 				title={event.title}
 				illustration={illustration}
-				primaryAction={actions[0] || noAction /* cannot be undefined */}
-				secondaryAction={actions[1] /* allowed to be undefined */}
+				primaryAction={actions[0] || noAction}
+				secondaryAction={actions[1] || undefined}
 			>
 				<p>{event.description}</p>
 			</CalloutCard>

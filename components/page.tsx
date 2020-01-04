@@ -2,7 +2,12 @@ import React from 'react'
 import Head from 'next/head'
 import translations from '@shopify/polaris/locales/en.json'
 import { AppProvider, Page as PolarisPage, Frame } from '@shopify/polaris'
-import { LayoutProps } from '../shared/types'
+import { Children, Child } from '../shared/types'
+
+interface LayoutProps {
+	children: Children | Child
+	title?: string
+}
 
 function Page({ children, title = 'Bevry Meetings' }: LayoutProps) {
 	return (

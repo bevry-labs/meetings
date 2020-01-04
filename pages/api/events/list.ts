@@ -1,14 +1,14 @@
 // External
 import Daet from 'daet'
-import { getEvents } from '../../../server/google'
 import { Http2ServerRequest, Http2ServerResponse } from 'http2'
 import faunadb, { query as q } from 'faunadb'
 
 // Internal
-import { expiresValue, expiresUnit, useFauna } from '../../../shared/config'
 import { faunaConfig } from '../../../server/config'
-import { RawEventsType } from '../../../shared/types'
+import { RawEventSchema } from '../../../shared/schemas'
 
+/*
+import { getEvents } from '../../../server/google'
 export async function getEventsFromCalendar() {
 	const now = new Daet()
 	const start = now.minus(expiresValue, expiresUnit)
@@ -16,9 +16,10 @@ export async function getEventsFromCalendar() {
 	const events = await getEvents(start.toISOString(), finish.toISOString())
 	return events.filter(item => item.visibility === 'public')
 }
+*/
 
 // eventually, move this to client-side with a client key used as the secret
-export async function getEventsFromFauna(): Promise<RawEventsType> {
+export async function getEventsFromFauna(): Promise<RawEventSchema[]> {
 	// @todo replace with client key
 	const client = new faunadb.Client({ secret: faunaConfig.secret_key })
 	let ids: String[] = []
@@ -43,13 +44,13 @@ export async function getEventsFromFauna(): Promise<RawEventsType> {
 	 * TODO: It would be good if it can be done in one step i.e. read the data
 	 * for all the events in one go rather than first reading ids and then sending
 	 * a query for every id. */
-	const rawEvents: RawEventsType = []
+	const events: RawEventSchema[] = []
 	for (const id of ids) {
 		console.log('Querying ID: ' + id)
 		await client
 			.query(q.Get(q.Ref(q.Collection(faunaConfig.events_database_name), id)))
 			.then((dbentry: any) => {
-				rawEvents.push(dbentry.data)
+				events.push(dbentry.data as RawEventSchema)
 			})
 			.catch((err: any) => {
 				console.warn(
@@ -60,17 +61,15 @@ export async function getEventsFromFauna(): Promise<RawEventsType> {
 				return []
 			})
 	}
-	console.log(rawEvents)
-	return rawEvents
+	console.log(events)
+	return events
 }
 
 export default async function sendEvents(
 	req: Http2ServerRequest,
 	res: Http2ServerResponse
 ) {
-	const data = useFauna
-		? await getEventsFromFauna()
-		: await getEventsFromCalendar()
+	const data = await getEventsFromFauna()
 	res.setHeader('Content-Type', 'application/json')
 	res.end(JSON.stringify(data))
 }

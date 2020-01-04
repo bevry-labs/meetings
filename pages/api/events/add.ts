@@ -3,7 +3,11 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import fauna, { query as q } from 'faunadb'
 import cuid from 'cuid'
 import { faunaConfig } from '../../../server/config'
-import { addSchema, AddSchema } from '../../../shared/schemas'
+import {
+	addEventSchema,
+	AddEventSchema,
+	RawEventSchema
+} from '../../../shared/schemas'
 
 /* Gets the data from client side when user creates a new event
  * by filling up a Form and clicking Submit. Here we should
@@ -17,28 +21,31 @@ export default async function sendEvents(
 
 	if (req.method === 'POST') {
 		// Prepare
-		const body: AddSchema = req.body
-		let event
+		const body: AddEventSchema = req.body
 
 		// validate
 		try {
-			const data = await addSchema.validate(body)
-			// @todo add a typescript type definition for this
-			// by trimming RawEvent
-			event = {
+			const data = await addEventSchema.validate(body)
+			const event: RawEventSchema = {
 				id: cuid(),
-				summary: data.name,
+				title: data.title,
 				description: data.description,
-				start: {
-					dateTime: data.start.toISOString()
-				},
-				end: {
-					dateTime: data.end.toISOString()
-				}
+				// store in UTC
+				start: data.start.toISOString(),
+				finish: data.finish.toISOString(),
+				expiry: data.expiry.toISOString(),
+				cancelled: data.cancelled || false,
+				privacy: data.privacy,
+				tz: data.tz,
+				joinURL: data.joinURL,
+				watchURL: data.watchURL
 			}
 
+			// Add
 			console.log('Post: New Event To be Added')
 			console.log(event)
+
+			// Send
 			await client
 				.query(
 					q.Create(q.Collection('posts'), {

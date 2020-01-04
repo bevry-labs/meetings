@@ -3,14 +3,8 @@ import Daet from 'daet'
 
 // Internal
 import fetchJSON from '../shared/fetch'
-import {
-	RawEventType,
-	RawEventsType,
-	RichEventType,
-	RichEventsType
-} from '../shared/types'
-import { DEVELOPMENT, expiresUnit, expiresValue } from '../shared/config'
-
+import { RawEventSchema, RichEventSchema } from '../shared/schemas'
+import { TEST_STATES } from '../shared/config'
 function firstLine(str?: string): string {
 	return (str || '').split(/\s*(\n|<br>)\s*/)[0]
 }
@@ -21,25 +15,31 @@ export function fetchRawEvents({
 	hostname
 }: {
 	hostname: string
-}): Promise<RawEventsType> {
+}): Promise<RawEventSchema[]> {
 	const url = hostname + '/api/events/list'
 	return fetchJSON(url)
-		.then(function(rawEvents: RawEventsType) {
-			// if development, convert the events to more recent ones
-			if (DEVELOPMENT) {
-				// modify the events we receive, to start one minute from now, and expire one minute later
-				// so that we can as the developer see the progression between the states quickly
+		.then(function(rawEvents: RawEventSchema[]) {
+			// if TEST_STATES, convert the events to more recent ones
+			if (TEST_STATES) {
+				// modify the events we receive, to start one minute from now, finish one minute after start,
+				// expire one minute after finish so that we can as the developer see the progression between
+				// the states quickly.
 				const now = new Daet()
-				rawEvents = rawEvents.map((rawEvent, index) => {
-					const minutes = 1 + index
-					const start = now.plus(minutes, 'minute').reset('second')
-					const end = start.plus(1, 'minute')
-					return Object.assign({}, rawEvent, {
-						start: { dateTime: start.toISOString() },
-						end: { dateTime: end.toISOString() }
-					})
-				})
-				rawEvents = rawEvents.slice(0, 1)
+				return (
+					rawEvents
+						// convert
+						.map((rawEvent, index) => {
+							const minutes = 1 + index
+							return {
+								...rawEvent,
+								start: now.plus(index + 1, 'minute').toISOString(),
+								finish: now.plus(index + 2, 'minute').toISOString(),
+								expiry: now.plus(index + 3, 'minute').toISOString()
+							}
+						})
+						// fetch only the first
+						.slice(0, 1)
+				)
 			}
 			return rawEvents
 		})
@@ -60,24 +60,18 @@ export function fetchRawEvents({
  * To pevent components having to redo the same calculations on each render.
  * To ensure that events start at second:0, millisecond:0, as otherwise weird bugs occur in time comparisons and display.
  */
-export function enrichEvent(rawEvent: RawEventType): RichEventType {
-	const description = firstLine(rawEvent.description || '')
-	const summary = rawEvent.summary || 'Untitled'
+export function enrichEvent(rawEvent: RawEventSchema): RichEventSchema {
+	// const description = firstLine(rawEvent.description || '')
 	// new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"})
-	const start = new Daet(rawEvent.start.dateTime).reset('second')
-	const end = new Daet(rawEvent.end.dateTime).reset('second')
-	const expires = DEVELOPMENT
-		? end.plus(1, 'minute')
-		: end.plus(expiresValue, expiresUnit)
-	return Object.assign({}, rawEvent, {
-		description,
-		summary,
-		start,
-		end,
-		expires
-	})
+	// start: new Daet(new Date(event.start).toLocaleString("en-US", {timeZone: event.tz}))
+	return {
+		...rawEvent,
+		start: new Daet(rawEvent.start).reset('second'),
+		finish: new Daet(rawEvent.finish).reset('second'),
+		expiry: new Daet(rawEvent.expiry).reset('second')
+	}
 }
 
-export function enrichEvents(rawEvents: RawEventsType): RichEventsType {
+export function enrichEvents(rawEvents: RawEventSchema[]): RichEventSchema[] {
 	return rawEvents.map(enrichEvent)
 }
