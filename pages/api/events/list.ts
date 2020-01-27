@@ -6,6 +6,7 @@ import faunadb, { query as q } from 'faunadb'
 // Internal
 import { faunaConfig } from '../../../server/config'
 import { RawEventSchema } from '../../../shared/schemas'
+import { getLocalISOString } from '../../../shared/util'
 
 /*
 import { getEvents } from '../../../server/google'
@@ -22,14 +23,27 @@ export async function getEventsFromCalendar() {
 export async function getEventsFromFauna(): Promise<RawEventSchema[]> {
 	// @todo replace with client key
 	const client = new faunadb.Client({ secret: faunaConfig.secret_key })
-	let ids: String[] = []
 
+	console.log(
+		'Listing events beyond Expiry Date of ' + new Daet().toISOString()
+	)
+	const events: RawEventSchema[] = []
 	/* Get the unique faunadb ID for all events. */
 	await client
-		.query(q.Paginate(q.Match(q.Index('all_posts'))))
+		.query(
+			q.Map(
+				q.Paginate(q.Match(q.Index('event_list_by_expiry_date')), {
+					after: new Daet().toISOString()
+				}),
+				q.Lambda(['expiry', 'event_ref'], q.Get(q.Var('event_ref')))
+			)
+		)
 		.then(function(dbentry: any) {
-			ids = dbentry.data.map((x: { id: string }) => x.id)
-			return ids
+			dbentry.data.map((x: { data: RawEventSchema }) =>
+				events.push(x.data as RawEventSchema)
+			)
+			console.log(events)
+			return events
 		})
 		.catch((err: any) => {
 			console.warn(
@@ -39,29 +53,6 @@ export async function getEventsFromFauna(): Promise<RawEventSchema[]> {
 			)
 			return []
 		})
-
-	/* Read the data for the events from faunadb.
-	 * TODO: It would be good if it can be done in one step i.e. read the data
-	 * for all the events in one go rather than first reading ids and then sending
-	 * a query for every id. */
-	const events: RawEventSchema[] = []
-	for (const id of ids) {
-		console.log('Querying ID: ' + id)
-		await client
-			.query(q.Get(q.Ref(q.Collection(faunaConfig.events_database_name), id)))
-			.then((dbentry: any) => {
-				events.push(dbentry.data as RawEventSchema)
-			})
-			.catch((err: any) => {
-				console.warn(
-					'FAILED TO FETCH EVENTS FROM FAUNADB:',
-					faunaConfig.events_database_name,
-					err
-				)
-				return []
-			})
-	}
-	console.log(events)
 	return events
 }
 
