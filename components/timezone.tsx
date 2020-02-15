@@ -45,6 +45,7 @@ export type TimezonePickerPropsT = {
 interface Option {
 	value: string
 	label: string
+	text: string
 	name: string
 	abbreviation: string
 	offset: number
@@ -69,17 +70,19 @@ function buildTimezoneOption(when: Date = new Date(), input: string): Option {
 		return {
 			value: '',
 			label: '',
+			text: '',
 			name: '',
 			abbreviation: '',
 			offset: 0
 		}
-	const value = humanify(timezone.name)
+	const value = humanify(formatZonedTime(zonedTime, `z - [${timezone.name}]`))
 	const label = humanify(
 		formatZonedTime(zonedTime, `z - [${timezone.name}] ([GMT] Z)`)
 	)
 	const option = {
 		value,
 		label,
+		text: humanify(timezone.name),
 		name: timezone.name,
 		abbreviation: zone.abbreviation || '',
 		offset: zone.offset
@@ -105,20 +108,6 @@ function buildTimezones(when: Date = new Date()): Array<Option> {
 			return 0
 		})
 	return timezones
-}
-
-function findTimezoneOptions(options: Array<Option>, input: string) {
-	return options.filter(option =>
-		option.label.toUpperCase().includes(input.toUpperCase())
-	)
-}
-
-function findTimezoneOption(options: Array<Option>, input: string) {
-	if (!input) return
-	const option = options.find(option => option.value === input)
-	if (option) return option
-	const many = findTimezoneOptions(options, input)
-	if (many.length === 1) return many[0]
 }
 
 function optionEqual(a: Option | undefined, b: Option | undefined) {
@@ -147,7 +136,9 @@ export default function TimezonePicker(props: TimezonePickerPropsT) {
 		function() {
 			let options = timezones
 			if (input !== '') {
-				options = findTimezoneOptions(options, input)
+				options = options.filter(option =>
+					option.value.toUpperCase().includes(input.toUpperCase())
+				)
 			}
 			// workaround for https://github.com/Shopify/polaris-react/pull/2582
 			options = dereferenceObjects(options)
@@ -157,9 +148,8 @@ export default function TimezonePicker(props: TimezonePickerPropsT) {
 	)
 
 	// Set the value
-	// Currently affected by this bug https://github.com/Shopify/polaris-react/issues/2750
 	const [value, setValue] = useState<Option>()
-	const option = findTimezoneOption(options, input)
+	const option = options.find(option => option.text === input)
 	if (optionEqual(option, value) === false) {
 		props.onChange(option)
 		setValue(option)
@@ -167,9 +157,9 @@ export default function TimezonePicker(props: TimezonePickerPropsT) {
 
 	// Update the selection
 	function updateSelection(selectedItems: string[]) {
-		const option = findTimezoneOption(options, selectedItems[0])
+		const option = options.find(option => option.value === selectedItems[0])
 		if (option) {
-			setInput(option.value)
+			setInput(option.text)
 		}
 	}
 
@@ -183,7 +173,6 @@ export default function TimezonePicker(props: TimezonePickerPropsT) {
 		/>
 	)
 
-	console.log(options)
 	return (
 		<Autocomplete
 			options={options}
