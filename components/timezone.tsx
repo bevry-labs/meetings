@@ -29,9 +29,9 @@ export type TimezonePickerPropsT = {
 	 * Pacific Daylight Time. The timezone picker will never display PST and PDT together. If you need
 	 * exact specificity, provide a date. Otherwise it will default to the relevant timezone at render.
 	 */
-	date?: Date
+	when?: Date
 	/** Callback for when the timezone selection changes. */
-	onChange?: (value?: { id: string; label: string; offset: number }) => any
+	onChange: (value: Option | undefined) => any
 	/**
 	 * Optional value that can be provided to fully control the component. If not provided,
 	 * TimezonePicker will manage state internally.
@@ -42,34 +42,64 @@ export type TimezonePickerPropsT = {
 	positive?: boolean
 }
 
+interface Option {
+	value: string
+	label: string
+	name: string
+	abbreviation: string
+	offset: number
+}
+
 function dereferenceObjects<T>(timezones: Array<T>) {
 	return timezones.slice().map(v => Object.assign({}, v))
 }
 
-function buildTimezones(compareDate: Date = new Date()) {
+function humanify(str: string | undefined) {
+	return str ? str.replace(/_/g, ' ') : ''
+}
+function robotify(str: string | undefined) {
+	return str ? str.replace(/\s/g, '_') : ''
+}
+
+function buildTimezoneOption(when: Date = new Date(), input: string): Option {
+	const timezone = findTimeZone(input)
+	const zonedTime = getZonedTime(when, timezone)
+	const { zone } = zonedTime
+	if (!zone)
+		return {
+			value: '',
+			label: '',
+			name: '',
+			abbreviation: '',
+			offset: 0
+		}
+	const value = humanify(timezone.name)
+	const label = humanify(
+		formatZonedTime(zonedTime, `z - [${timezone.name}] ([GMT] Z)`)
+	)
+	const option = {
+		value,
+		label,
+		name: timezone.name,
+		abbreviation: zone.abbreviation || '',
+		offset: zone.offset
+	}
+	return option
+}
+
+function buildTimezones(when: Date = new Date()): Array<Option> {
 	const timezones = listTimeZones()
-		.map(zone => {
-			const timezone = findTimeZone(zone)
-			const zonedTime = getZonedTime(compareDate, timezone)
-			const formatted = formatZonedTime(
-				zonedTime,
-				`z - [${zone}] ([GMT] Z)`
-			).replace('_', ' ')
-			return {
-				// id: zone,
-				value: zone,
-				label: formatted,
-				offset: zonedTime?.zone?.offset
-			}
-		})
+		.map(buildTimezoneOption.bind(null, when))
 		// Removes 'noisy' timezones without a letter acronym.
-		.filter(option => option.label[0] !== '-' && option.label[0] !== '+')
+		.filter(
+			option =>
+				option.label && option.label[0] !== '-' && option.label[0] !== '+'
+		)
 		// Sorts W -> E, prioritizes america. could be more nuanced based on system tz but simple for now
 		.sort((a, b) => {
 			// @ts-ignore
 			const offsetDelta = b.offset - a.offset
 			if (offsetDelta !== 0) return offsetDelta
-
 			if (a.label < b.label) return -1
 			if (a.label > b.label) return 1
 			return 0
@@ -77,55 +107,87 @@ function buildTimezones(compareDate: Date = new Date()) {
 	return timezones
 }
 
+function findTimezoneOptions(options: Array<Option>, input: string) {
+	return options.filter(option =>
+		option.label.toUpperCase().includes(input.toUpperCase())
+	)
+}
+
+function findTimezoneOption(options: Array<Option>, input: string) {
+	if (!input) return
+	const option = options.find(option => option.value === input)
+	if (option) return option
+	const many = findTimezoneOptions(options, input)
+	if (many.length === 1) return many[0]
+}
+
+function optionEqual(a: Option | undefined, b: Option | undefined) {
+	if (a && b) {
+		return a.abbreviation === b.abbreviation && a.offset === b.offset
+	}
+	return a === b
+}
+
 export default function TimezonePicker(props: TimezonePickerPropsT) {
-	const [text, setText] = useState(
+	// Prepare
+	const when = props.when?.toISOString()
+
+	// Set the input
+	const [input, setInput] = useState(
 		props.value ||
 			(isBrowser && Intl.DateTimeFormat().resolvedOptions().timeZone) ||
 			''
 	)
-	const [selection, setSelection] = useState([text])
-	const timezones = useMemo(() => buildTimezones(props.date), [props.date])
+
+	// Filter timezones based on date
+	const timezones = useMemo(() => buildTimezones(props.when), [when])
+
+	// Filter options based on input
 	const options = useMemo(
 		function() {
 			let options = timezones
-			// console.log('update timezones')
-			if (text !== '') {
-				const filterRegex = new RegExp(text, 'i')
-				options = options.filter(option => option.label.match(filterRegex))
+			if (input !== '') {
+				options = findTimezoneOptions(options, input)
 			}
+			// workaround for https://github.com/Shopify/polaris-react/pull/2582
 			options = dereferenceObjects(options)
-			// console.log(options)
 			return options
 		},
-		[text]
+		[input, when]
 	)
 
-	function updateSelection(selected: string[]) {
-		// console.log('update selection')
-		const selectedValue = selected.map(selectedItem => {
-			const matchedOption = options.find(option => {
-				return option.value.match(selectedItem)
-			})
-			return matchedOption && matchedOption.label
-		})
-		setSelection(selected)
-		// setText(selectedValue)
+	// Set the value
+	// Currently affected by this bug https://github.com/Shopify/polaris-react/issues/2750
+	const [value, setValue] = useState<Option>()
+	const option = findTimezoneOption(options, input)
+	if (optionEqual(option, value) === false) {
+		props.onChange(option)
+		setValue(option)
+	}
+
+	// Update the selection
+	function updateSelection(selectedItems: string[]) {
+		const option = findTimezoneOption(options, selectedItems[0])
+		if (option) {
+			setInput(option.value)
+		}
 	}
 
 	const textField = (
 		<Autocomplete.TextField
-			onChange={setText}
+			onChange={setInput}
 			label="Timezone"
-			value={text}
+			value={input}
 			// prefix={<Icon source={SearchMinor} color="inkLighter" />}
 			placeholder="Search"
 		/>
 	)
 
+	console.log(options)
 	return (
 		<Autocomplete
 			options={options}
-			selected={selection}
+			selected={[value?.value || '']}
 			onSelect={updateSelection}
 			textField={textField}
 		/>

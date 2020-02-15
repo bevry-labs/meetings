@@ -22,6 +22,7 @@ import {
 import { addEventSchema, AddEventSchema } from '../../shared/schemas'
 import { getLocalISOString, getTimezone } from '../../shared/util'
 import useErrors from '../../shared/errors'
+import TimezonePicker from '../../components/timezone'
 
 // Types
 type Status = { success: null } | { success: boolean; message: string }
@@ -172,6 +173,14 @@ export default function EditEvent() {
 							error={showError('expiry')}
 						/>
 						{/* @todo show the start, finish, and expiry in a nice fashion to the local timezone */}
+						<TimezonePicker
+							when={values.start}
+							value={values.tz}
+							onChange={value => {
+								console.log('timezone:', value)
+								form.setValue('tz', (value && value.value) || '', true)
+							}}
+						/>
 						<TextField
 							value={values.joinURL}
 							name="joinURL"
