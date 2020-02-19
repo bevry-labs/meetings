@@ -1,7 +1,7 @@
 FROM node:12
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm install
+CMD ["npm", "install"]
 COPY . .
-RUN npm run build
-CMD [ "npm", "start" ]
+CMD ["npx", "next", "build"]
+CMD ["npx", "next", "start"]
