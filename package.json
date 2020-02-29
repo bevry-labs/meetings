@@ -72,6 +72,7 @@
   ],
   "type": "commonjs",
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.7.0-beta.3",
     "@bevry/hooks": "^2.5.0",
     "@shopify/polaris": "^4.13.1",
     "@types/react": "^16.9.19",
@@ -115,10 +116,11 @@
   },
   "scripts": {
     "my:deploy": "npm run our:compile && npm run our:test && now",
-    "my:secrets": "npm run my:secrets:google-oauth && npm run my:secrets:google-service && npm run my:secrets:fauna",
+    "my:secrets": "npm run my:secrets:google-oauth && npm run my:secrets:google-service && npm run my:secrets:fauna && npm run my:secrets:auth0",
     "my:secrets:google-oauth": "(now secret rm google-oauth || true) && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c .)\"",
     "my:secrets:google-service": "(now secret rm google-service || true) && now secret add google-service \"$(cat ./.env/google-service.json | jq -c .)\"",
     "my:secrets:fauna": "(now secret rm fauna || true) && now secret add fauna \"$(cat ./.env/fauna.json | jq -c .)\"",
+    "my:secrets:auth0": "(now secret rm auth0 || true) && now secret add auth0 \"$(cat ./.env/auth0.json | jq -c .)\"",
     "our:clean": "rm -Rf ./docs ./edition* ./es2015 ./es5 ./out ./.next",
     "our:compile": "npm run our:compile:next",
     "our:compile:next": "next build",
@@ -139,7 +141,7 @@
     "our:verify:prettier": "prettier --write ./**",
     "our:verify:stylelint": "echo 'disabled due to https://spectrum.chat/zeit/general/resolved-deployments-fail-with-enospc-no-space-left-on-device-write~d1b9f61a-65e8-42a3-9042-f9c6a6fae6fd'",
     "our:verify:typescript": "tsc --noEmit --project tsconfig.json",
-    "env": "env NODE_ENV=development FAUNA=\"$(cat ./.env/fauna.json | jq -c .)\" GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\"",
+    "env": "env NODE_ENV=development FAUNA=\"$(cat ./.env/fauna.json | jq -c .)\" AUTH0=\"$(cat ./.env/auth0.json | jq -c .)\" GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\"",
     "start": "npm run our:verify && npm run env -- next dev",
     "test": "npm run env -- ts-node --compiler-options '{\"module\":\"commonjs\"}' ./scripts/test.ts",
     "now-build": "npm run our:compile:next"

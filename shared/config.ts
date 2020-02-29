@@ -1,3 +1,5 @@
+import { Auth0Config } from '../shared/types'
+
 export const TEST_STATES = false // process.env.NODE_ENV === 'development'
 // export const podcastJoinUrl = 'https://meet.bevry.me/join'
 // export const podcastWatchUrl = 'https://meet.bevry.me/watch'
@@ -12,4 +14,9 @@ export const privacyIllustrations = {
 	public: '/illustrations/undraw_conference_uo36.svg',
 	protected: '/illustrations/undraw_conversation_h12g.svg',
 	private: '/illustrations/undraw_security_o890.svg'
+}
+
+export const auth0Config: Auth0Config = {
+	domain: 'dev-bevry.auth0.com',
+	client_id: '7tW2mwbXs3Ob4JYsdHm1toLnxgPBcK4q'
 }

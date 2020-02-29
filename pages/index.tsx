@@ -16,6 +16,13 @@ import Events from '../components/events/view'
 import { fetchRawEvents, enrichEvents } from '../shared/events'
 import { getHostname } from '../shared/util'
 
+// Config
+import { auth0Config } from '../shared/config'
+
+// Auth
+import { useAuth0 } from '../server/auth0-spa'
+import NavigationBar from '../components/NavigationBar'
+
 // Page
 function IndexPage({ rawEvents }: { rawEvents: RawEventSchema[] }) {
 	/* TODO: Implement Effect for getting events from fauna.
@@ -28,6 +35,8 @@ function IndexPage({ rawEvents }: { rawEvents: RawEventSchema[] }) {
 		}
 	}, [])
 	*/
+	const { user } = useAuth0()
+
 	const events = enrichEvents(rawEvents)
 	return (
 		<Page>
@@ -36,6 +45,10 @@ function IndexPage({ rawEvents }: { rawEvents: RawEventSchema[] }) {
 					Take part in <a href="https://bevry.me">Bevry</a>&apos;s{' '}
 					<a href="https://bevry.me/meetings/">meetings</a>.
 				</DisplayText>
+				<div>
+					{user && user.nickname}
+					<NavigationBar />
+				</div>
 			</Layout.Section>
 			{events.length ? <Events events={events} /> : ''}
 			<PageActions
