@@ -2,7 +2,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import fauna, { query as q } from 'faunadb'
 import cuid from 'cuid'
-import { faunaConfig } from '../../../server/config'
+import SERVER_ENV from '../../../server/env'
 import {
 	addEventSchema,
 	AddEventSchema,
@@ -17,7 +17,9 @@ export default async function sendEvents(
 	res: NextApiResponse
 ) {
 	/* TODO: I think we should create a global fauna client at server init and use that everywhere. */
-	const client = new fauna.Client({ secret: faunaConfig.secret_key })
+	const client = new fauna.Client({
+		secret: SERVER_ENV.fauna.secret_key as string
+	})
 
 	if (req.method === 'POST') {
 		// Prepare

@@ -4,7 +4,7 @@ import { Http2ServerRequest, Http2ServerResponse } from 'http2'
 import faunadb, { query as q } from 'faunadb'
 
 // Internal
-import { faunaConfig } from '../../../server/config'
+import SERVER_ENV from '../../../server/env'
 import { RawEventSchema } from '../../../shared/schemas'
 import { getLocalISOString } from '../../../shared/util'
 
@@ -22,7 +22,10 @@ export async function getEventsFromCalendar() {
 // eventually, move this to client-side with a client key used as the secret
 export async function getEventsFromFauna(): Promise<RawEventSchema[]> {
 	// @todo replace with client key
-	const client = new faunadb.Client({ secret: faunaConfig.secret_key })
+	const client = new faunadb.Client({
+		secret: SERVER_ENV.fauna.secret_key as string
+	})
+	console.log('LISTING CLIENT ID', SERVER_ENV.auth0.clientId)
 
 	console.log(
 		'Listing events beyond Expiry Date of ' + new Daet().toISOString()
@@ -48,7 +51,7 @@ export async function getEventsFromFauna(): Promise<RawEventSchema[]> {
 		.catch((err: any) => {
 			console.warn(
 				'FAILED TO FETCH EVENTS FROM FAUNADB:',
-				faunaConfig.events_database_name,
+				SERVER_ENV.fauna.events_database_name,
 				err
 			)
 			return []

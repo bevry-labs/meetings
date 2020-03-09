@@ -72,6 +72,7 @@
   ],
   "type": "commonjs",
   "dependencies": {
+    "@auth0/nextjs-auth0": "^0.10.0",
     "@bevry/hooks": "^2.5.0",
     "@shopify/polaris": "^4.13.1",
     "@types/react": "^16.9.19",
@@ -85,6 +86,7 @@
     "faunadb": "^2.11.1",
     "fetch-lite": "^1.1.0",
     "googleapis": "47.0.0",
+    "isomorphic-unfetch": "^3.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-hook-form": "^4.9.3",
@@ -115,10 +117,7 @@
   },
   "scripts": {
     "my:deploy": "npm run our:compile && npm run our:test && now",
-    "my:secrets": "npm run my:secrets:google-oauth && npm run my:secrets:google-service && npm run my:secrets:fauna",
-    "my:secrets:google-oauth": "(now secret rm google-oauth || true) && now secret add google-oauth \"$(cat ./.env/google-oauth.json | jq -c .)\"",
-    "my:secrets:google-service": "(now secret rm google-service || true) && now secret add google-service \"$(cat ./.env/google-service.json | jq -c .)\"",
-    "my:secrets:fauna": "(now secret rm fauna || true) && now secret add fauna \"$(cat ./.env/fauna.json | jq -c .)\"",
+    "my:secrets": "(now secret rm fountain || true) && now secret add fountain \"$(cat ./.env.json | jq -c .)\"",
     "our:clean": "rm -Rf ./docs ./edition* ./es2015 ./es5 ./out ./.next",
     "our:compile": "npm run our:compile:next",
     "our:compile:next": "next build",
@@ -139,7 +138,7 @@
     "our:verify:prettier": "prettier --write ./**",
     "our:verify:stylelint": "echo 'disabled due to https://spectrum.chat/zeit/general/resolved-deployments-fail-with-enospc-no-space-left-on-device-write~d1b9f61a-65e8-42a3-9042-f9c6a6fae6fd'",
     "our:verify:typescript": "tsc --noEmit --project tsconfig.json",
-    "env": "env NODE_ENV=development FAUNA=\"$(cat ./.env/fauna.json | jq -c .)\" GOOGLE_OAUTH=\"$(cat ./.env/google-oauth.json | jq -c .)\" GOOGLE_SERVICE=\"$(cat ./.env/google-service.json | jq -c .)\"",
+    "env": "env NODE_ENV=development FOUNTAIN=\"$(cat ./.env.json | jq -c .)\"",
     "start": "npm run our:verify && npm run env -- next dev",
     "test": "npm run env -- ts-node --compiler-options '{\"module\":\"commonjs\"}' ./scripts/test.ts",
     "now-build": "npm run our:compile:next"

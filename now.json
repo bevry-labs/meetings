@@ -9,8 +9,6 @@
     }
   ],
   "env": {
-    "GOOGLE_SERVICE": "@google-service",
-    "GOOGLE_OAUTH": "@google-oauth",
-    "FAUNA": "@fauna"
+    "FOUNTAIN": "@fountain"
   }
 }

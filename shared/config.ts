@@ -13,3 +13,10 @@ export const privacyIllustrations = {
 	protected: '/illustrations/undraw_conversation_h12g.svg',
 	private: '/illustrations/undraw_security_o890.svg'
 }
+export const loginUrl = '/api/auth/login'
+export const logoutUrl = '/api/auth/logout'
+export const profileUrl = '/profile'
+export const meUrl = '/api/auth/me'
+export const logoUrl =
+	'https://bevry-discourse-v3-forum.s3.dualstack.eu-west-3.amazonaws.com/original/1X/fec1014a4a297f617236c03264f71e05336bd293.svg'
+export const homeUrl = '/'

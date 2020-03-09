@@ -1,8 +1,11 @@
 // External
 import React, { useState, useEffect, useCallback } from 'react'
 import Router from 'next/router'
+import dynamic from 'next/dynamic'
 import { IncomingMessage } from 'http'
 import Daet from 'daet'
+
+import * as ReactDOMServer from 'react-dom/server'
 
 // Polaris
 import { DisplayText, Layout, PageActions } from '@shopify/polaris'
@@ -16,6 +19,12 @@ import Events from '../components/events/view'
 import { fetchRawEvents, enrichEvents } from '../shared/events'
 import { getHostname } from '../shared/util'
 
+// ENV
+import SHARED_ENV from '../shared/env'
+import { loginUrl } from '../shared/config'
+
+const TopBar = dynamic(() => import('../components/top_bar'), { ssr: false })
+
 // Page
 function IndexPage({ rawEvents }: { rawEvents: RawEventSchema[] }) {
 	/* TODO: Implement Effect for getting events from fauna.
@@ -28,25 +37,32 @@ function IndexPage({ rawEvents }: { rawEvents: RawEventSchema[] }) {
 		}
 	}, [])
 	*/
+	console.log('XXX', SHARED_ENV.auth0.clientId, 'XXX')
 	const events = enrichEvents(rawEvents)
 	return (
-		<Page>
+		<div>
 			<Layout.Section>
-				<DisplayText size="small">
-					Take part in <a href="https://bevry.me">Bevry</a>&apos;s{' '}
-					<a href="https://bevry.me/meetings/">meetings</a>.
-				</DisplayText>
+				<TopBar />
 			</Layout.Section>
-			{events.length ? <Events events={events} /> : ''}
-			<PageActions
-				primaryAction={{
-					content: 'Add',
-					onAction() {
-						Router.push('/events/add')
-					}
-				}}
-			/>
-		</Page>
+			<Page>
+				<Layout.Section>
+					<DisplayText size="small">
+						Take part in <a href="https://bevry.me">Bevry</a>&apos;s{' '}
+						<a href="https://bevry.me/meetings/">meetings</a>.
+					</DisplayText>
+				</Layout.Section>
+				<a href={loginUrl}>Login</a>
+				{events.length ? <Events events={events} /> : ''}
+				<PageActions
+					primaryAction={{
+						content: 'Add',
+						onAction() {
+							Router.push('/events/add')
+						}
+					}}
+				/>
+			</Page>
+		</div>
 	)
 }
 
