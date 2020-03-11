@@ -39,7 +39,7 @@ function Event({ event }: { event: RichEventSchema }) {
 	}
 
 	// Hooks
-	const [forceEnable, setForceEnable] = useState()
+	const [forceEnable, setForceEnable] = useState(false)
 	useInterval(
 		[startDelta.refresh, endDelta.refresh, expiresDelta.refresh],
 		1000
