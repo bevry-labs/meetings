@@ -3,9 +3,15 @@ import Router from 'next/router'
 import { AppProvider, TopBar, Card, Frame, ActionList } from '@shopify/polaris'
 
 import { useFetchUser } from '../lib/user'
-import { loginUrl, logoUrl, homeUrl, profileUrl } from '../shared/config'
+import {
+	loginUrl,
+	logoutUrl,
+	logoUrl,
+	homeUrl,
+	profileUrl
+} from '../shared/config'
 
-export default function TopBarExample() {
+export default function BevryTopBar() {
 	const { user } = useFetchUser()
 	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
@@ -33,15 +39,15 @@ export default function TopBarExample() {
 		}
 	}
 
-	const userMenuMarkup = (
+	const userMenuMarkupAfterLogin = (
 		<TopBar.UserMenu
 			actions={[
 				{
 					items: [
 						{
-							content: 'Login',
+							content: 'Logout',
 							onAction() {
-								window.location.href = loginUrl
+								window.location.href = logoutUrl
 							}
 						},
 						{
@@ -61,10 +67,27 @@ export default function TopBarExample() {
 		/>
 	)
 
+	const userMenuMarkupBeforeLogin = (
+		<TopBar.UserMenu
+			actions={[
+				{
+					items: []
+				}
+			]}
+			name={'Login'}
+			detail={'Click to login'}
+			initials={'L'}
+			open={isUserMenuOpen}
+			onToggle={() => {
+				window.location.href = loginUrl
+			}}
+		/>
+	)
+
 	const topBarMarkup = (
 		<TopBar
 			showNavigationToggle
-			userMenu={userMenuMarkup}
+			userMenu={user ? userMenuMarkupAfterLogin : userMenuMarkupBeforeLogin}
 			onNavigationToggle={handleNavigationToggle}
 		/>
 	)

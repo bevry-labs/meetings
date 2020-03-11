@@ -51,7 +51,6 @@ function IndexPage({ rawEvents }: { rawEvents: RawEventSchema[] }) {
 						<a href="https://bevry.me/meetings/">meetings</a>.
 					</DisplayText>
 				</Layout.Section>
-				<a href={loginUrl}>Login</a>
 				{events.length ? <Events events={events} /> : ''}
 				<PageActions
 					primaryAction={{
