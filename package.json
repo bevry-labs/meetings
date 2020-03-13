@@ -90,6 +90,7 @@
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-hook-form": "^5.0.3",
+    "swr": "^0.1.18",
     "timezone-support": "^2.0.2",
     "yup": "^0.28.3"
   },

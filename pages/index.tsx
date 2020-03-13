@@ -1,17 +1,13 @@
 // External
 import React, { useState, useEffect, useCallback } from 'react'
 import Router from 'next/router'
-import dynamic from 'next/dynamic'
 import { IncomingMessage } from 'http'
-import Daet from 'daet'
-
-import * as ReactDOMServer from 'react-dom/server'
 
 // Polaris
-import { DisplayText, Layout, PageActions } from '@shopify/polaris'
+import { DisplayText, Layout, PageActions, Page } from '@shopify/polaris'
 
 // Local
-import Page from '../components/page'
+import Fountain from '../components/layout'
 import { RawEventSchema } from '../shared/schemas'
 
 // Events
@@ -22,8 +18,6 @@ import { getHostname } from '../shared/util'
 // ENV
 import SHARED_ENV from '../shared/env'
 import { loginUrl } from '../shared/config'
-
-const TopBar = dynamic(() => import('../components/top_bar'), { ssr: false })
 
 // Page
 function IndexPage({ rawEvents }: { rawEvents: RawEventSchema[] }) {
@@ -41,26 +35,25 @@ function IndexPage({ rawEvents }: { rawEvents: RawEventSchema[] }) {
 	const events = enrichEvents(rawEvents)
 	return (
 		<div>
-			<Layout.Section>
-				<TopBar />
-			</Layout.Section>
-			<Page>
-				<Layout.Section>
-					<DisplayText size="small">
-						Take part in <a href="https://bevry.me">Bevry</a>&apos;s{' '}
-						<a href="https://bevry.me/meetings/">meetings</a>.
-					</DisplayText>
-				</Layout.Section>
-				{events.length ? <Events events={events} /> : ''}
-				<PageActions
-					primaryAction={{
-						content: 'Add',
-						onAction() {
-							Router.push('/events/add')
-						}
-					}}
-				/>
-			</Page>
+			<Fountain>
+				<Page>
+					<Layout.Section>
+						<DisplayText size="small">
+							Take part in <a href="https://bevry.me">Bevry</a>&apos;s{' '}
+							<a href="https://bevry.me/meetings/">meetings</a>.
+						</DisplayText>
+					</Layout.Section>
+					{events.length ? <Events events={events} /> : ''}
+					<PageActions
+						primaryAction={{
+							content: 'Add',
+							onAction() {
+								Router.push('/events/add')
+							}
+						}}
+					/>
+				</Page>
+			</Fountain>
 		</div>
 	)
 }
