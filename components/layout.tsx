@@ -129,12 +129,14 @@ export default function Layout({
 				{
 					items: [
 						{
-							content: 'Logout',
-							url: logoutUrl
+							content: 'Profile',
+							icon: ProfileMajorMonotone,
+							url: profileUrl
 						},
 						{
-							content: 'Profile',
-							url: profileUrl
+							content: 'Logout',
+							icon: CustomersMajorMonotone,
+							url: logoutUrl
 						}
 					]
 				}
