@@ -9,7 +9,7 @@ import EditEvent from '../../components/events/edit'
 // Page
 export default function AddEventPage() {
 	return (
-		<Fountain>
+		<Fountain url="/events/add" title="New Event">
 			<Page>
 				<EditEvent></EditEvent>
 			</Page>

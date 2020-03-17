@@ -33,3 +33,9 @@ export function getLocalISOString(date: Date) {
 export function getTimezone() {
 	return Intl.DateTimeFormat().resolvedOptions().timeZone
 }
+
+export function getInitials(name: string = '') {
+	return name
+		.split(/\s+/)
+		.reduce((pv, cv) => pv + (cv[0] || '').toUpperCase(), '')
+}

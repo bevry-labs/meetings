@@ -1,78 +1,71 @@
-// renders on both server and client
-// Fetch user profile, login if necessary, give user prop to component:
-// https://github.com/zeit/next.js/blob/master/examples/auth0/pages/advanced/ssr-profile.js
+// External
 import React from 'react'
+import useSWR from '../lib/swr'
+import {
+	Banner,
+	SkeletonPage,
+	Layout,
+	Card,
+	TextContainer,
+	SkeletonDisplayText,
+	SkeletonBodyText,
+	Page,
+	Avatar
+} from '@shopify/polaris'
 
-import { NextApiRequest, NextApiResponse } from 'next'
+// Local
+import Fountain from '../components/layout'
+import { profileApiUrl } from '../shared/config'
+import { IUser } from '../shared/types'
 
-// This import is only needed when checking authentication status directly from getInitialProps
-import auth0 from '../lib/auth0'
-import { fetchUser } from '../lib/user'
-import { ISession } from '@auth0/nextjs-auth0/dist/session/session'
+// Page
+export default function Profile() {
+	const { data: user, error, isValidating } = useSWR<IUser, any>(profileApiUrl)
+	let inner
 
-import { loginUrl } from '../shared/config'
+	if (error)
+		inner = (
+			<Banner title="Failed to load" status="critical">
+				<p>{JSON.stringify(error)}</p>
+			</Banner>
+		)
+	else if (!user)
+		inner = (
+			<SkeletonPage primaryAction secondaryActions={2}>
+				<Layout>
+					<Layout.Section>
+						<Card sectioned>
+							<SkeletonBodyText />
+						</Card>
+						<Card sectioned>
+							<TextContainer>
+								<SkeletonDisplayText size="small" />
+								<SkeletonBodyText />
+							</TextContainer>
+						</Card>
+						<Card sectioned>
+							<TextContainer>
+								<SkeletonDisplayText size="small" />
+								<SkeletonBodyText />
+							</TextContainer>
+						</Card>
+					</Layout.Section>
+				</Layout>
+			</SkeletonPage>
+		)
+	else {
+		// @todo add editing from
+		// https://polaris.shopify.com/components/structure/frame#navigation
+		inner = (
+			<Page title="Profile" subtitle={user.name}>
+				<Avatar customer name={user.nickname} source={user.picture} />
+			</Page>
+		)
+	}
 
-function Profile({ user }: { user: any }) {
 	return (
-		<div>
-			<h1>Profile</h1>
-
-			<div>
-				<h3>Profile (server rendered)</h3>
-				<img src={user?.picture} alt="user picture" />
-				<p>nickname: {user.nickname}</p>
-				<p>name: {user.name}</p>
-			</div>
-		</div>
+		<Fountain url="/profile" title="Profile">
+			{inner}
+		</Fountain>
 	)
 }
-
-Profile.getInitialProps = async ({
-	req,
-	res
-}: {
-	req: NextApiRequest
-	res: NextApiResponse
-}) => {
-	// On the server-side you can check authentication status directly
-	// However in general you might want to call API Routes to fetch data
-	// An example of directly checking authentication:
-	if (typeof window === 'undefined') {
-		const session = await auth0.getSession(req)
-		const user =
-			session === undefined || session === null
-				? undefined
-				: (session as ISession)?.user
-
-		if (!user) {
-			res.writeHead(302, {
-				Location: loginUrl
-			})
-			res.end()
-			return
-		}
-		return { user }
-	}
-
-	// To do fetches to API routes you can pass the cookie coming from the incoming request on to the fetch
-	// so that a request to the API is done on behalf of the user
-	// keep in mind that server-side fetches need a full URL, meaning that the full url has to be provided to the application
-	const cookie = req && req.headers.cookie
-	const user = await fetchUser(cookie)
-
-	// A redirect is needed to authenticate to Auth0
-	if (!user) {
-		if (typeof window === 'undefined') {
-			res.writeHead(302, {
-				Location: loginUrl
-			})
-			return res.end()
-		}
-
-		window.location.href = loginUrl
-	}
-
-	return { user }
-}
-
-export default Profile

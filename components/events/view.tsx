@@ -111,7 +111,7 @@ function Event({ event }: { event: RichEventSchema }) {
 		content: 'N/A'
 	}
 	return (
-		<div>
+		<>
 			<CalloutCard
 				title={event.title}
 				illustration={illustration}
@@ -122,7 +122,7 @@ function Event({ event }: { event: RichEventSchema }) {
 			</CalloutCard>
 			{statusBar}
 			{progressBar}
-		</div>
+		</>
 	)
 }
 

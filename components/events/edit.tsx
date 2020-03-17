@@ -23,6 +23,7 @@ import { addEventSchema, AddEventSchema } from '../../shared/schemas'
 import { getLocalISOString, getTimezone } from '../../shared/util'
 import useErrors from '../../shared/errors'
 import TimezonePicker from '../../components/timezone'
+import { eventsUrl } from '../../shared/config'
 
 // Types
 type Status = { success: null } | { success: boolean; message: string }
@@ -73,7 +74,10 @@ export default function EditEvent() {
 		status.success == null ? (
 			''
 		) : status.success ? (
-			<Toast content={status.message} onDismiss={() => Router.push('/')} />
+			<Toast
+				content={status.message}
+				onDismiss={() => Router.push(eventsUrl)}
+			/>
 		) : (
 			<Toast
 				error

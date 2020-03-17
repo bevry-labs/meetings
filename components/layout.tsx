@@ -1,48 +1,164 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import translations from '@shopify/polaris/locales/en.json'
-import { AppProvider, Frame } from '@shopify/polaris'
-import { Children, Child } from '../shared/types'
-import dynamic from 'next/dynamic'
+import { AppProvider, Frame, Navigation, TopBar } from '@shopify/polaris'
+import { LinkLikeComponentProps } from '@shopify/polaris/types/utilities/link'
+import {
+	CustomersMajorMonotone,
+	ProfileMajorMonotone,
+	CalendarMajorMonotone,
+	CalendarTickMajorMonotone,
+	HomeMajorMonotone
+} from '@shopify/polaris-icons'
 
 // Local
+import { Children, Child } from '../shared/types'
 import {
-	loginUrl,
+	theme,
 	logoutUrl,
-	logoUrl,
+	profileUrl,
+	loginUrl,
+	eventsUrl,
 	homeUrl,
-	profileUrl
+	newEventUrl
 } from '../shared/config'
+import useUser from '../lib/user'
+import { getInitials } from '../shared/util'
 
-// Theme
-const theme = {
-	colors: {
-		topBar: {
-			background: '#FFFFFF'
-		}
-	},
-	logo: {
-		width: 124,
-		topBarSource: logoUrl,
-		url: homeUrl,
-		accessibilityLabel: 'Bevry'
-	}
+// Link Proxy
+function LinkProxy({ children, url, ...rest }: LinkLikeComponentProps) {
+	return (
+		<Link href={url}>
+			<a {...rest}>{children}</a>
+		</Link>
+	)
 }
 
-// Props
+// Layout Properties
 interface LayoutProps {
 	children: Children | Child
+	url: string
 	title?: string
 }
 
 // Components
 export default function Layout({
 	children,
+	url,
 	title = 'Bevry Meetings'
 }: LayoutProps) {
-	const topBarMarkup = dynamic(() => import('./topbar'), { ssr: false })
+	// User
+	const { data: user } = useUser()
+
+	// State
+	const [mobileNavigationActive, setMobileNavigationActive] = useState(false)
+	const toggleMobileNavigationActive = useCallback(
+		() =>
+			setMobileNavigationActive(
+				mobileNavigationActive => !mobileNavigationActive
+			),
+		[]
+	)
+
+	// Navigation
+	const navMarkup = (
+		<Navigation location={url}>
+			<Navigation.Section
+				items={[
+					{
+						label: 'Home',
+						icon: HomeMajorMonotone,
+						url: homeUrl,
+						exactMatch: true
+					}
+				]}
+			/>
+			<Navigation.Section
+				items={[
+					{
+						label: 'Events',
+						icon: CalendarMajorMonotone,
+						url: eventsUrl
+					},
+					{
+						label: 'New Event',
+						icon: CalendarTickMajorMonotone,
+						url: newEventUrl,
+						disabled: !user
+					}
+				]}
+			/>
+			<Navigation.Section
+				items={
+					user
+						? [
+								{
+									label: 'Profile',
+									icon: ProfileMajorMonotone,
+									url: profileUrl
+								},
+								{
+									label: 'Logout',
+									icon: CustomersMajorMonotone,
+									url: logoutUrl
+								}
+						  ]
+						: [
+								{
+									label: 'Login',
+									icon: CustomersMajorMonotone,
+									url: loginUrl
+								}
+						  ]
+				}
+			/>
+		</Navigation>
+	)
+
+	// Logged in menu state
+	const [userMenuActive, setUserMenuActive] = useState<boolean>(false)
+	const toggleUserMenuActive = useCallback(() => {
+		setUserMenuActive(!userMenuActive)
+	}, [])
+
+	// Adjust menu based on user state
+	const userMenuMarkup = user ? (
+		<TopBar.UserMenu
+			actions={[
+				{
+					items: [
+						{
+							content: 'Logout',
+							url: logoutUrl
+						},
+						{
+							content: 'Profile',
+							url: profileUrl
+						}
+					]
+				}
+			]}
+			name={user.nickname}
+			detail={user.name}
+			initials={getInitials(user.nickname)}
+			open={userMenuActive}
+			onToggle={toggleUserMenuActive}
+		/>
+	) : (
+		undefined
+	)
+	const topBarMarkup = (
+		<TopBar
+			showNavigationToggle
+			onNavigationToggle={toggleMobileNavigationActive}
+			userMenu={userMenuMarkup}
+		/>
+	)
+
+	// Layout
 	return (
-		<div>
+		<AppProvider theme={theme} i18n={translations} linkComponent={LinkProxy}>
 			<Head>
 				<title key="title">{title}</title>
 				<meta
@@ -56,9 +172,14 @@ export default function Layout({
 					href="//unpkg.com/@shopify/polaris@4/styles.min.css"
 				/>
 			</Head>
-			<AppProvider theme={theme} i18n={translations}>
-				<Frame topBar={topBarMarkup}>{children}</Frame>
-			</AppProvider>
-		</div>
+			<Frame
+				navigation={navMarkup}
+				topBar={topBarMarkup}
+				showMobileNavigation={mobileNavigationActive}
+				onNavigationDismiss={toggleMobileNavigationActive}
+			>
+				{children}
+			</Frame>
+		</AppProvider>
 	)
 }
