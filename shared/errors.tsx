@@ -19,7 +19,7 @@ export default function useErrors<
 			throw new Error('unknown field provided to show error: ' + name)
 		}
 	}
-	function renderError(name: Field, unique = false) {
+	function renderError(name: Field) {
 		const message = showError(name)
 		if (message) {
 			return (

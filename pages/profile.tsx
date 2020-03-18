@@ -1,6 +1,6 @@
 // External
 import React from 'react'
-import useSWR from '../lib/swr'
+import useUser from '../lib/user'
 import {
 	Banner,
 	SkeletonPage,
@@ -15,12 +15,11 @@ import {
 
 // Local
 import Fountain from '../components/layout'
-import { profileApiUrl } from '../shared/config'
-import { IUser } from '../shared/types'
 
 // Page
 export default function Profile() {
-	const { data: user, error, isValidating } = useSWR<IUser, any>(profileApiUrl)
+	const { data: user, error, isValidating } = useUser()
+	console.log({ user, error, isValidating })
 	let inner
 
 	if (error)

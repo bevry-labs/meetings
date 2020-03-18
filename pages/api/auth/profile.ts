@@ -7,6 +7,9 @@ export default async function profile(
 	res: NextApiResponse
 ) {
 	try {
+		// await new Promise(function(resolve) {
+		// 	setTimeout(resolve, 3000)
+		// })
 		await auth0.handleProfile(req, res, {})
 	} catch (error) {
 		console.log(error)
