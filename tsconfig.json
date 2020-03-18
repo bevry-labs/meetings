@@ -17,6 +17,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": ["client", "pages", "scripts", "server", "shared"],
+  "include": [
+    "components",
+    "lib",
+    "pages",
+    "public",
+    "scripts",
+    "server",
+    "shared"
+  ],
   "exclude": ["node_modules"]
 }
