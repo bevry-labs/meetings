@@ -7,6 +7,9 @@ export default async function callback(
 	res: NextApiResponse
 ) {
 	try {
+		// create fauna user if not exists
+		// log them in
+		// give fauna secret to them
 		await auth0.handleCallback(req, res, { redirectTo: '/' })
 	} catch (error) {
 		console.error(error)
