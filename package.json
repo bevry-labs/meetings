@@ -72,7 +72,7 @@
   ],
   "type": "commonjs",
   "dependencies": {
-    "@auth0/nextjs-auth0": "^0.10.0",
+    "@auth0/nextjs-auth0": "^1.4.2",
     "@bevry/hooks": "^2.5.0",
     "@shopify/polaris": "^4.16.0",
     "@types/react": "^16.9.23",
